@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>logIn</title>
+    <link href="styles/Form.css" rel="stylesheet">
+</head>
+<script src="scripts/login.js" defer></script>
+
+<body>
+    <div class="total-container">
+        <div class="background-layer"></div>
+        <div id="box1"></div>
+        <h1>学生日程管理系统</h1>
+        <div id="logInForm">
+            <div id="choose">
+                <div class="chooseItem" id="tea">教师登录</div>
+                <div class="chooseItem" id="stu">学生登录</div>
+            </div>
+            <form>
+                <section>
+                    <p>
+                        <label for="userid">
+                            <span>账号：</span>
+                        </label>
+                        <input type="text" id="userid">
+                    </p>
+                    <p>
+                        <label for="password">
+                            <span>密码：</span>
+                        </label>
+                        <input type="password" id="psw">
+                    </p>
+                </section>
+                <p><button id="confirm" type="button">确认</button></p>
+                <p id="returnMessage" style="text-align: center;"></p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

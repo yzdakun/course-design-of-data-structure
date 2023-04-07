@@ -30,29 +30,34 @@ int main(int argc, char** argv)
     tmp=argv;
     vector<string> userid;
     vector<string> psw;
-    string a="x",b,c;
+    vector<string> lev;
+    string a="x",b,c,d;
     while(a!="&")
     {
         cin>>a;
         userid.push_back(a);
         cin>>a;
         psw.push_back(a);
+        cin>>a;
+        lev.push_back(a);
     }
-    // for(auto x:userid)
-    //     cout<<x<<endl;
+    // // for(auto x:userid)
+    // //     cout<<x<<endl;
 
     i=8;
 
     a=tmp[1];
     b=tmp[2];
     c=tmp[3];
+    d=tmp[4];
+    // cout<<a<<" "<<b<<" "<<c<<" "<<d<<endl;
     // cout<<tmp[1][i]<<endl;
-    long long tim=stoll(c);
+    long long tim=stoll(d);
 
     int flag=0;
     int j=0,lenu=userid.size();
     for(;j<lenu;j++)
-        if(a==userid[j])
+        if(a==userid[j]&&c==lev[j])
         {
             flag=1;
             break;
@@ -61,7 +66,8 @@ int main(int argc, char** argv)
     if(!flag) cout<<0<<endl;
     else if(b!=psw[j]) cout<<0<<endl;
     else cout<<1<<endl;
-    cout<<tim;      
+    cout<<tim<<endl;
+    cout<<c;      
     fclose(stdout);
     // system("pause");
     return 0;

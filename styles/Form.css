@@ -1,5 +1,6 @@
 h1 {
     margin-top: 0;
+    text-align: center;
 }
 
 ul {
@@ -14,10 +15,6 @@ form {
     padding: 1em;
     border: 1px solid #CCC;
     border-radius: 1em;
-}
-
-div+div {
-    margin-top: 1em;
 }
 
 label span {
@@ -68,4 +65,61 @@ button {
 body {
     width: 100vw;
     height: 100vh;
+    margin: 0;
+}
+.total-container
+{
+    position: relative;
+    z-index: 1;
+}
+.background-layer
+{
+    position: absolute;
+    z-index: -1;
+    background-image: url(../images/bible-1868070.jpg);
+    /* background: linear-gradient(rgba(255,255,255,.5),rgba(255,255,255,.5)),url(../images/My-test-image.png); */
+    /* background-color: #7AB7F4; */
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    /* display: block; */
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    /* padding-top: 20px; */
+}
+
+#box1
+{
+    margin: 0;
+    padding-top: 25vh;
+}
+
+#logInForm
+{
+    margin: 0 auto;
+    width: max-content;
+    background-color: aliceblue;
+    border: 1px solid #000;
+    border-radius: 1em;
+    padding: 15px 10px;
+}
+
+#choose
+{
+    display: flex;
+    font-size: 20px;
+    
+}
+
+.chooseItem
+{
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    margin-top: 0;
+}
+
+.chooseItem:hover
+{
+    color:#11A6A3;
 }
