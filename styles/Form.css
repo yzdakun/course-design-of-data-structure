@@ -19,7 +19,7 @@ form {
 
 label span {
     display: inline-block;
-    width: 120px;
+    width: max-content;
     text-align: right;
 }
 
@@ -55,6 +55,7 @@ fieldset {
 
 label {
   position: relative;
+  width: max-content;
 }
 
 button {
@@ -87,6 +88,13 @@ body {
     height: 100vh;
     max-width: 100%;
     /* padding-top: 20px; */
+}
+
+.labelbox
+{
+    display: block;
+    width: fit-content;
+    margin: 16px auto;
 }
 
 #box1
