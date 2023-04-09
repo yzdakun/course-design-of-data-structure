@@ -1,0 +1,11 @@
+﻿  BPlus_node.cpp
+  BPlus_tree.cpp
+  main.cpp
+  Log_control.cpp
+D:\cworkspace\学生管理系统\学生管理系统\Log_control.cpp(107,29): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\cworkspace\学生管理系统\学生管理系统\Log_control.cpp(107,45): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\cworkspace\学生管理系统\学生管理系统\Log_control.cpp(149,29): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\cworkspace\学生管理系统\学生管理系统\Log_control.cpp(149,46): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+  user.cpp
+  正在生成代码...
+  学生管理系统.vcxproj -> D:\cworkspace\学生管理系统\学生管理系统\x64\Debug\学生管理系统.exe
