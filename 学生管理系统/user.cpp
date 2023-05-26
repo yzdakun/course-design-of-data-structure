@@ -24,12 +24,12 @@ void student::ManageSystem()
 	while (true)
 	{
 		int t;
-		cout << "ÄúÒª½øÐÐµÄ²Ù×÷ÀàÐÍ£º1 ¿Î³Ì±íÕ¹Ê¾£¬2 ²éÕÒ£¬3,Ìí¼Ó»î¶¯£¬4 É¾³ý»î¶¯£¬5 Ìí¼ÓÄÖÖÓ£¬6 É¾³ýÄÖÖÓ £¬7 Õ¹Ê¾ÄÖÖÓ £¬8 ÍË³ö" << endl;
+		cout << "æ‚¨è¦è¿›è¡Œçš„æ“ä½œç±»åž‹ï¼š1 è¯¾ç¨‹è¡¨å±•ç¤ºï¼Œ2 æŸ¥æ‰¾ï¼Œ3,æ·»åŠ æ´»åŠ¨ï¼Œ4 åˆ é™¤æ´»åŠ¨ï¼Œ5 æ·»åŠ é—¹é’Ÿï¼Œ6 åˆ é™¤é—¹é’Ÿ ï¼Œ7 å±•ç¤ºé—¹é’Ÿ ï¼Œ8 é€€å‡º" << endl;
 		cin >> t;
 
 		if (t == 1)
 		{
-			cout << "ÇëÊäÈëÄúÒªÕ¹Ê¾µÚ¼¸ÖÜµÄ¿Î±í£º" << endl;
+			cout << "è¯·è¾“å…¥æ‚¨è¦å±•ç¤ºç¬¬å‡ å‘¨çš„è¯¾è¡¨ï¼š" << endl;
 			int w;
 			cin >> w;
 			this->ShowClassSchedule(w);
@@ -37,17 +37,17 @@ void student::ManageSystem()
 		}
 		else if (t == 2)
 		{
-			cout << "ÇëÊäÈëÄúÒª²éÕÒµÄÀàÐÍ£º1 ¿Î³Ì£¬2 ¼¯Ìå»î¶¯£¬3 ¸öÈË»î¶¯ £¬4 ÁÙÊ±ÊÂÎñ" << endl;
+			cout << "è¯·è¾“å…¥æ‚¨è¦æŸ¥æ‰¾çš„ç±»åž‹ï¼š1 è¯¾ç¨‹ï¼Œ2 é›†ä½“æ´»åŠ¨ï¼Œ3 ä¸ªäººæ´»åŠ¨ ï¼Œ4 ä¸´æ—¶äº‹åŠ¡" << endl;
 			int tp;
 			cin >> tp;
 			if (tp != 1 && tp != 2 && tp != 3 && tp != 4)
 			{
-				cout << "ÊäÈë´íÎó" << endl;
+				cout << "è¾“å…¥é”™è¯¯" << endl;
 			}
 			else
 			{
 				string s;
-				cout << "ÇëÊäÈëÃû³Æ" << endl;
+				cout << "è¯·è¾“å…¥åç§°" << endl;
 				cin >> s;
 				int week = Search(tp, s);
 				if (week > 0)
@@ -56,18 +56,18 @@ void student::ManageSystem()
 				}
 				else
 				{
-					cout << "ºóÐøÎÞ¸ÃÊÂÎñ" << endl;
+					cout << "åŽç»­æ— è¯¥äº‹åŠ¡" << endl;
 				}
 			}
 		}
 		else if (t == 3)
 		{
-			cout << "ÇëÊäÈëÄúÒªÌí¼ÓµÄÊÂÎñÀàÐÍ;2 ¼¯Ìå»î¶¯ £¬3 ¸öÈË»î¶¯ £¬4 ÁÙÊ±ÊÂÎñ" << endl;
+			cout << "è¯·è¾“å…¥æ‚¨è¦æ·»åŠ çš„äº‹åŠ¡ç±»åž‹;2 é›†ä½“æ´»åŠ¨ ï¼Œ3 ä¸ªäººæ´»åŠ¨ ï¼Œ4 ä¸´æ—¶äº‹åŠ¡" << endl;
 			int tp;
 			cin >> tp;
 			if (tp == 1)
 			{
-				cout << "Ã»ÓÐÈ¨ÏÞÌí¼Ó¿Î³Ì" << endl;
+				cout << "æ²¡æœ‰æƒé™æ·»åŠ è¯¾ç¨‹" << endl;
 			}
 			else if (tp == 2)
 			{
@@ -83,18 +83,18 @@ void student::ManageSystem()
 			}
 			else
 			{
-				cout << "ÊäÈë´íÎó" << endl;
+				cout << "è¾“å…¥é”™è¯¯" << endl;
 			}
 
 		}
 		else if (t == 4)
 		{
-			cout << "ÇëÊäÈëÄúÒªÉ¾³ýµÄÊÂÎñÀàÐÍ;2 ¼¯Ìå»î¶¯ £¬3 ¸öÈË»î¶¯ £¬4 ÁÙÊ±ÊÂÎñ" << endl;
+			cout << "è¯·è¾“å…¥æ‚¨è¦åˆ é™¤çš„äº‹åŠ¡ç±»åž‹;2 é›†ä½“æ´»åŠ¨ ï¼Œ3 ä¸ªäººæ´»åŠ¨ ï¼Œ4 ä¸´æ—¶äº‹åŠ¡" << endl;
 			int tp;
 			cin >> tp;
 			if (tp == 1)
 			{
-				cout << "Ã»ÓÐÈ¨ÏÞÉ¾³ý¿Î³Ì" << endl;
+				cout << "æ²¡æœ‰æƒé™åˆ é™¤è¯¾ç¨‹" << endl;
 			}
 			else if (tp == 2)
 			{
@@ -110,15 +110,15 @@ void student::ManageSystem()
 			}
 			else
 			{
-				cout << "ÊäÈë´íÎó" << endl;
+				cout << "è¾“å…¥é”™è¯¯" << endl;
 			}
 		}
 		else if (t == 5)
 		{
 			int starttime, kind, endtime, acttime, type;
-			cout << "ÇëÊäÈëÄÖÖÓÊ±¼ä£¬ÄÖÖÓÀàÐÍ£¬»î¶¯¿ªÊ¼Ê±¼ä" << endl;
+			cout << "è¯·è¾“å…¥é—¹é’Ÿæ—¶é—´ï¼Œé—¹é’Ÿç±»åž‹ï¼Œæ´»åŠ¨å¼€å§‹æ—¶é—´" << endl;
 			cin >> starttime >> kind >> acttime;
-			cout << "ÇëÊäÈëÖÜÆÚ£º1 µ¥´Î£¬2 Ã¿Ìì£¬3 Ã¿ÖÜ" << endl;
+			cout << "è¯·è¾“å…¥å‘¨æœŸï¼š1 å•æ¬¡ï¼Œ2 æ¯å¤©ï¼Œ3 æ¯å‘¨" << endl;
 			cin >> type;
 			AddPersonalAlarmClock(starttime, kind, acttime, type);
 		}
@@ -132,12 +132,12 @@ void student::ManageSystem()
 		}
 		else if (t == 8)
 		{
-			cout << "¼´½«ÍË³öµÇÂ¼" << endl;
+			cout << "å³å°†é€€å‡ºç™»å½•" << endl;
 			break;
 		}
 		else 
 		{
-			cout << "²»´æÔÚ´Ë²Ù×÷" << endl;
+			cout << "ä¸å­˜åœ¨æ­¤æ“ä½œ" << endl;
 		}
 
 
@@ -185,7 +185,7 @@ void student::InitCourseInformation()
 
 	if (!ifs.is_open())
 	{
-		cout << "Ñ§Éú¿Î³ÌÐÅÏ¢³õÊ¼»¯´íÎó" << endl;
+		cout << "å­¦ç”Ÿè¯¾ç¨‹ä¿¡æ¯åˆå§‹åŒ–é”™è¯¯" << endl;
 		exit(0);
 	}
 
@@ -239,7 +239,7 @@ void student::InitActivityInformation()
 
 	if (!ifs.is_open())
 	{
-		cout << "Ñ§Éú¿ÎÍâ»î¶¯ÐÅÏ¢³õÊ¼»¯´íÎó" << endl;
+		cout << "å­¦ç”Ÿè¯¾å¤–æ´»åŠ¨ä¿¡æ¯åˆå§‹åŒ–é”™è¯¯" << endl;
 		exit(0);
 	}
 
@@ -283,7 +283,7 @@ void student::InitActivityInformation()
 	}
 	if (flag)
 	{
-		cout << "ÄúÓÐ¸öÈË»î¶¯Òò³åÍ»±»É¾³ý" << endl;
+		cout << "æ‚¨æœ‰ä¸ªäººæ´»åŠ¨å› å†²çªè¢«åˆ é™¤" << endl;
 	}
 }
 
@@ -304,7 +304,7 @@ void student::InitGroupActInformation()
 
 	if (!ifs.is_open())
 	{
-		cout << "Ñ§Éú¼¯Ìå»î¶¯ÐÅÏ¢³õÊ¼»¯´íÎó" << endl;
+		cout << "å­¦ç”Ÿé›†ä½“æ´»åŠ¨ä¿¡æ¯åˆå§‹åŒ–é”™è¯¯" << endl;
 		exit(0);
 	}
 
@@ -360,7 +360,7 @@ void student::InitTempActInformation()
 
 	if (!ifs.is_open())
 	{
-		cout << "Ñ§ÉúÁÙÊ±ÊÂÎñÐÅÏ¢³õÊ¼»¯´íÎó" << endl;
+		cout << "å­¦ç”Ÿä¸´æ—¶äº‹åŠ¡ä¿¡æ¯åˆå§‹åŒ–é”™è¯¯" << endl;
 		exit(0);
 	}
 
@@ -404,7 +404,7 @@ void student::InitTempActInformation()
 	}
 	if (flag)
 	{
-		cout << "ÄúÓÐÁÙÊ±ÊÂÎñÒò³åÍ»±»É¾³ý" << endl;
+		cout << "æ‚¨æœ‰ä¸´æ—¶äº‹åŠ¡å› å†²çªè¢«åˆ é™¤" << endl;
 	}
 }
 
@@ -420,7 +420,7 @@ void student::InitAlarmClockInformation()
 
 	if (!ifs.is_open())
 	{
-		cout << "ÄÖÖÓÐÅÏ¢³õÊ¼»¯´íÎó" << endl;
+		cout << "é—¹é’Ÿä¿¡æ¯åˆå§‹åŒ–é”™è¯¯" << endl;
 		exit(0);
 	}
 
@@ -460,7 +460,7 @@ void student::ShowClassSchedule(int week)
 
 	//for (int i = 0; i < CourseNum[w]; i++)
 	//{
-	//	cout << CourseList[w][i].name << " " << CourseList[w][i].StartTime << " " << CourseList[w][i].EndTime << " " << CourseList[w][i].place << " " << CourseList[w][i].kind << endl;//Êä³ö¿Î³Ì£»
+	//	cout << CourseList[w][i].name << " " << CourseList[w][i].StartTime << " " << CourseList[w][i].EndTime << " " << CourseList[w][i].place << " " << CourseList[w][i].kind << endl;//è¾“å‡ºè¯¾ç¨‹ï¼›
 	//}
 
 	for (int i = 0; i < 7; i++)
@@ -544,7 +544,7 @@ void student::ShowClassSchedule(int week)
 
 			if (Ctm < Atm && Ctm < Ttm && Ctm < Gtm)
 			{
-				cout << CourseList[w][CourseL].kind << " " << CourseList[w][CourseL].StartTime << " " << CourseList[w][CourseL].EndTime << " " << CourseList[w][CourseL].name << " " << CourseList[w][CourseL].Class << " " << CourseList[w][CourseL].place << endl;//Êä³ö¿Î³Ì£»
+				cout << CourseList[w][CourseL].kind << " " << CourseList[w][CourseL].StartTime << " " << CourseList[w][CourseL].EndTime << " " << CourseList[w][CourseL].name << " " << CourseList[w][CourseL].Class << " " << CourseList[w][CourseL].place << endl;//è¾“å‡ºè¯¾ç¨‹ï¼›
 				CourseL++;
 			}
 			else if (Gtm < Atm && Gtm < Ttm && Gtm < Ctm)
@@ -554,7 +554,7 @@ void student::ShowClassSchedule(int week)
 			}
 			else if (Atm < Ctm && Atm < Ttm && Atm < Gtm)
 			{
-				cout << ActivityList[w][ActivityL].kind << " " << ActivityList[w][ActivityL].StartTime << " " << ActivityList[w][ActivityL].EndTime << " " << ActivityList[w][ActivityL].place << " " << ActivityList[w][ActivityL].name << endl;//¶ÔÓ¦»î¶¯
+				cout << ActivityList[w][ActivityL].kind << " " << ActivityList[w][ActivityL].StartTime << " " << ActivityList[w][ActivityL].EndTime << " " << ActivityList[w][ActivityL].place << " " << ActivityList[w][ActivityL].name << endl;//å¯¹åº”æ´»åŠ¨
 				ActivityL++;
 			}
 			else if (Ttm < Ctm && Ttm < Atm && Ttm < Gtm)
@@ -584,12 +584,12 @@ void student::ShowClassSchedule(int week)
 }
 
 
-int student::Search(int kind, string name)//°ë³ÉÆ·
+int student::Search(int kind, string name)//åŠæˆå“
 {
 	int w = now_time / 168;
 	int ret = -1;
 	int flag = 0;
-	cout << now_time << " " << w << endl;
+	//cout << now_time << " " << w << endl;
 	if (kind == 1)
 	{
 		int x = w, y = 0;
@@ -757,7 +757,7 @@ int student::Search(int kind, string name)//°ë³ÉÆ·
 
 void student::AddGroupAct()
 {
-	cout << "ÇëÊäÈë¼¯Ìå»î¶¯µÄ¿ªÊ¼Ê±¼ä" << endl;
+	cout << "è¯·è¾“å…¥é›†ä½“æ´»åŠ¨çš„å¼€å§‹æ—¶é—´" << endl;
 	int tm;
 	cin >> tm;
 	group_act tmp;
@@ -770,7 +770,7 @@ void student::AddGroupAct()
 		tmp.EndTime = tmp.StartTime + 1;
 		int w = tmp.StartTime / 168;
 
-		cout << "ÇëÊäÈë¼¯Ìå»î¶¯µÄÃû³ÆÓëµØµã" << endl;
+		cout << "è¯·è¾“å…¥é›†ä½“æ´»åŠ¨çš„åç§°ä¸Žåœ°ç‚¹" << endl;
 		cin >> tmp.name >> tmp.place;
 
 		GroupActList[w][GroupActNum[w]] = tmp;
@@ -790,7 +790,7 @@ void student::AddGroupAct()
 	}
 	else
 	{
-		cout << "Ê±¼ä³åÍ»" << endl;
+		cout << "æ—¶é—´å†²çª" << endl;
 
 		int a = tm % 24;
 		int num = 0;
@@ -807,18 +807,18 @@ void student::AddGroupAct()
 
 		if (num == 0)
 		{
-			cout << "ÎÞ¿ÉÓÃÊ±¼ä" << endl;
+			cout << "æ— å¯ç”¨æ—¶é—´" << endl;
 		}
 	}
-	//¿ÉÒÔË¢ÐÂÒ»ÏÂ¿Î±í
+	//å¯ä»¥åˆ·æ–°ä¸€ä¸‹è¯¾è¡¨
 }
 
 void student::AddActivity()
 {
-	//cout << "ÇëÊäÈë¸öÈË»î¶¯µÄ¿ªÊ¼Ê±¼ä" << endl;
+	//cout << "è¯·è¾“å…¥ä¸ªäººæ´»åŠ¨çš„å¼€å§‹æ—¶é—´" << endl;
 	//int tm;
 	//cin >> tm;
-	cout << "ÇëÊäÈëÖÜÆÚÀàÐÍ:1 µ¥´Î£¬2 Ã¿Ìì£¬3 Ã¿ÖÜ" << endl;
+	cout << "è¯·è¾“å…¥å‘¨æœŸç±»åž‹:1 å•æ¬¡ï¼Œ2 æ¯å¤©ï¼Œ3 æ¯å‘¨" << endl;
 	int tp;
 	cin >> tp;
 
@@ -826,7 +826,7 @@ void student::AddActivity()
 
 	if (tp == 1)
 	{
-		cout << "ÇëÊäÈë¸öÈË»î¶¯µÄ¿ªÊ¼Ê±¼ä,Ãû³Æ£¬µØµã" << endl;
+		cout << "è¯·è¾“å…¥ä¸ªäººæ´»åŠ¨çš„å¼€å§‹æ—¶é—´,åç§°ï¼Œåœ°ç‚¹" << endl;
 		int tm;
 		string name, place;
 		cin >> tm >> name >> place;
@@ -834,7 +834,7 @@ void student::AddActivity()
 	}
 	else if (tp == 2)
 	{
-		cout << "ÇëÊäÈë¸öÈË»î¶¯µÄ¿ªÊ¼Ê±¼ä,½áÊøÊ±¼ä,Ãû³Æ£¬µØµã" << endl;
+		cout << "è¯·è¾“å…¥ä¸ªäººæ´»åŠ¨çš„å¼€å§‹æ—¶é—´,ç»“æŸæ—¶é—´,åç§°ï¼Œåœ°ç‚¹" << endl;
 		int tm,endtm;
 		string name, place;
 		cin >> tm >> endtm >> name >> place;
@@ -844,13 +844,13 @@ void student::AddActivity()
 			if (x == 0)
 			{
 				int w = tm / 168 + 1,d = ( tm % 168 ) / 24 + 1;
-				cout << "µÚ" << w << "ÖÜÖÜ"  << d << "»î¶¯ÓÐ³åÍ»£¬²åÈëÊ§°Ü" << endl;
+				cout << "ç¬¬" << w << "å‘¨å‘¨"  << d << "æ´»åŠ¨æœ‰å†²çªï¼Œæ’å…¥å¤±è´¥" << endl;
 			}
 		}
 	}
 	else if (tp == 3)
 	{
-		cout << "ÇëÊäÈë¸öÈË»î¶¯µÄ¿ªÊ¼Ê±¼ä,½áÊøÊ±¼ä,Ãû³Æ£¬µØµã" << endl;
+		cout << "è¯·è¾“å…¥ä¸ªäººæ´»åŠ¨çš„å¼€å§‹æ—¶é—´,ç»“æŸæ—¶é—´,åç§°ï¼Œåœ°ç‚¹" << endl;
 		int tm, endtm;
 		string name, place;
 		cin >> tm >> endtm >> name >> place;
@@ -860,7 +860,7 @@ void student::AddActivity()
 			if (x == 0)
 			{
 				int w = tm / 168 + 1 ;
-				cout << "µÚ" << w << "ÖÜ»î¶¯ÓÐ³åÍ»£¬²åÈëÊ§°Ü" << endl;
+				cout << "ç¬¬" << w << "å‘¨æ´»åŠ¨æœ‰å†²çªï¼Œæ’å…¥å¤±è´¥" << endl;
 			}
 		}
 	}
@@ -868,7 +868,7 @@ void student::AddActivity()
 
 
 	
-	//¿ÉÒÔË¢ÐÂÒ»ÏÂ¿Î±í
+	//å¯ä»¥åˆ·æ–°ä¸€ä¸‹è¯¾è¡¨
 }
 
 
@@ -885,7 +885,7 @@ int student::AddSingleActivity(int tm,string name,string place,int type)
 		tmp.name = name;
 		tmp.place = place;
 		int w = tmp.StartTime / 168;
-		//cout << "ÇëÊäÈë¼¯Ìå»î¶¯µÄÃû³ÆÓëµØµã" << endl;
+		//cout << "è¯·è¾“å…¥é›†ä½“æ´»åŠ¨çš„åç§°ä¸Žåœ°ç‚¹" << endl;
 
 		ActivityList[w][ActivityNum[w]] = tmp;
 		ActivityNum[w]++;
@@ -911,7 +911,7 @@ int student::AddSingleActivity(int tm,string name,string place,int type)
 	{
 		if (type == 1)
 		{
-			cout << "Ê±¼ä³åÍ»" << endl;
+			cout << "æ—¶é—´å†²çª" << endl;
 
 			int a = tm % 24;
 			int num = 0;
@@ -926,7 +926,7 @@ int student::AddSingleActivity(int tm,string name,string place,int type)
 			}
 			if (num == 0)
 			{
-				cout << "ÎÞ¿ÉÓÃÊ±¼ä" << endl;
+				cout << "æ— å¯ç”¨æ—¶é—´" << endl;
 			}
 		}
 		return 0;
@@ -936,7 +936,7 @@ int student::AddSingleActivity(int tm,string name,string place,int type)
 
 void student::AddTempAct()
 {
-	cout << "ÇëÊäÈëÁÙÊ±ÊÂÎñµÄ¿ªÊ¼Ê±¼ä" << endl;
+	cout << "è¯·è¾“å…¥ä¸´æ—¶äº‹åŠ¡çš„å¼€å§‹æ—¶é—´" << endl;
 	int tm;
 	cin >> tm;
 	temp_act tmp;
@@ -948,7 +948,7 @@ void student::AddTempAct()
 		tmp.StartTime = tm;
 		tmp.EndTime = tm + 1;
 		int w = tmp.StartTime / 168;
-		cout << "ÇëÊäÈëÁÙÊ±ÊÂÎñµÄÃû³ÆÓëµØµã" << endl;
+		cout << "è¯·è¾“å…¥ä¸´æ—¶äº‹åŠ¡çš„åç§°ä¸Žåœ°ç‚¹" << endl;
 		cin >> tmp.name >> tmp.place;
 
 		TempActList[w][TempActNum[w]] = tmp;
@@ -968,14 +968,14 @@ void student::AddTempAct()
 	}
 	else
 	{
-		cout << "Ê±¼ä³åÍ»£¬ÊäÈëÊ§°Ü" << endl;
+		cout << "æ—¶é—´å†²çªï¼Œè¾“å…¥å¤±è´¥" << endl;
 	}
-	//¿ÉÒÔË¢ÐÂÒ»ÏÂ¿Î±í
+	//å¯ä»¥åˆ·æ–°ä¸€ä¸‹è¯¾è¡¨
 }
 
 void student::DeleteGroupAct()
 {
-	cout << "ÇëÊäÈëÆðÊ¼Ê±¼ä" << endl;
+	cout << "è¯·è¾“å…¥èµ·å§‹æ—¶é—´" << endl;
 	int tm;
 	cin >> tm;
 
@@ -990,7 +990,7 @@ void student::DeleteGroupAct()
 	}
 	if (idx == GroupActNum[w])
 	{
-		cout << "²»´æÔÚ¸ÃÊÂÎñ" << endl;
+		cout << "ä¸å­˜åœ¨è¯¥äº‹åŠ¡" << endl;
 	}
 	for (int i = idx; i < GroupActNum[w] - 1; i++)
 	{
@@ -1002,7 +1002,7 @@ void student::DeleteGroupAct()
 
 void student::DeleteActivity()
 {
-	cout << "ÇëÊäÈëÆðÊ¼Ê±¼ä" << endl;
+	cout << "è¯·è¾“å…¥èµ·å§‹æ—¶é—´" << endl;
 	int tm;
 	cin >> tm;
 
@@ -1017,7 +1017,7 @@ void student::DeleteActivity()
 	}
 	if (idx == ActivityNum[w])
 	{
-		cout << "²»´æÔÚ¸ÃÊÂÎñ" << endl;
+		cout << "ä¸å­˜åœ¨è¯¥äº‹åŠ¡" << endl;
 	}
 	for (int i = idx; i < ActivityNum[w] - 1; i++)
 	{
@@ -1029,10 +1029,10 @@ void student::DeleteActivity()
 
 void student::DeleteTempAct()
 {
-	cout << "ÇëÊäÈëÆðÊ¼Ê±¼ä" << endl;
+	cout << "è¯·è¾“å…¥èµ·å§‹æ—¶é—´" << endl;
 	int tm;
 	cin >> tm;
-	cout << "ÇëÊäÈëÊÂÎñÃû³Æ" << endl;
+	cout << "è¯·è¾“å…¥äº‹åŠ¡åç§°" << endl;
 	string nm;
 	cin >> nm;
 
@@ -1050,7 +1050,7 @@ void student::DeleteTempAct()
 	}
 	if (idx == TempActNum[w])
 	{
-		cout << "²»´æÔÚ¸ÃÊÂÎñ" << endl;
+		cout << "ä¸å­˜åœ¨è¯¥äº‹åŠ¡" << endl;
 	}
 	for (int i = idx; i < TempActNum[w] - 1; i++)
 	{
@@ -1099,7 +1099,7 @@ void student::SystemAlarmClock()
 				{
 					break;
 				}
-				cout << "";//Êä³öÐÅÏ¢£»
+				cout << "";//è¾“å‡ºä¿¡æ¯ï¼›
 			}
 			for (idx = 0; idx < GroupActNum[w]; idx++)
 			{
@@ -1115,7 +1115,7 @@ void student::SystemAlarmClock()
 				{
 					break;
 				}
-				cout << "";//Êä³öÐÅÏ¢£»
+				cout << "";//è¾“å‡ºä¿¡æ¯ï¼›
 			}
 			for (idx = 0; idx < ActivityNum[w]; idx++)
 			{
@@ -1131,7 +1131,7 @@ void student::SystemAlarmClock()
 				{
 					break;
 				}
-				cout << "";//Êä³öÐÅÏ¢£»
+				cout << "";//è¾“å‡ºä¿¡æ¯ï¼›
 			}
 
 		}
@@ -1172,8 +1172,8 @@ void student::TempAlarmClock()
 		{
 			if (flag == 0)
 			{
-				cout << "";//Êä³öÐÅÏ¢
-				//µ÷ÓÃµ¼º½
+				cout << "";//è¾“å‡ºä¿¡æ¯
+				//è°ƒç”¨å¯¼èˆª
 				flag = 1;
 			}
 		}
@@ -1201,7 +1201,7 @@ void student::PersonalAlarmClock()
 				if (flag == 0)
 				{
 					ShowInfo(AlarmList[AlarmIdx].kind, AlarmList[AlarmIdx].ActTime);
-					//µ÷ÓÃµ¼º½
+					//è°ƒç”¨å¯¼èˆª
 					if (AlarmList[AlarmIdx].type == 2)
 					{
 						AddPersonalAlarmClock(AlarmList[AlarmIdx].StartTime + 24, AlarmList[AlarmIdx].kind, AlarmList[AlarmIdx].ActTime + 24, AlarmList[AlarmIdx].type);
@@ -1226,9 +1226,9 @@ void student::AddPersonalAlarmClock(int starttime,int kind,int acttime,int tp)
 {
 	alarm x;
 	//int tp;
-	///*cout << "ÇëÊäÈëÄÖÖÓÊ±¼ä£¬ÄÖÖÓÀàÐÍ£¬»î¶¯¿ªÊ¼Ê±¼ä" << endl;
+	///*cout << "è¯·è¾“å…¥é—¹é’Ÿæ—¶é—´ï¼Œé—¹é’Ÿç±»åž‹ï¼Œæ´»åŠ¨å¼€å§‹æ—¶é—´" << endl;
 	//cin >> x.StartTime >> x.kind >> x.ActTime;
-	//cout << "ÇëÊäÈëÖÜÆÚ£º1 µ¥´Î£¬2 Ã¿Ìì£¬3 Ã¿ÖÜ" << endl;
+	//cout << "è¯·è¾“å…¥å‘¨æœŸï¼š1 å•æ¬¡ï¼Œ2 æ¯å¤©ï¼Œ3 æ¯å‘¨" << endl;
 	//cin >> x.type;*/
 	x.StartTime = starttime;
 	x.kind = kind;
@@ -1299,7 +1299,7 @@ void student::ShowInfo(int kind, int ActTime)
 				break;
 			}
 		}
-		cout << CourseList[w][idx].name << " ";//ÐÅÏ¢£»
+		cout << CourseList[w][idx].name << " ";//ä¿¡æ¯ï¼›
 	}
 	else if (kind == 2)
 	{
@@ -1365,29 +1365,29 @@ void student::ShowInfo(int kind, int ActTime)
 
 /*user::user(int id, int cId, int type, string name, string password)
 {
-	m_id = id;//Ñ§ºÅ
-	m_ClassNum = cId;//°àºÅ
+	m_id = id;//å­¦å·
+	m_ClassNum = cId;//ç­å·
 	m_type = type;
-	m_name = name;//Ñ§ÉúÐÕÃû
-	m_password = password;//ÃÜÂë
+	m_name = name;//å­¦ç”Ÿå§“å
+	m_password = password;//å¯†ç 
 
 }
 user::~user() {};
 
 student::student(int id,  int ClassNum, string name,string password)
 {
-	this->id = id;//Ñ§ºÅ
-	this->name = name;//Ñ§ÉúÐÕÃû
-	this->ClassNum = ClassNum;//°àºÅ
-	this->password = password;//ÃÜÂë
+	this->id = id;//å­¦å·
+	this->name = name;//å­¦ç”Ÿå§“å
+	this->ClassNum = ClassNum;//ç­å·
+	this->password = password;//å¯†ç 
 	this->type = 1;
 }
 
 manager::manager(int id, string name, string password)
 {
-	this->id = id;//Ñ§ºÅ
-	this->name = name;//Ñ§ÉúÐÕÃû
-	this->password = password;//ÃÜÂë
+	this->id = id;//å­¦å·
+	this->name = name;//å­¦ç”Ÿå§“å
+	this->password = password;//å¯†ç 
 	this->type = 2;
 }*/
 /*
