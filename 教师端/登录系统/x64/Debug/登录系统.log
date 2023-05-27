@@ -1,0 +1,11 @@
+﻿  control.cpp
+C:\Users\86159\Desktop\数据结构课设\登录系统\登录系统\control.cpp(49,45): error C2661: “manager::manager”: 没有重载函数接受 3 个参数
+C:\Users\86159\Desktop\数据结构课设\登录系统\登录系统\control.cpp(56,51): error C2661: “student::student”: 没有重载函数接受 4 个参数
+C:\Users\86159\Desktop\数据结构课设\登录系统\登录系统\control.cpp(80,8): error C2059: 语法错误:“)”
+C:\Users\86159\Desktop\数据结构课设\登录系统\登录系统\control.cpp(81,4): error C2143: 语法错误: 缺少“;”(在“{”的前面)
+C:\Users\86159\Desktop\数据结构课设\登录系统\登录系统\control.cpp(101,1): error C2589: “end of file”:“::”右边的非法标记
+C:\Users\86159\Desktop\数据结构课设\登录系统\登录系统\control.cpp(100): error C2062: 意外的类型“unknown-type”
+  manager.cpp
+C:\Users\86159\Desktop\数据结构课设\登录系统\登录系统\manager.cpp(203,3): error C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
+  student.cpp
+  正在生成代码...
