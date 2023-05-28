@@ -1974,7 +1974,7 @@ void manager::fUpdate()
 			<< course_Array[i].week << endl;
 	}//д�ļ�����
 	ofs.close();
-	ofs.open("student.txt", ios::out);
+	ofs.open("../datas/student.txt", ios::out);
 	ofs << count_student << endl;
 	for (int i = 0; i < count_student; i++)
 	{
