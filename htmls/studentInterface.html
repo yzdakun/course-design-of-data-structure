@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>studentInterface</title>
+    <link href="../styles/Form.css" rel="stylesheet">
+    
+</head>
+<script type="text/javascript" src="../scripts/studentInterface.js" defer></script>
+
+<body>
+    <div class="total-container">
+        <div class="header-container" style="margin: 20px;">
+            <header>
+                <div id="timeBox" style="font-size: large; padding: 10px 10px; " onclick="timeCha()">
+                    我是学生
+                    
+                </div>
+                
+                <div id="choose">
+                    <div class="chooseItem" id="speed0" onclick="timeSet(0)">暂停</div>
+                    <div class="chooseItem" id="speed1" onclick="timeSet(1)">正常</div>
+                    <div class="chooseItem" id="speed2" onclick="timeSet(2)">10秒1小时</div>
+                    <div class="chooseItem" id="speed3" onclick="timeSet(3)">1秒1小时</div>
+                </div>
+                <div></div>
+                <div></div>
+                <a href="login.html"><button class="chooseItem" style="margin-left: auto;">退出登录</button></a>
+            </header>
+        </div>
+        <div class="main-wrapper">
+            
+            <div class="sidebar-container">
+                <aside>
+                    <div class="chooseItem-row" id="itm01">日程管理</div>
+                    <!-- <div class="chooseItem-row" id="itm02">日程查询</div> -->
+                    <div class="chooseItem-row" id="itm02">闹钟管理</div>
+                    <div class="chooseItem-row" id="itm03">导航系统</div>
+                    <div class="chooseItem-row" id="itm04">操作日志</div>
+                </aside>
+            </div>
+            <div class="main">
+                <div class="overlay" id="tips" style="overflow: scroll">
+                    <form style="background-color: aliceblue; margin: 100px auto;">
+                        <p id="tipsContent">
+                    
+                        </p>
+                        <button type="button" onclick="closeTips()">确定</button>
+                    </form>
+                    
+                </div>
+                <div class="overlay" id="addAct" style="overflow: scroll;">
+                    <!-- <iframe width=100% height=100% src="actForm.html"></iframe> -->
+                    <form class="addForm" id="actForm" style="background-color: aliceblue; margin: 100px auto;">
+                        <h1>添加新的日程</h1>
+                        <!-- <section id="actSection" style="display: block;">
+                            
+                        </section> -->
+                        <section id="alarmSection" style="display: none;">
+                            <!-- <p>
+                                <span>日期：</span>
+                                <input type="date" id="newAlarmDate" name="newAlarmDate"
+                                    value="2023-02-20"
+                                    min="2023-02-20" max="2023-07-02" style="margin: 20px;">
+                            </p> -->
+                            <p>
+                                <span>闹钟时间：</span>
+                                <input type="number" id="alarmTime">
+                                <span id="actTime">活动时间：</span>
+                            </p>
+                            <!-- <p>
+                                <span>活动时间：</span>
+                            </p> -->
+                        </section>
+                        <div id="actSection" style="display: block;">
+                            <section>
+                                <p>
+                                    <span>起始日期：</span>
+                                    <input type="date" id="newActdate" name="newActdate"
+                                        value="2023-02-20"
+                                        min="2023-02-20" max="2023-07-02" style="margin: 20px;"
+                                        onchange="update()">
+                                </p>
+                                <p>
+                                    <span>起始时间：</span>
+                                    <input type="number" id="startTime">
+                                </p>
+                                <fieldset>
+                                    <legend>类型：</legend>
+                    
+                                    <p>
+                                    <input type="radio" id="indAct" name="type" value="indAct" onchange="gener(this)" class="radio">
+                                    <label for="indAct">个人活动</label>
+                                    </p>
+                    
+                                    <p>
+                                    <input type="radio" id="groAct" name="type" value="groAct" onchange="gener(this)" class="radio">
+                                    <label for="groAct">集体活动</label>
+                                    </p>
+                    
+                                    <p>
+                                    <input type="radio" id="indEve" name="type" value="indEve" onchange="gener(this)" class="radio">
+                                    <label for="indEve">临时事务</label>
+                                    </p>
+                                </fieldset>
+                            </section>
+                            <div id="addAct-page01" style="display: none;">
+                                <section>
+                                    <fieldset>
+                                        <legend>周期：</legend>
+                    
+                                        <p>
+                                            <input type="radio" id="onTime" name="loop" value="onTime" onchange="quizTime(this)" checked>
+                                            <label>单次</label>
+                                        </p>
+                                        <p>
+                                            <input type="radio" id="oneDay" name="loop" value="oneDay" onchange="quizTime(this)">
+                                            <label>每天</label>
+                                        </p>
+                                        <p>
+                                            <input type="radio" id="oneWeek" name="loop" value="oneWeek" onchange="quizTime(this)">
+                                            <label>每周</label>
+                                        </p>
+                                    </fieldset>
+                                    <div id="bonusquizTime" style="display: none;">
+                                        <span>截止日期:</span>
+                                        <input type="date" id="endDate" name="endDate"
+                                            value="2023-02-20"
+                                            min="2023-02-20" max="2023-07-02" style="margin: 20px;">
+                                    </div>
+                                </section>
+                                <section>
+                                    <p>
+                                        <span>活动名称：</span>
+                                        <input type="text" id="Actname">
+                                    </p>
+                                    <p>
+                                        <span>活动地点：</span>
+                                        <select id="Actplac"></select>
+                                    </p>
+                                </section>
+                            </div>
+                            <div id="addAct-page02" style="display: none;">
+                                <p id="totNum">
+                                    总数: 1
+                                </p>
+                                <p>
+                                    <button onclick="Build()" type="button" id="build">新建</button>
+                                </p>
+                                <p>
+                                    <span>活动名称：</span>
+                                    <input type="text" id="name1" class="eveNameLists">
+                                    <span>活动地点：</span>
+                                    <select id="plac1" class="evePlacLists"></select>
+                                    <button type="button" id="del">删除</button>
+                                </p>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="button" id="comp">确认</button>
+                            <button type="button" onclick="Canc()" id="canc">取消</button>
+                        </div>
+                    </form>
+                </div>
+                <div id="page01" class=" page" style="display: block; overflow: scroll; height: 80vh;">
+                    <div id="couhead" style="text-align: center;">
+                        <input type="date" id="date" name="date"
+                               value="2023-02-20"
+                               min="2023-02-20" max="2023-07-02" style="margin: 20px;">
+                        <select name="week" id="week" style="margin: 20px;">
+                                <option value = "1">第1周</option>
+                                <option value = "2">第2周</option>
+                                <option value = "3">第3周</option>
+                                <option value = "4">第4周</option>
+                                <option value = "5">第5周</option>
+                                <option value = "6">第6周</option>
+                                <option value = "7">第7周</option>
+                                <option value = "8">第8周</option>
+                                <option value = "9">第9周</option>
+                                <option value = "10">第10周</option>
+                                <option value = "11">第11周</option>
+                                <option value = "12">第12周</option>
+                                <option value = "13">第13周</option>
+                                <option value = "14">第14周</option>
+                                <option value = "15">第15周</option>
+                                <option value = "16">第16周</option>
+                                <option value = "17">第17周</option>
+                                <option value = "18">第18周</option>
+                                <option value = "19">第19周</option>
+                        </select>
+                    </div>
+                    <div id="inputmes" style="margin: 10px auto; width: fit-content;">
+                        <input type="text" id="searchName" placeholder="请输入需要查询的日程名称" style="width: 300px;">
+                        <select name="searchType" id="searchType" style="margin: 20px">
+                            <option value = "1">课程</option>
+                            <option value = "2">集体活动</option>
+                            <option value = "3">个人活动</option>
+                            <option value = "4">临时事务</option>
+                        </select>
+                        <input type="button" id="searchBtn" value="查询" onclick="searchActivity()">
+                    </div>
+                    <table id="coutable">
+                        <tr>
+                            <th>时间</th>
+                            <th><p>星期一</p> <div class="day">02-20</div></th>
+                            <th><p>星期二</p> <div class="day">02-21</div></th>
+                            <th><p>星期三</p> <div class="day">02-22</div></th>
+                            <th><p>星期四</p> <div class="day">02-23</div></th>
+                            <th><p>星期五</p> <div class="day">02-24</div></th>
+                            <th><p>星期六</p> <div class="day">02-25</div></th>
+                            <th><p>星期日</p> <div class="day">02-26</div></th>
+                        </tr>
+                        <tr>
+                            <th>00:00 ~ 01:00</th>
+                        </tr>
+                        <tr>
+                            <th>01:00 ~ 02:00</th>
+                        </tr>
+                        <tr>
+                            <th>02:00 ~ 03:00</th>
+                        </tr>
+                        <tr>
+                            <th>03:00 ~ 04:00</th>
+                        </tr>
+                        <tr>
+                            <th>04:00 ~ 05:00</th>
+                        </tr>
+                        <tr>
+                            <th>05:00 ~ 06:00</th>
+                        </tr>
+                        <tr>
+                            <th>06:00 ~ 07:00</th>
+                        </tr>
+                        <tr>
+                            <th>07:00 ~ 08:00</th>
+                        </tr>
+                        <tr>
+                            <th>08:00 ~ 09:00</th>
+                        </tr>
+                        <tr>
+                            <th>09:00 ~ 10:00</th>
+                        </tr>
+                        <tr>
+                            <th>10:00 ~ 11:00</th>
+                        </tr>
+                        <tr>
+                            <th>11:00 ~ 12:00</th>
+                        </tr>
+                        <tr>
+                            <th>12:00 ~ 13:00</th>
+                        </tr>
+                        <tr>
+                            <th>13:00 ~ 14:00</th>
+                        </tr>
+                        <tr>
+                            <th>14:00 ~ 15:00</th>
+                        </tr>
+                        <tr>
+                            <th>15:00 ~ 16:00</th>
+                        </tr>
+                        <tr>
+                            <th>16:00 ~ 17:00</th>
+                        </tr>
+                        <tr>
+                            <th>17:00 ~ 18:00</th>
+                        </tr>
+                        <tr>
+                            <th>18:00 ~ 19:00</th>
+                        </tr>
+                        <tr>
+                            <th>19:00 ~ 20:00</th>
+                        </tr>
+                        <tr>
+                            <th>20:00 ~ 21:00</th>
+                        </tr>
+                        <tr>
+                            <th>21:00 ~ 22:00</th>
+                        </tr>
+                        <tr>
+                            <th>22:00 ~ 23:00</th>
+                        </tr>
+                        <tr>
+                            <th>23:00 ~ 24:00</th>
+                        </tr>
+                    </table>
+                    
+                </div>
+                <div id="page02" class=" page" style="display: none;">
+                    <!-- <button type="button" id="addAlarm" onclick="addAlarm()">添加新的闹钟</button> -->
+                    <table id="alarmInfo">
+                        <tr>
+                            <th>类型</th>
+                            <th>时间</th>
+                            <th>活动时间</th>
+                            <th>起始日期</th>
+                            <th>周期</th>
+                            <th>活动名称</th>
+                            <th>活动地点</th>
+                            <th>参与班级</th>
+                            <th>操作</th>
+                        </tr>
+                    </table>
+                </div>
+                <div id="page03" class=" page" style="display: none;">
+                    <div id="box04">
+                        <div class="picture" style="margin:100px auto; width: 800px; height: 568px; background-image: url(../images/1684485185602_new.png);">
+                            <canvas id="canvas" width="800px" height="568px">
+                            
+                            </canvas>
+                        </div>
+                        <div id="page04-settings">
+                            <form class="addForm" id="page04-form" style="background-color: aliceblue; margin: 100px auto;">
+                                <h1>路径设置</h1>
+                                <fieldset>
+                                    <p>
+                                        <span>起点: </span>
+                                        <select id="startPoint"></select>
+                                    </p>
+                                    <p>
+                                        <span>终点: </span>
+                                        <select id="endPoint"></select>
+                                    </p>
+                                </fieldset>
+                                <fieldset id="middlePoints">
+                                    <legend>途经点: </legend>
+                                    <button type="button" onclick="newPoint()" id="buildNewPoint">新建</button>
+                                </fieldset>
+                                <p id="shortestLen"></p>
+                                <button type="button" onclick="startFindWay()">开始寻路</button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div id="page04" class=" page" style="display: none;">
+                    操作日志
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,10 @@
+Windows Registry Editor Version 5.00
+[HKEY_CLASSES_ROOT\closeexe]
+"URL Protocol"="D:\\Antarc\\C++\\Datastructure\\main\\cpps\\sendmessage.exe"
+@="closeexe Protocol"
+[HKEY_CLASSES_ROOT\closeexe\DefaultIcon]
+@="D:\\Antarc\\C++\\Datastructure\\main\\cpps\\sendmessage.exe,1"
+[HKEY_CLASSES_ROOT\closeexe\shell]
+[HKEY_CLASSES_ROOT\closeexe\shell\open]
+[HKEY_CLASSES_ROOT\closeexe\shell\open\command]
+@="\"D:\\Antarc\\C++\\Datastructure\\main\\cpps\\sendmessage.exe\" \"%1\""

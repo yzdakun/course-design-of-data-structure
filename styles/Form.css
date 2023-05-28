@@ -1,0 +1,268 @@
+h1 {
+    margin-top: 0;
+    text-align: center;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+header {
+    width: 100vw;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 15% 35% 20% 10% 10%;
+}
+
+form {
+    margin: 0 auto;
+    width: 400px;
+    padding: 1em;
+    border: 1px solid #CCC;
+    border-radius: 1em;
+}
+
+label span {
+    display: inline-block;
+    width: max-content;
+    text-align: right;
+}
+
+input, textarea {
+    margin-left: 5px;
+    margin-right: 5px;
+    font: 1em sans-serif;
+    width: 100px;
+    box-sizing: border-box;
+    border: 1px solid #999;
+}
+
+select {
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 5px;
+    font: 1em sans-serif;
+    width: 100px;
+    height: 30px;
+    box-sizing: border-box;
+    border: 1px solid #999;
+}
+
+input[type=checkbox], input[type=radio] {
+    width: auto;
+    border: none;
+}
+
+input[type=date]
+{
+    width: auto;
+}
+
+input:focus, textarea:focus {
+    border-color: #000;
+}
+
+textarea {
+    vertical-align: top;
+    height: 5em;
+    resize: vertical;
+}
+
+fieldset {
+    width: 350px;
+    box-sizing: border-box;
+    margin-right: 136px;
+    margin-bottom: 10px;
+    border: 1px solid #999;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 20px auto;
+    border: 2px solid #5C93F9;
+}
+td,th {
+    text-align: center;
+    width: 125px;
+    height: 80px;
+    border: 1px solid #B5CEFC;
+}
+
+label {
+  position: relative;
+  width: max-content;
+}
+
+button {
+    display: block;
+    margin: 0 auto;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+}
+
+/* .page::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+}
+.page::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+.page::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: #535353;
+}
+
+.page::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    background: #ededed;
+}
+
+.page::-webkit-scrollbar-button {
+} */
+
+.total-container
+{
+    position: relative;
+    z-index: 1;
+}
+.background-layer
+{
+    position: absolute;
+    z-index: -1;
+    background-image: url(../images/bible-1868070.jpg);
+    /* background: linear-gradient(rgba(255,255,255,.5),rgba(255,255,255,.5)),url(../images/My-test-image.png); */
+    /* background-color: #7AB7F4; */
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    /* display: block; */
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    /* padding-top: 20px; */
+}
+
+.labelbox
+{
+    display: block;
+    width: fit-content;
+    margin: 16px auto;
+}
+
+.header-container
+{
+    display: flex;
+}
+
+.sidebar-container
+{
+    display: flex;
+}
+
+.main-wrapper
+{
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 10vw 85vw;
+}
+
+#box1
+{
+    margin: 0;
+    padding-top: 25vh;
+}
+
+#box04
+{
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 50% 50%;
+}
+
+#logInForm
+{
+    margin: 0 auto;
+    width: max-content;
+    background-color: aliceblue;
+    border: 1px solid #000;
+    border-radius: 1em;
+    padding: 15px 10px;
+}
+
+#choose
+{
+    display: flex;
+    font-size: 15px;
+    
+}
+
+.chooseItem
+{
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    margin-top: 0;
+    color: black;
+}
+
+.chooseItem-row
+{
+    padding: 10px 15px;
+    margin-top: 0;
+    color: black;
+}
+
+.chooseItem:hover
+{
+    color:#11A6A3;
+}
+
+.chooseItem-row:hover
+{
+    color:#11A6A3;
+}
+
+#inputstu
+{
+    text-align: center;
+    margin: 50px;
+}
+
+#coutable td {
+    font-size: small;
+}
+
+.overlay {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+}
+.addForm button {
+    display: inline-block;
+    width: 80px;
+    margin: 0 auto;
+    height: 40px;
+    color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    background-color: #337ab7;
+}
+.addForm p {
+    display: flex;
+}
+.addForm input[type=text] {
+    display: inline-block;
+    height: 30px;
+}
