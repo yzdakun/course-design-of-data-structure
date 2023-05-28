@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../styles/Form.css" rel="stylesheet">
+    <script src="../scripts/addAct.js" defer></script>
+</head>
+<body>
+    <div style="background-color: aliceblue; margin: 100px auto; padding: 100px 100px;">
+    <form id="actForm">
+        <h1>添加新的日程</h1>
+        <section>
+            <p>
+            <span>起始日期：</span>
+            <input type="date" id="newActdate" name="newActdate"
+                   value="2023-02-20"
+                   min="2023-02-20" max="2023-07-02" style="margin: 20px;"
+                   onchange="update()">
+            </p>
+            <p>
+                <span>起始时间：</span>
+                <input type="number" id="startTime">
+                <span>终止时间:</span>
+                <input type="number" id="endTime">
+            </p>
+        </section>
+        <section>
+            <fieldset>
+                <legend>类型：</legend>
+
+                <p>
+                <input type="radio" id="indAct" name="type" value="indAct" onchange="gener(this)">
+                <label for="indAct">个人活动</label>
+                </p>
+
+                <p>
+                <input type="radio" id="groAct" name="type" value="groAct" onchange="gener(this)">
+                <label for="groAct">集体活动</label>
+                </p>
+
+                <p>
+                <input type="radio" id="indEve" name="type" value="indEve" onchange="gener(this)">
+                <label for="indEve">临时事务</label>
+                </p>
+            </fieldset>
+        </section>
+        <div id="bonusClass" style="display: none;">
+            <p>
+                <span>参与班级：</span>
+                <input type="text" id="classes">
+            </p>
+        </div>
+        <div id="addAct-page01" style="display: none;">
+            <section>
+                <fieldset>
+                    <legend>周期：</legend>
+
+                    <p>
+                        <input type="radio" id="onTime" name="loop" value="onTime" onchange="quizTime(this)" checked>
+                        <label>单次</label>
+                    </p>
+                    <p>
+                        <input type="radio" id="oneDay" name="loop" value="oneDay" onchange="quizTime(this)">
+                        <label>每天</label>
+                    </p>
+                    <p>
+                        <input type="radio" id="oneWeek" name="loop" value="oneWeek" onchange="quizTime(this)">
+                        <label>每周</label>
+                    </p>
+                </fieldset>
+                <div id="bonusquizTime" style="display: none;">
+                    <span>截止日期:</span>
+                    <input type="date" id="endDate" name="endDate"
+                        value="2023-02-20"
+                        min="2023-02-20" max="2023-07-02" style="margin: 20px;">
+                </div>
+            </section>
+            <section>
+                <p>
+                    <span>活动名称：</span>
+                    <input type="text" id="name">
+                </p>
+                <p>
+                    <span>活动地点：</span>
+                    <input type="text" id="plac">
+                </p>
+            </section>
+        </div>
+        <div id="addAct-page02" style="display: none;">
+            <p id="totNum">
+                总数: 1
+            </p>
+            <p>
+                <button onclick="build()" type="button">新建</button>
+            </p>
+            <p>
+                <span>活动名称：</span>
+                <input type="text" id="name1">
+                <span>活动地点：</span>
+                <input type="text" id="plac1">
+                <button onclick="del(this)" type="button">删除</button>
+            </p>
+        </div>
+        <div>
+            <button type="button">确认</button>
+            <button type="button">取消</button>
+        </div>
+    </form>
+    </div>
+</body>
+</html>

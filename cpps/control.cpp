@@ -1,9 +1,53 @@
-#include<bits/stdc++.h>
-#include<windows.h>
-#include<direct.h>
+#include <bits/stdc++.h>
+#include <direct.h>
+#include <windows.h>
+#include <tchar.h>
+#include <iomanip>
+#include <thread>
+#include "BPlus_node.h"
+#include "BPlus_tree.h"
+#include "Log_control.h"
+#include "Time.h"
+#include "findWay.h"
+#include "user.h"
+#include "BPlus_node.cpp"
+#include "BPlus_tree.cpp"
+#include "Log_control.cpp"
+#include "user.cpp"
+#include "Time.cpp"
+// #include "manager.cpp"
+#include "course.cpp"
 using namespace std;
-char program[256];
-char buffer[256];
+
+
+#define LOGIN_COMMAND 0
+#define ASK_FOR_COURSE 1
+
+void fileWatcher();
+void HideWindow();
+string CharToStr(char * contentChar);
+void DelLineData(int lineNum);
+
+thread TH;
+
+int main(int argc, char** argv)
+{
+    // HideWindow();
+	string a=argv[0];
+    int len=a.length();
+    a=a.substr(0,len-12);
+    char path[MAX_PATH];
+    strcpy(path,a.c_str());
+    SetCurrentDirectoryA(path);
+
+	TH = thread(time_run);
+	St = 1;
+	TH.join();
+	fileWatcher();
+
+	
+}
+
 void HideWindow()
 {
     HWND hwnd=GetForegroundWindow();
@@ -12,49 +56,134 @@ void HideWindow()
         ShowWindow(hwnd, SW_HIDE);
     }
 }
-int main(int argc, char** argv)
-{
-    HideWindow();
-    string a=argv[0];
-    int len=a.length();
-    a=a.substr(0,len-12);
-    char path[256];
-    strcpy(path,a.c_str());
-    SetCurrentDirectoryA(path);
-    _getcwd(buffer,256);
-    cout<<buffer<<endl;
-    char **tmp=argv;
-    cout<<argc<<endl;
-    int i=0;
-    while(*tmp!=NULL)
-    {
-        cout<<i++<<": "<<*tmp<<endl;
-        ++tmp;
-    }
-    // Sleep(5000);
-    // fclose(stdout);
-    if(argc==1) return 0;
-    vector<string> new_argvs;
-    string tmpArgvs=argv[1];
-    std::string::size_type cnt=tmpArgvs.find_last_of("&&");
-    while(cnt!=-1)
-    {
-        new_argvs.push_back(tmpArgvs.substr(cnt+1,tmpArgvs.length()-cnt));
-        tmpArgvs=tmpArgvs.substr(0,cnt);
-        cnt=tmpArgvs.find_last_of("&&");
-    }
 
-    len=new_argvs.size()-1;
-    string msg="";
-    for(int i=len;i>=0;i--)
-    {
-        msg+=new_argvs[i];
-        msg+=' ';
-    }
-    msg=msg.substr(1,msg.length()-3);
-    cout<<msg<<endl;
-    char posMsg[256];
-    strcpy(posMsg,msg.c_str());
-    system(posMsg);
-    return 0;
+void fileWatcher()
+{
+	DWORD cbBytes;
+	char file_name[MAX_PATH];
+	char file_rename[MAX_PATH]; 
+	char notify[1024];
+	int count = 0;
+    char buffer[256];
+    _getcwd(buffer,256);
+	TCHAR dir[256];
+    #ifdef UNICODE
+        MultiByteToWideChar(CP_ACP,0,buffer,-1,dir,256);
+    #else
+        strcpy(dir,buffer);
+    #endif
+    cout<<buffer<<endl;
+    cout<<dir<<endl;
+
+	HANDLE dirHandle = CreateFile(dir,
+								  GENERIC_READ | GENERIC_WRITE | FILE_LIST_DIRECTORY,
+								  FILE_SHARE_READ | FILE_SHARE_WRITE,
+								  NULL,
+								  OPEN_EXISTING,
+								  FILE_FLAG_BACKUP_SEMANTICS,
+								  NULL);
+
+	if (dirHandle == INVALID_HANDLE_VALUE)
+	{
+		cout << "error" + GetLastError() << endl;
+	}
+
+	memset(notify, 0, strlen(notify));
+	FILE_NOTIFY_INFORMATION *pnotify = (FILE_NOTIFY_INFORMATION *)notify;
+
+	cout << "Start Monitor..." << endl;
+
+	
+	int flag=0;
+	int level=0;
+	while (true)
+	{
+		cout<<"Monitoring"<<endl;
+		if (ReadDirectoryChangesW(dirHandle, &notify, 1024, true,
+								  FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_LAST_ACCESS,
+								  &cbBytes, NULL, NULL))
+		{
+			if(level == 0)
+				level = 1;
+			else
+			{
+				level = 0;
+				continue;
+			}
+			switch (pnotify->Action)
+			{	
+			case FILE_ACTION_MODIFIED:
+                cout<<"Modified"<<endl;
+				cout<<"test"<<endl;
+				ifstream ifs;
+				ifs.open("js2exe.txt",ios::in);
+				ifs>>flag;
+				cout<<flag<<endl;
+				// DelLineData(2);
+
+				switch (flag)
+				{
+				case LOGIN_COMMAND:
+					// cout<<"LOGIN_COMMAND"<<endl;
+					Login();
+					ifs.close();
+					break;
+
+				// case ASK_FOR_COURSE:
+				// 	int w;
+				// 	ifs>>w;
+				// 	break;
+				
+				default:
+					break;
+				}
+				break;
+
+			}
+			// Sleep(100);
+		}
+	}
+
+	CloseHandle(dirHandle);
 }
+
+// string CharToStr(char * contentChar)
+// {
+// 	string tempStr;
+// 	for (int i=0;contentChar[i]!='\0';i++)
+// 	{
+// 		tempStr+=contentChar[i];
+// 	}
+// 	return tempStr;
+// }
+
+// void DelLineData(int lineNum)
+// {
+// 	ifstream in;
+// 	in.open("js2exe.txt");
+	
+// 	string strFileData = "";
+// 	int line = 1;
+// 	char lineData[1024] = {0};
+// 	while(in.getline(lineData, sizeof(lineData)))
+// 	{
+// 		if (line == lineNum)
+// 		{
+// 			strFileData += "\n";
+// 		}
+// 		else
+// 		{
+// 			strFileData += CharToStr(lineData);
+// 			strFileData += "\n";
+// 		}
+// 		line++;
+// 	}
+// 	in.close();
+ 
+// 	//写入文件
+// 	ofstream out;
+// 	out.open("js2exe.txt");
+// 	out.flush();
+// 	out<<strFileData;
+// 	out.close();
+// }

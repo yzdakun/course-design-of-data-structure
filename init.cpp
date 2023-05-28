@@ -14,12 +14,9 @@ Windows Registry Editor Version 5.00
 #include<direct.h>
 using namespace std;
 char buffer[256];
-string cwd;
+string cwd,cwd2;
 int main()
 {
-    ofstream init;
-    init.open("C:\\Windows\\System32\\exe2js.txt");
-    init.close();
     _getcwd(buffer,256);
     int len=strlen(buffer);
     for(int i=0;i<len;i++)
@@ -30,6 +27,7 @@ int main()
             cwd+="\\\\";
         }
     }
+    cwd2=cwd;
     cwd+="\\\\cpps\\\\control.exe";
     freopen("Start.reg","w",stdout);
     cout<<"Windows Registry Editor Version 5.00"<<endl;
@@ -42,6 +40,20 @@ int main()
     cout<<"[HKEY_CLASSES_ROOT\\openexe\\shell\\open]"<<endl;
     cout<<"[HKEY_CLASSES_ROOT\\openexe\\shell\\open\\command]"<<endl;
     cout<<"@="<<"\"\\\""<<cwd<<"\\\" \\\"%1\\\"\""<<endl;
+    fclose(stdout);
+
+    cwd2+="\\\\cpps\\\\sendmessage.exe";
+    freopen("Start2.reg","w",stdout);
+    cout<<"Windows Registry Editor Version 5.00"<<endl;
+    cout<<"[HKEY_CLASSES_ROOT\\closeexe]"<<endl;
+    cout<<"\"URL Protocol\"="<<"\""<<cwd2<<"\""<<endl;
+    cout<<"@=\"closeexe Protocol\""<<endl;
+    cout<<"[HKEY_CLASSES_ROOT\\closeexe\\DefaultIcon]"<<endl;
+    cout<<"@="<<"\""<<cwd2<<",1\""<<endl;
+    cout<<"[HKEY_CLASSES_ROOT\\closeexe\\shell]"<<endl;
+    cout<<"[HKEY_CLASSES_ROOT\\closeexe\\shell\\open]"<<endl;
+    cout<<"[HKEY_CLASSES_ROOT\\closeexe\\shell\\open\\command]"<<endl;
+    cout<<"@="<<"\"\\\""<<cwd2<<"\\\" \\\"%1\\\"\""<<endl;
     fclose(stdout);
     return 0;
 }

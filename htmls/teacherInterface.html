@@ -3,8 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <title>teacherInterface</title>
+    <link href="../styles/Form.css" rel="stylesheet">
 </head>
+<script src="../scripts/teacherInterface.js" defer></script>
+
 <body>
-    <p>我是老师</p>
+    <div class="total-container">
+        <div class="header-container" style="margin: 20px;">
+            <header>
+                <div style="display: none;" id="timeSetterBox">
+                    <input  min="2023-02-20T00:00" max="2023-07-02T23:59"
+                            type="datetime-local" id="timeSetter" style="width: 150px;">
+                    <button type="button" id="timeCon" style="margin: 0; display: inline-flex;" onclick="timeCon(1)">确定</button>
+                    <button type="button" id="timeCan" style="margin: 0; display: inline-flex;" onclick="timeCon(2)">取消</button>
+                </div>
+                <div id="timeBox" style="font-size: large; padding: 10px 10px; " onclick="timeCha()">
+                    我是学生
+                    
+                </div>
+                
+                <div id="choose">
+                    <div class="chooseItem" id="speed0" onclick="timeSet(0)">暂停</div>
+                    <div class="chooseItem" id="speed1" onclick="timeSet(1)">正常</div>
+                    <div class="chooseItem" id="speed2" onclick="timeSet(2)">10秒1小时</div>
+                    <div class="chooseItem" id="speed3" onclick="timeSet(3)">1秒1小时</div>
+                </div>
+                
+                    
+                <a href="login.html"><button class="chooseItem" style="margin-left: auto;">退出登录</button></a>
+            </header>
+        </div>
+        <div class="main-wrapper">
+            <div class="sidebar-container">
+                <aside>
+                    <div class="chooseItem-row" id="stu">学生管理</div>
+                    <div class="chooseItem-row" id="cou">课程管理</div>
+                    
+                </aside>
+            </div>
+            <div class="main">
+                <div id="page01" class=" page" style="display: block">
+                    <div id="inputstu" text-align="center">
+                        <input type="text" id="name">
+                        <input type="text" id="number">
+                        <input type="text" id="class">
+                        <input type="text" id="stuid">
+                        <input type="button" value="添加" id="btnadd">
+                    </div>
+                    <table>
+                        <caption>学生信息表</caption>
+                        <tr>
+                            <th>姓名</th>
+                            <th>学号</th>
+                            <th>班级</th>
+                            <th>id</th>
+                            <th>操作</th>
+                        </tr>
+                    </table>
+                </div>
+                <div id="page02" class=" page" style="display: none; overflow: scroll; height: 80vh;">
+                    <table>
+                        <caption>课程信息表</caption>
+                        <tr>
+                            <th>课程名称</th>
+                            <th>星期</th>
+                            <th>时间</th>
+                            <th>班级</th>
+                            <th>地点</th>
+                            <th>周数</th>
+                            <!-- <th>考试时间</th>
+                            <th>考试地点</th> -->
+                            <th>操作</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+    
 </body>
 </html>
