@@ -40,7 +40,7 @@ class student : public user
 {
 public:
 	int ClassNum;
-	int stop;
+	//  int stop;
 
 	int timeline[5000];
 
@@ -64,27 +64,27 @@ public:
 	int AlarmNum;
 	int AlarmIdx;
 	void ManageSystem();
-	thread sysalarm, tmpalarm, personalalarm;
-	void SystemAlarmClock();
-	void TempAlarmClock();
-	void PersonalAlarmClock();
+	//thread sysalarm, tmpalarm, personalalarm;
+	void SystemAlarmClock(int now_time);
+	void TempAlarmClock(int now_time);
+	void PersonalAlarmClock(int now_time);
 	student();
 	~student();
 private:
 	//CBPlusTree Course;
-	void Init();
+	void Init(int now_time);
 	void save();
 	void course_showinfo();
-	void InitCourseInformation();
+	void InitCourseInformation(int now_time);
 	void InitActivityInformation();
 	void InitGroupActInformation();
 	void InitTempActInformation();
-	void InitAlarmClockInformation();
+	void InitAlarmClockInformation(int now_time);
 	void ShowClassSchedule(int week);
 
 
 
-	int Search(int kind, string name);
+	int Search(int kind, string name,int now_time);
 	void AddGroupAct();
 	void AddActivity();
 	int AddSingleActivity(int tm, string name, string place, int type);
