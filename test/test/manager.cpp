@@ -28,8 +28,8 @@ void manager::init()
 		ifs >> c.Class;
 		ifs >> c.period;
 
-		ifs >> c.c_week;//µ¥´ÎµÄÉè³É0
-		ifs >> c.week;//µ¥´ÎµÄÉè³É0
+		ifs >> c.c_week;//å•æ¬¡çš„è®¾æˆ0
+		ifs >> c.week;//å•æ¬¡çš„è®¾æˆ0
 		course_Array.push_back(c);
 	}
 	ifs.close();
@@ -49,47 +49,47 @@ void manager::add_class()
 {
 	int num, j = 0;
 	course c;
-	cout << "ÇëÑ¡ÔñÒªÌí¼ÓµÄ¿Î³ÌÊı£º" << endl;
+	cout << "è¯·é€‰æ‹©è¦æ·»åŠ çš„è¯¾ç¨‹æ•°ï¼š" << endl;
 	cin >> num;
 	for (int i = 0; i < num; i++)
 	{
 		while (1)
 		{
-			cout << "ÇëÊäÈëµÚ" << i + 1 << "¸ö¿Î³ÌµÄÃû³Æ£º" << endl;
+			cout << "è¯·è¾“å…¥ç¬¬" << i + 1 << "ä¸ªè¯¾ç¨‹çš„åç§°ï¼š" << endl;
 			cin >> c.name;
 			for (j = 0; j < count_course; j++)
 			{
 				if (course_Array[j].name == c.name)
 				{
-					cout << "¸Ã¿Î³ÌÒÑ´æÔÚ£¡" << endl;
+					cout << "è¯¥è¯¾ç¨‹å·²å­˜åœ¨ï¼" << endl;
 					break;
 				}
 			}
 			if (j == count_course)
 				break;
 		}
-		cout << "ÇëÊäÈëµÚ" << i + 1 << "¸ö¿Î³ÌµÄ¿ªÊ¼Ê±¼ä£º" << endl;
+		cout << "è¯·è¾“å…¥ç¬¬" << i + 1 << "ä¸ªè¯¾ç¨‹çš„å¼€å§‹æ—¶é—´ï¼š" << endl;
 		cin >> c.StartTime;
-		cout << "ÇëÊäÈëµÚ" << i + 1 << "¸ö¿Î³ÌµÄ½áÊøÊ±¼ä£º" << endl;
+		cout << "è¯·è¾“å…¥ç¬¬" << i + 1 << "ä¸ªè¯¾ç¨‹çš„ç»“æŸæ—¶é—´ï¼š" << endl;
 		cin >> c.EndTime;
-		cout << "ÇëÊäÈëµÚ" << i + 1 << "¸ö¿Î³ÌµÄÉÏ¿ÎµØµã£º" << endl;
+		cout << "è¯·è¾“å…¥ç¬¬" << i + 1 << "ä¸ªè¯¾ç¨‹çš„ä¸Šè¯¾åœ°ç‚¹ï¼š" << endl;
 		cin >> c.place;
-		cout << "ÇëÊäÈëµÚ" << i + 1 << "¸ö¿Î³ÌµÄÉÏ¿Î°à¼¶£º" << endl;
+		cout << "è¯·è¾“å…¥ç¬¬" << i + 1 << "ä¸ªè¯¾ç¨‹çš„ä¸Šè¯¾ç­çº§ï¼š" << endl;
 		cin >> c.Class;
-		cout << "µÚ" << i + 1 << "¸ö¿Î³ÌÊÇ·ñÎªµ¥´Î¿Î£º" << endl;
-		cout << "1.ÊÇ	2.·ñ" << endl;
+		cout << "ç¬¬" << i + 1 << "ä¸ªè¯¾ç¨‹æ˜¯å¦ä¸ºå•æ¬¡è¯¾ï¼š" << endl;
+		cout << "1.æ˜¯	2.å¦" << endl;
 		cin >> c.period;
 		if (c.period == 2)
 		{
-			cout << "ÇëÊäÈëµÚ" << i + 1 << "¸ö¿Î³ÌµÄÉÏ¿ÎÖÜÊı£º" << endl;
+			cout << "è¯·è¾“å…¥ç¬¬" << i + 1 << "ä¸ªè¯¾ç¨‹çš„ä¸Šè¯¾å‘¨æ•°ï¼š" << endl;
 			cin >> c.c_week;
-			cout << "ÇëÒÀ´ÎÊäÈëµÚ" << i + 1 << "¸ö¿Î³ÌµÄÉÏ¿ÎÖÜ£º" << endl;
+			cout << "è¯·ä¾æ¬¡è¾“å…¥ç¬¬" << i + 1 << "ä¸ªè¯¾ç¨‹çš„ä¸Šè¯¾å‘¨ï¼š" << endl;
 			cin >> c.week;
 		}
 		else
 		{
 			c.c_week = 1;
-			cout << "ÇëÒÀ´ÎÊäÈëµÚ" << i + 1 << "¸ö¿Î³ÌµÄÉÏ¿ÎÖÜ£º" << endl;
+			cout << "è¯·ä¾æ¬¡è¾“å…¥ç¬¬" << i + 1 << "ä¸ªè¯¾ç¨‹çš„ä¸Šè¯¾å‘¨ï¼š" << endl;
 			cin >> c.week;
 		}
 		course_Array.push_back(c);
@@ -98,7 +98,7 @@ void manager::add_class()
 	
 	sort(course_Array.begin(), course_Array.end(), cmp);
 	fUpdate();
-	cout << "Ìí¼Ó³É¹¦£¡" << endl;
+	cout << "æ·»åŠ æˆåŠŸï¼" << endl;
 }
 void manager::delete_class()
 {
@@ -106,7 +106,7 @@ void manager::delete_class()
 	int num, i = 0;
 	while (1)
 	{
-		cout << "ÇëÊäÈëÒªÉ¾³ıµÄ¿Î³ÌÃû³Æ£º" << endl;
+		cout << "è¯·è¾“å…¥è¦åˆ é™¤çš„è¯¾ç¨‹åç§°ï¼š" << endl;
 		cin >> name;
 
 		for (i = 0; i < count_course; i++)
@@ -118,7 +118,7 @@ void manager::delete_class()
 			}
 		}
 		if (i == count_course)
-			cout << "¸Ã¿Î³Ì²»´æÔÚ£¡" << endl;
+			cout << "è¯¥è¯¾ç¨‹ä¸å­˜åœ¨ï¼" << endl;
 		else
 			break;
 	}
@@ -126,7 +126,7 @@ void manager::delete_class()
 	course_Array.erase(it);
 	count_course--;
 	fUpdate();
-	cout << "É¾³ı³É¹¦£¡" << endl;
+	cout << "åˆ é™¤æˆåŠŸï¼" << endl;
 }
 void manager::change_class()
 {
@@ -135,7 +135,7 @@ void manager::change_class()
 	course c;
 	while (1)
 	{
-		cout << "ÇëÊäÈëÒªĞŞ¸ÄµÄ¿Î³ÌÃû³Æ£º" << endl;
+		cout << "è¯·è¾“å…¥è¦ä¿®æ”¹çš„è¯¾ç¨‹åç§°ï¼š" << endl;
 		cin >> name;
 		for (i = 0; i < count_course; i++)
 		{
@@ -146,91 +146,104 @@ void manager::change_class()
 			}
 		}
 		if (i == count_course)
-			cout << "¸Ã¿Î³Ì²»´æÔÚ£¡" << endl;
+			cout << "è¯¥è¯¾ç¨‹ä¸å­˜åœ¨ï¼" << endl;
 		else
 			break;
 	}
 	while (1)
 	{
-		cout << "ÇëÊäÈëĞŞ¸Äºó¿Î³ÌµÄÃû³Æ£º" << endl;
+		cout << "è¯·è¾“å…¥ä¿®æ”¹åè¯¾ç¨‹çš„åç§°ï¼š" << endl;
 		cin >> c.name;
 		for (j = 0; j < count_course; j++)
 		{
 			if (course_Array[j].name == c.name && num != j)
 			{
-				cout << "¸Ã¿Î³ÌÒÑ´æÔÚ£¡" << endl;
+				cout << "è¯¥è¯¾ç¨‹å·²å­˜åœ¨ï¼" << endl;
 				break;
 			}
 		}
 		if (j == count_course)
 			break;
 	}
-	cout << "ÇëÊäÈëĞŞ¸Äºó¿Î³ÌµÄ¿ªÊ¼Ê±¼ä£º" << endl;
+	cout << "è¯·è¾“å…¥ä¿®æ”¹åè¯¾ç¨‹çš„å¼€å§‹æ—¶é—´ï¼š" << endl;
 	cin >> c.StartTime;
-	cout << "ÇëÊäÈëĞŞ¸Äºó¿Î³ÌµÄ½áÊøÊ±¼ä£º" << endl;
+	cout << "è¯·è¾“å…¥ä¿®æ”¹åè¯¾ç¨‹çš„ç»“æŸæ—¶é—´ï¼š" << endl;
 	cin >> c.EndTime;
-	cout << "ÇëÊäÈëĞŞ¸Äºó¿Î³ÌµÄÉÏ¿ÎµØµã£º" << endl;
+	cout << "è¯·è¾“å…¥ä¿®æ”¹åè¯¾ç¨‹çš„ä¸Šè¯¾åœ°ç‚¹ï¼š" << endl;
 	cin >> c.place;
-	cout << "ÇëÊäÈëĞŞ¸Äºó¿Î³ÌµÄÉÏ¿Î°à¼¶£º" << endl;
+	cout << "è¯·è¾“å…¥ä¿®æ”¹åè¯¾ç¨‹çš„ä¸Šè¯¾ç­çº§ï¼š" << endl;
 	cin >> c.Class;
-	cout << "ĞŞ¸Äºó¿Î³ÌÊÇ·ñÎªµ¥´Î¿Î£º" << endl;
-	cout << "1.ÊÇ	2.·ñ" << endl;
+	cout << "ä¿®æ”¹åè¯¾ç¨‹æ˜¯å¦ä¸ºå•æ¬¡è¯¾ï¼š" << endl;
+	cout << "1.æ˜¯	2.å¦" << endl;
 	cin >> c.period;
 	if (c.period == 2)
 	{
-		cout << "ÇëÊäÈëĞŞ¸Äºó¿Î³ÌµÄÉÏ¿ÎÖÜÊı£º" << endl;
+		cout << "è¯·è¾“å…¥ä¿®æ”¹åè¯¾ç¨‹çš„ä¸Šè¯¾å‘¨æ•°ï¼š" << endl;
 		cin >> c.c_week;
-		cout << "ÇëÒÀ´ÎÊäÈëĞŞ¸Äºó¿Î³ÌµÄÉÏ¿ÎÖÜ£º" << endl;
+		cout << "è¯·ä¾æ¬¡è¾“å…¥ä¿®æ”¹åè¯¾ç¨‹çš„ä¸Šè¯¾å‘¨ï¼š" << endl;
 		cin >> c.week;
 	}
 	else
 	{
 		c.week = 1;
-		cout << "ÇëÒÀ´ÎÊäÈëĞŞ¸Äºó¿Î³ÌµÄÉÏ¿ÎÖÜ£º" << endl;
+		cout << "è¯·ä¾æ¬¡è¾“å…¥ä¿®æ”¹åè¯¾ç¨‹çš„ä¸Šè¯¾å‘¨ï¼š" << endl;
 		cin >> c.week;
 	}
 	course_Array[num] = c;
 	fUpdate();
-	cout << "ĞŞ¸Ä³É¹¦£¡" << endl;
+	cout << "ä¿®æ”¹æˆåŠŸï¼" << endl;
 }
 void manager::add_student()
 {
 	int num, j = 0;
+	ofstream ofs;
 	student s;
 	string s2;
 	string s1 = "2021";
-	cout << "ÇëÑ¡ÔñÒªÌí¼ÓµÄÑ§ÉúÊı£º" << endl;
+	string filename1, filename2, filename3;
+	cout << "è¯·é€‰æ‹©è¦æ·»åŠ çš„å­¦ç”Ÿæ•°ï¼š" << endl;
 	cin >> num;
 	for (int i = 0; i < num; i++)
 	{
 		while (1)
 		{
-			cout << "ÇëÊäÈëµÚ" << i + 1 << "¸öÑ§ÉúµÄid£º" << endl;
+			cout << "è¯·è¾“å…¥ç¬¬" << i + 1 << "ä¸ªå­¦ç”Ÿçš„idï¼š" << endl;
 			cin >> s.id;
 			for (j = 0; j < count_student; j++)
 			{
 				if (student_Array[j].id == s.id)
 				{
-					cout << "¸ÃÑ§ÉúÒÑ´æÔÚ£¡" << endl;
+					cout << "è¯¥å­¦ç”Ÿå·²å­˜åœ¨ï¼" << endl;
 					break;
 				}
 			}
 			if (j == count_student)
 				break;
 		}
-		cout << "ÇëÊäÈëµÚ" << i + 1 << "¸öÑ§ÉúµÄĞÕÃû£º" << endl;
+		cout << "è¯·è¾“å…¥ç¬¬" << i + 1 << "ä¸ªå­¦ç”Ÿçš„å§“åï¼š" << endl;
 		cin >> s.name;
-		cout << "ÇëÊäÈëµÚ" << i + 1 << "¸öÑ§ÉúµÄ°à¼¶£º" << endl;
+		cout << "è¯·è¾“å…¥ç¬¬" << i + 1 << "ä¸ªå­¦ç”Ÿçš„ç­çº§ï¼š" << endl;
 		cin >> s.ClassNum;
 		s2 = to_string(s.id);
 		s1 = "2021";
 		s1 = s1 + s2;
-		s.password = s1;//ÉèÖÃÄ¬ÈÏÃÜÂë
+		s.password = s1;//è®¾ç½®é»˜è®¤å¯†ç 
 		student_Array.push_back(s);
+		filename1 = ".. / datas / " + s2 + "personal" + ".txt";
+		filename2 = ".. / datas / " + s2 + "temp" + ".txt";
+		filename3 = ".. / datas / " + s2 + "alarm" + ".txt";
+		
+		ofs.open(filename1, std::ios::out);
+		ofs.close();
+		ofs.open(filename2, std::ios::out);
+		ofs.close();
+		ofs.open(filename3, std::ios::out);
+		ofs.close();
+
 		count_student++;
 	}
 	fUpdate();
-	cout << "Ìí¼Ó³É¹¦£¡" << endl;
+	cout << "æ·»åŠ æˆåŠŸï¼" << endl;
 }
 void manager::delete_student()
 {
@@ -238,7 +251,7 @@ void manager::delete_student()
 	int num, i = 0;
 	while (1)
 	{
-		cout << "ÇëÊäÈëÒªÉ¾³ıµÄÑ§Éúid£º" << endl;
+		cout << "è¯·è¾“å…¥è¦åˆ é™¤çš„å­¦ç”Ÿidï¼š" << endl;
 		cin >> id;
 
 		for (i = 0; i < count_student; i++)
@@ -250,7 +263,7 @@ void manager::delete_student()
 			}
 		}
 		if (i == count_student)
-			cout << "¸ÃÑ§Éú²»´æÔÚ£¡" << endl;
+			cout << "è¯¥å­¦ç”Ÿä¸å­˜åœ¨ï¼" << endl;
 		else
 			break;
 	}
@@ -258,7 +271,7 @@ void manager::delete_student()
 	student_Array.erase(it);
 	count_student--;
 	fUpdate();
-	cout << "É¾³ı³É¹¦£¡" << endl;
+	cout << "åˆ é™¤æˆåŠŸï¼" << endl;
 }
 void manager::change_student()
 {
@@ -267,7 +280,7 @@ void manager::change_student()
 	student s;
 	while (1)
 	{
-		cout << "ÇëÊäÈëÒªĞŞ¸ÄµÄÑ§ÉúµÄid£º" << endl;
+		cout << "è¯·è¾“å…¥è¦ä¿®æ”¹çš„å­¦ç”Ÿçš„idï¼š" << endl;
 		cin >> id;
 		for (i = 0; i < count_student; i++)
 		{
@@ -278,38 +291,38 @@ void manager::change_student()
 			}
 		}
 		if (i == count_student)
-			cout << "¸ÃÑ§Éú²»´æÔÚ£¡" << endl;
+			cout << "è¯¥å­¦ç”Ÿä¸å­˜åœ¨ï¼" << endl;
 		else
 			break;
 	}
 	while (1)
 	{
-		cout << "ÇëÊäÈëĞŞ¸ÄºóµÄid£º" << endl;
+		cout << "è¯·è¾“å…¥ä¿®æ”¹åçš„idï¼š" << endl;
 		cin >> s.id;
 		for (j = 0; j < count_student; j++)
 		{
 			if (student_Array[j].id == s.id && num != j)
 			{
-				cout << "¸ÃÑ§ÉúÒÑ´æÔÚ£¡" << endl;
+				cout << "è¯¥å­¦ç”Ÿå·²å­˜åœ¨ï¼" << endl;
 				break;
 			}
 		}
 		if (j == count_student)
 			break;
 	}
-	cout << "ÇëÊäÈëĞŞ¸ÄºóÑ§ÉúµÄĞÕÃû£º" << endl;
+	cout << "è¯·è¾“å…¥ä¿®æ”¹åå­¦ç”Ÿçš„å§“åï¼š" << endl;
 	cin >> s.name;
-	cout << "ÇëÊäÈëĞŞ¸ÄºóÑ§ÉúµÄ°à¼¶£º" << endl;
+	cout << "è¯·è¾“å…¥ä¿®æ”¹åå­¦ç”Ÿçš„ç­çº§ï¼š" << endl;
 	cin >> s.ClassNum;
 	s.password = student_Array[num].password;
 	student_Array[num] = s;
 	fUpdate();
-	cout << "ĞŞ¸Ä³É¹¦£¡" << endl;
+	cout << "ä¿®æ”¹æˆåŠŸï¼" << endl;
 }
 void manager::fUpdate()
 {
 	ofstream ofs;
-	ofs.open("course.txt", ios::out);//outÎª¸²Ğ´Ä£Ê½£¬¼´»á½«Ô­À´ÎÄ¼şÖĞµÄÄÚÈİÈ«²¿Çå³ı
+	ofs.open("course.txt", ios::out);//outä¸ºè¦†å†™æ¨¡å¼ï¼Œå³ä¼šå°†åŸæ¥æ–‡ä»¶ä¸­çš„å†…å®¹å…¨éƒ¨æ¸…é™¤
 	ofs << count_course << endl;
 	for (int i = 0; i < count_course; i++)
 	{
@@ -321,7 +334,7 @@ void manager::fUpdate()
 			<< course_Array[i].period << "\t"
 			<< course_Array[i].c_week << "\t"
 			<< course_Array[i].week << endl;
-	}//Ğ´ÎÄ¼ş²Ù×÷
+	}//å†™æ–‡ä»¶æ“ä½œ
 	ofs.close();
 	ofs.open("student.txt", ios::out);
 	ofs << count_student << endl;
@@ -331,7 +344,7 @@ void manager::fUpdate()
 			<< student_Array[i].password << "\t"
 			<< student_Array[i].ClassNum << "\t"
 			<< student_Array[i].id << endl;
-	}//Ğ´ÎÄ¼ş²Ù×÷
+	}//å†™æ–‡ä»¶æ“ä½œ
 	ofs.close();
 }
 void manager::connection()
@@ -376,7 +389,7 @@ void manager::translate()
 		{
 			if (s[j] == '-')
 			{	
-				if ((j>1)&&s[j - 2] >= '0' && s[j - 2] <= '9')//ÅĞ¶ÏÊÇ²»ÊÇÊ®Î»Êı
+				if ((j>1)&&s[j - 2] >= '0' && s[j - 2] <= '9')//åˆ¤æ–­æ˜¯ä¸æ˜¯åä½æ•°
 				{
 					start = s[j - 1] - '0' + (s[j - 2] - '0') * 10;
 				}
@@ -384,7 +397,7 @@ void manager::translate()
 				{
 					start = s[j - 1] - '0';
 				}
-				if ((j + 2) < s.length()&&s[j + 2] >= '0' && s[j + 2] <= '9')//ÅĞ¶ÏÊÇ²»ÊÇÊ®Î»Êı
+				if ((j + 2) < s.length()&&s[j + 2] >= '0' && s[j + 2] <= '9')//åˆ¤æ–­æ˜¯ä¸æ˜¯åä½æ•°
 				{
 					end = s[j + 2] - '0' + (s[j + 1] - '0') * 10;
 					j += 3;
@@ -404,23 +417,23 @@ void manager::translate()
 			}
 
 
-			else if (s[j] >= '0' && s[j] <= '9')//µ¥¸öÖÜ
+			else if (s[j] >= '0' && s[j] <= '9')//å•ä¸ªå‘¨
 			{
-				if ((j + 1) < s.length()&&s[j + 1] >= '0' && s[j + 1] <= '9')//¿´¿´Õâ¸öÊıÊÇ²»ÊÇÊ®Î»Êı£¬Èç¹ûÊÇÊ®Î»
+				if ((j + 1) < s.length()&&s[j + 1] >= '0' && s[j + 1] <= '9')//çœ‹çœ‹è¿™ä¸ªæ•°æ˜¯ä¸æ˜¯åä½æ•°ï¼Œå¦‚æœæ˜¯åä½
 				{
 					single = 10 * (s[j] - '\0') + (s[j + 1] - '\0');
-					if ((j == 0 && s[j + 2] == ',')||(j == 0 && s[j + 2] == '\0'))//µÚÒ»¸ö
+					if ((j == 0 && s[j + 2] == ',')||(j == 0 && s[j + 2] == '\0'))//ç¬¬ä¸€ä¸ª
 					{
 						course_Array[i].check[single] = 1;
 						j += 3;
 					}
-					else if ((j + 2) < s.length() && j > 0 && s[j - 1] == ',' && s[j + 2] == ',')//²¢ÇÒ×óÓÒ¶¼ÊÇ¡°£¬¡±
+					else if ((j + 2) < s.length() && j > 0 && s[j - 1] == ',' && s[j + 2] == ',')//å¹¶ä¸”å·¦å³éƒ½æ˜¯â€œï¼Œâ€
 					{
 						course_Array[i].check[single] = 1;
 						j += 3;
 
 					}
-					else if ((j + 2) < s.length() && j > 0 && s[j + 2] == '\0' && s[j - 1] == ',')//×îºóÒ»¸ö
+					else if ((j + 2) < s.length() && j > 0 && s[j + 2] == '\0' && s[j - 1] == ',')//æœ€åä¸€ä¸ª
 					{
 						course_Array[i].check[single] = 1;
 						j += 3;
@@ -429,7 +442,7 @@ void manager::translate()
 					else
 						j++;
 				}
-				else//²»ÊÇÊ®Î»Êı
+				else//ä¸æ˜¯åä½æ•°
 				{
 					single = s[j] - '0';
 					if ((j + 1) < s.length() && j > 0 && s[j - 1] == ',' && s[j + 1] == ',')
@@ -438,7 +451,7 @@ void manager::translate()
 						j += 2;
 
 					}
-					else if ((j == 0 && s[j + 1] == ',') || (j == 0 && s[j + 1] == '\0'))//µÚÒ»¸ö
+					else if ((j == 0 && s[j + 1] == ',') || (j == 0 && s[j + 1] == '\0'))//ç¬¬ä¸€ä¸ª
 					{
 						course_Array[i].check[single] = 1;
 						j += 2;
