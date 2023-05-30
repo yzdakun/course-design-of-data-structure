@@ -6,16 +6,16 @@
 #include"test1.h"
 using namespace std;
 
-thread a;
+//thread a;
 
 int main()
 {
 	//thread a;
-	a = thread(time_run);
+	//a = thread(time_run);
 	//test1();
 	Login();
-	St = 1;
-	a.join();
+	//St = 1;
+	//a.join();
 
 
 
@@ -24,11 +24,11 @@ int main()
 	
 	while (1)
 	{
-		cout << "ÇëÊäÈëÄãµÄ²Ù×÷" << endl;
+		cout << "è¯·è¾“å…¥ä½ çš„æ“ä½œ" << endl;
 		cout << "insert 1" << endl;
 		cout << "delete 2" << endl;
 		cout << "search 3" << endl;
-		cout << "ÍË³öµÇÂ¼ 4" << endl;
+		cout << "é€€å‡ºç™»å½• 4" << endl;
 
 		int type;
 		int key, dt;
@@ -36,17 +36,17 @@ int main()
 		switch (type)
 		{
 		case 1:
-			cout << "ÇëÊäÈëÒª²åÈëµÄ¼üÖµÓëÊı¾İ" << endl;
+			cout << "è¯·è¾“å…¥è¦æ’å…¥çš„é”®å€¼ä¸æ•°æ®" << endl;
 			cin >> key >> dt;
 			T.insert(key, dt);
 			break;
 		case 2:
-			cout << "ÇëÊäÈëÒªÉ¾³ıµÄ¼üÖµ" << endl;
+			cout << "è¯·è¾“å…¥è¦åˆ é™¤çš„é”®å€¼" << endl;
 			cin >> key;
 			T.remove(key);
 			break;
 		case 3:
-			cout << "ÇëÊäÈëÒª²éÑ¯µÄ¼üÖµ" << endl;
+			cout << "è¯·è¾“å…¥è¦æŸ¥è¯¢çš„é”®å€¼" << endl;
 			cin >> key;
 			if (T.search(key))
 			{
@@ -58,7 +58,7 @@ int main()
 			}
 			break;
 		default:
-			cout << "ÏÂ´ÎÔÙÀ´" << endl;
+			cout << "ä¸‹æ¬¡å†æ¥" << endl;
 			break;
 		}
 		if (type == 4)
