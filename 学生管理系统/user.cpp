@@ -263,11 +263,12 @@ void student::InitActivityInformation()
 	ifs.seekg(0, ios::beg);
 
 	string name;
-	int StartTime;
-	string place;
+	int StartTime,EndTime;
+	int place;
 	int id;
 	int kind;
-	while (ifs >> name && ifs >> StartTime && ifs >> place && ifs >> id && ifs >> kind)
+	int tp;
+	while (ifs >> name && ifs >> StartTime  && ifs >> EndTime && ifs >> place && ifs >> id && ifs >> kind && ifs >> tp)
 	{
 		int x = StartTime / 168;
 		if (id == this->id)//
@@ -284,10 +285,11 @@ void student::InitActivityInformation()
 				timeline[StartTime] = kind;
 				ActivityList[x][i].name = name;
 				ActivityList[x][i].StartTime = StartTime;
-				ActivityList[x][i].EndTime = StartTime + 1;
+				ActivityList[x][i].EndTime = EndTime;
 				ActivityList[x][i].place = place;
 				ActivityList[x][i].id = id;
 				ActivityList[x][i].kind = kind;
+				ActivityList[x][i].type = tp;
 				ActivityNum[x]++;
 			}
 			else
@@ -332,12 +334,12 @@ void student::InitGroupActInformation()
 	ifs.seekg(0, ios::beg);
 
 	string name;
-	int StartTime;
+	int StartTime, EndTime;
 	//int EndTime;
 	string place;
 	int Class;
 	int kind;
-	while (ifs >> name && ifs >> StartTime && ifs >> place && ifs >> Class && ifs >> kind)
+	while (ifs >> name && ifs >> StartTime && ifs >> EndTime && ifs >> place && ifs >> Class && ifs >> kind)
 	{
 		int x = StartTime / 168;
 		if (Class == this->ClassNum)//
@@ -353,7 +355,7 @@ void student::InitGroupActInformation()
 			timeline[StartTime] = kind;
 			GroupActList[x][i].name = name;
 			GroupActList[x][i].StartTime = StartTime;
-			GroupActList[x][i].EndTime = StartTime + 1;
+			GroupActList[x][i].EndTime = EndTime;
 			GroupActList[x][i].place = place;
 			GroupActList[x][i].Class = Class;
 			GroupActList[x][i].kind = kind;
@@ -362,9 +364,6 @@ void student::InitGroupActInformation()
 	}
 	ifs.close();
 }
-
-
-
 
 void student::InitTempActInformation()
 {
@@ -393,11 +392,11 @@ void student::InitTempActInformation()
 
 	string name;
 	int StartTime;
-	//int EndTime;
+	int EndTime;
 	string place;
 	int id;
 	int kind;
-	while (ifs >> name && ifs >> StartTime && ifs >> place && ifs >> id && ifs >> kind)
+	while (ifs >> name && ifs >> StartTime && ifs >> EndTime && ifs >> place && ifs >> id && ifs >> kind)
 	{
 		int x = StartTime / 168;
 		if (id == this->id)//
@@ -414,7 +413,7 @@ void student::InitTempActInformation()
 				timeline[StartTime] = kind;
 				TempActList[x][i].name = name;
 				TempActList[x][i].StartTime = StartTime;
-				TempActList[x][i].EndTime = StartTime + 1;
+				TempActList[x][i].EndTime = EndTime;
 				TempActList[x][i].place = place;
 				TempActList[x][i].id = id;
 				TempActList[x][i].kind = kind;
@@ -529,7 +528,8 @@ void student::SaveActivityInformation()
 			<< ActivityList[i][j].EndTime << " "
 			<< ActivityList[i][j].place << " "
 			<< ActivityList[i][j].id << " "
-			<< ActivityList[i][j].kind << endl;
+			<< ActivityList[i][j].kind << " "
+			<< ActivityList[i][j].type << endl;
 		}
 	}
 	ofs.close();
@@ -1680,3 +1680,4 @@ void student::ShowInfo(int kind, int ActTime)
 
 }
 
+ 
