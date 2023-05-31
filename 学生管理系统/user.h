@@ -91,7 +91,7 @@ private:
 	int Search(int kind, string name,int now_time);
 	void AddGroupAct();
 	void AddActivity();
-	int AddSingleActivity(int tm, string name, string place, int type);
+	int AddSingleActivity(int tm, string name, int place, int type);
 	void AddTempAct();
 	void DeleteGroupAct();
 	void DeleteActivity();
