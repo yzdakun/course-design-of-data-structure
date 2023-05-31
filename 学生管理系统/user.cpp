@@ -208,7 +208,7 @@ void student::InitCourseInformation(int now_time)
 	string name;
 	int StartTime;
 	int EndTime;
-	string place;
+	int place;
 	int Class, kind;
 	while (ifs >> name && ifs >> StartTime && ifs >> EndTime && ifs >> place && ifs >> Class && ifs >> kind)
 	{
@@ -336,10 +336,11 @@ void student::InitGroupActInformation()
 	string name;
 	int StartTime, EndTime;
 	//int EndTime;
-	string place;
+	int place;
 	int Class;
 	int kind;
-	while (ifs >> name && ifs >> StartTime && ifs >> EndTime && ifs >> place && ifs >> Class && ifs >> kind)
+	int tp;
+	while (ifs >> name && ifs >> StartTime && ifs >> EndTime && ifs >> place && ifs >> Class && ifs >> kind && ifs >> tp)
 	{
 		int x = StartTime / 168;
 		if (Class == this->ClassNum)//
@@ -359,11 +360,15 @@ void student::InitGroupActInformation()
 			GroupActList[x][i].place = place;
 			GroupActList[x][i].Class = Class;
 			GroupActList[x][i].kind = kind;
+			GroupActList[x][i].type = type;
 			GroupActNum[x]++;
 		}
 	}
 	ifs.close();
 }
+
+
+
 
 void student::InitTempActInformation()
 {
@@ -393,7 +398,7 @@ void student::InitTempActInformation()
 	string name;
 	int StartTime;
 	int EndTime;
-	string place;
+	int place;
 	int id;
 	int kind;
 	while (ifs >> name && ifs >> StartTime && ifs >> EndTime && ifs >> place && ifs >> id && ifs >> kind)
@@ -408,7 +413,7 @@ void student::InitTempActInformation()
 				flag = 1;
 			}*/
 			int i = TempActNum[x];
-			if (timeline[StartTime] == 0)
+			if (timeline[StartTime] == 0|| timeline[StartTime] == 4)
 			{
 				timeline[StartTime] = kind;
 				TempActList[x][i].name = name;
@@ -500,7 +505,8 @@ void student::SaveGroupActInformation()
 			<< GroupActList[i][j].EndTime << " "
 			<< GroupActList[i][j].place << " "
 			<< GroupActList[i][j].Class << " "
-			<< GroupActList[i][j].kind << endl;
+			<< GroupActList[i][j].kind << " "
+			<< GroupActList[i][j].type << endl;
 		}
 	}
 	ofs.close();
@@ -977,8 +983,8 @@ void student::AddActivity()
 	if (tp == 1)
 	{
 		cout << "请输入个人活动的开始时间,名称，地点" << endl;
-		int tm;
-		string name, place;
+		int tm,place;
+		string name;
 		cin >> tm >> name >> place;
 		AddSingleActivity(tm, name, place, tp);
 		log1.wr(now_time, this->name, "添加一个单次的个人活动");
@@ -986,8 +992,8 @@ void student::AddActivity()
 	else if (tp == 2)
 	{
 		cout << "请输入个人活动的开始时间,结束时间,名称，地点" << endl;
-		int tm, endtm;
-		string name, place;
+		int tm, endtm,place;
+		string name;
 		cin >> tm >> endtm >> name >> place;
 		for (tm; tm <= endtm; tm += 24)
 		{
@@ -1003,8 +1009,8 @@ void student::AddActivity()
 	else if (tp == 3)
 	{
 		cout << "请输入个人活动的开始时间,结束时间,名称，地点" << endl;
-		int tm, endtm;
-		string name, place;
+		int tm, endtm,place;
+		string name;
 		cin >> tm >> endtm >> name >> place;
 		for (tm; tm <= endtm; tm += 168)
 		{
@@ -1025,7 +1031,7 @@ void student::AddActivity()
 }
 
 
-int student::AddSingleActivity(int tm, string name, string place, int type)
+int student::AddSingleActivity(int tm, string name, int place, int type)
 {
 	activity tmp;
 	if (timeline[tm] == 0)
