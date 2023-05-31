@@ -43,10 +43,6 @@ void Login()
 		{
 			return ;
 		}
-		long long timestamp;
-		ifsTotal>>timestamp;
-		otsTotal<<timestamp<<endl;
-
 		ifsTotal.close();
 		otsTotal.close();
 		/*switch (identity)
@@ -82,6 +78,7 @@ void Log_control::Init_StudentMessage()
 	int id, ClassNum;
 	string name, password;
 	StudentCnt = 0;
+	ifs >> id;
 	while (ifs >> id && ifs >> ClassNum && ifs >> name && ifs >> password)
 	{
 		++StudentCnt;
@@ -112,6 +109,7 @@ void Log_control::Init_ManagerMessage()
 	//char name[20], password[20];
 	string name, password;
 	ManagerCnt = 0;
+	ifs >> id;
 	while (ifs >> id  && ifs >> name && ifs >> password)
 	{
 		++ManagerCnt;
@@ -133,6 +131,8 @@ void Log_control::Student_login()
 	ifsTotal >> id;
 	cout<<id<<endl;
 	ifsTotal >> password;
+	long long timestamp;
+	ifsTotal>>timestamp;
 	if (Stu.search(id))
 	{
 		// cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" << endl;
@@ -144,26 +144,27 @@ void Log_control::Student_login()
 		if (len1 != len2)
 		{
 			otsTotal<<0<<endl<<0<<endl;
-			//cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿?" << " " << password << " " << p << endl;
-			// cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿?" << endl;
+			otsTotal<<timestamp<<endl;
+			//cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?" << " " << password << " " << p << endl;
+			// cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?" << endl;
 		}
 		else
 		{
-			//cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿?" << " " << password << " " << p << endl;
+			//cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?" << " " << password << " " << p << endl;
 			for (int i = 0; i < len1; i++)
 			{
 				if (password[i] != p[i])
 				{
 					otsTotal<<0<<endl<<0<<endl;
-					//cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿?" << password[i] << " " << p[i] << " " << endl;
-					// cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿?" << endl;
+					otsTotal<<timestamp<<endl;
+					//cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?" << password[i] << " " << p[i] << " " << endl;
+					// cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?" << endl;
 					return;
 				}
 			}
 			otsTotal<<1<<endl<<0<<endl;
-			// cout << "ï¿½ï¿½Ã£ï¿?" << StudentList[ptr].name << endl;
-			long long timestamp;
-			ifsTotal>>timestamp;
+			// cout << "ï¿½ï¿½Ã£ï¿½?" << StudentList[ptr].name << endl;
+			
 			otsTotal<<timestamp<<endl;
 			StudentList[ptr].ManageSystem();
 			//Student_ManageSystem();
@@ -173,6 +174,7 @@ void Log_control::Student_login()
 	else
 	{
 		otsTotal<<2<<endl<<0<<endl;
+		otsTotal<<timestamp<<endl;
 		// cout << "ï¿½ï¿½ï¿½ï¿½ï¿½Ëºï¿½ï¿½Ç·ï¿½ï¿½ï¿½È·" << endl;
 		return;
 	}
@@ -189,6 +191,8 @@ void Log_control::Manager_login()
 	
 	cout<<id<<endl;
 	ifsTotal >> password;
+	long long timestamp;
+	ifsTotal>>timestamp;
 	if (Tec.search(id))
 	{
 		// cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" << endl;
@@ -199,8 +203,9 @@ void Log_control::Manager_login()
 		if (len1 != len2)
 		{
 			otsTotal<<0<<endl<<1<<endl;
+			otsTotal<<timestamp<<endl;
 			//cout << password;
-			// cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿?" <<  endl;
+			// cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?" <<  endl;
 		}
 		else
 		{
@@ -210,11 +215,15 @@ void Log_control::Manager_login()
 				if (password[i] != p[i])
 				{
 					otsTotal<<0<<endl<<1<<endl;
-					// cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿?" <<  endl;
+					otsTotal<<timestamp<<endl;
+					// cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?" <<  endl;
 					return;
 				}
 			}
 			otsTotal<<1<<endl<<1<<endl;
+			
+			otsTotal<<timestamp<<endl;
+			ManagerList[ptr].ManageSystem();
 			//Manager_ManageSystem();
 		}
 
@@ -222,6 +231,7 @@ void Log_control::Manager_login()
 	else
 	{
 		otsTotal<<2<<endl<<1<<endl;
+		otsTotal<<timestamp<<endl;
 		// cout << "ï¿½ï¿½ï¿½ï¿½ï¿½Ëºï¿½ï¿½Ç·ï¿½ï¿½ï¿½È·" << endl;
 		return;
 	}

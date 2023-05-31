@@ -266,3 +266,13 @@ body {
     display: inline-block;
     height: 30px;
 }
+.tips button {
+    display: inline-block;
+    width: 80px;
+    margin: 0 auto;
+    height: 40px;
+    color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    background-color: #337ab7;
+}

@@ -8,6 +8,7 @@
 #include"Time.h"
 #include"stringop.h"
 #include"findWay.h"
+#include"CLog.cpp"
 using namespace std;
 
 #define ASK_FOR_COURSE 1
@@ -17,7 +18,21 @@ using namespace std;
 #define SEARCH_ACTIVITY 5
 #define FIND_SINGLE_WAY 6
 #define FIND_MULTIPLE_WAY 7
+#define ADD_ALARM 8
+#define DEL_ALARM 9
+#define MODIFY_ALARM 10
+#define INIT 11
+#define CHECK_ALARM 12
+
+#define ADD_STUDENT 1
+#define DEL_STUDENT 2
+#define MODIFY_STUDENT 3
+#define ADD_COURSE 4
+#define DEL_COURSE 5
+#define MODIFY_COURSE 6
+
 ofstream ofsCou;
+ofstream ofsAla;
 ifstream ifsArg;
 
 student StudentList[MAX_PEOPLE];
@@ -34,7 +49,7 @@ manager::~manager() {};
 
 void student::ManageSystem()
 {
-	Init();
+	// Init();
 	g.init_graph();
 	// cout<<"欢迎登陆"<<endl;
 	ofsCou.open("../htmls/pagebuffer.txt");
@@ -103,17 +118,35 @@ void student::ManageSystem()
 				ifsArg.open("js2exe.txt",ios::in);
 				ifsArg>>flag;
 				cout<<flag<<endl;
-				int w;
+				int w,NTS;
 				int searchWeek;
 				string searchName;
 				long long nowTimeStamp;
 				int c_point,end,start;
+				int starttime,kind,acttime,tp;
 				int point[50];
 				int type;
 				// DelLineData(2);
 
 				switch (flag)
 				{
+				case INIT:
+					ifsArg>>w;
+					ifsArg>>s;
+					ifsArg>>nowTimeStamp;
+
+					ofsCou.close();
+					ofsCou.open("../htmls/pagebuffer.txt");
+					ofsCou<<0<<endl;
+					ofsCou<<w<<endl;
+					ofsCou<<s<<endl;
+					ofsCou<<nowTimeStamp<<endl;
+					
+					ifsArg >> NTS;
+					Init(NTS);
+					this->ShowClassSchedule(w);
+					ShowPersonalAlarmClock();
+					break;
 
 				case ASK_FOR_COURSE:
 					ifsArg>>w;
@@ -233,6 +266,7 @@ void student::ManageSystem()
 					}
 						
 					this->ShowClassSchedule(w);
+					ShowPersonalAlarmClock();
 					break;
 
 				case SEARCH_ACTIVITY:
@@ -246,8 +280,9 @@ void student::ManageSystem()
 
 					ifsArg >> type;
 					ifsArg >> searchName;
+					ifsArg >> NTS;
 					searchName = UTF8_To_string(searchName);
-					searchWeek = Search(type,searchName);
+					searchWeek = Search(type,searchName,NTS);
 
 					if(searchWeek > 0)
 					{
@@ -301,8 +336,79 @@ void student::ManageSystem()
 						ifsArg>>point[i];
 					g.floyd(c_point,point);
 					break;
-				default:
+
+				case ADD_ALARM:
+					ifsArg>>w;
+					ifsArg>>s;
+					ifsArg>>nowTimeStamp;
+
+					ofsCou.close();
+					ofsCou.open("../htmls/pagebuffer.txt");
+					ofsCou<<1<<endl;
+					ofsCou<<w<<endl;
+					ofsCou<<s<<endl;
+					ofsCou<<nowTimeStamp<<endl;
+
+					ifsArg >> starttime >> kind >> acttime >> tp;
+					AddPersonalAlarmClock(starttime,kind,acttime,tp);
+					ShowPersonalAlarmClock();
 					break;
+				
+				case DEL_ALARM:
+					ifsArg>>w;
+					ifsArg>>s;
+					ifsArg>>nowTimeStamp;
+
+					ofsCou.close();
+					ofsCou.open("../htmls/pagebuffer.txt");
+					ofsCou<<1<<endl;
+					ofsCou<<w<<endl;
+					ofsCou<<s<<endl;
+					ofsCou<<nowTimeStamp<<endl;
+
+					DeletePersonalAlarmClock();
+					ShowPersonalAlarmClock();
+					break;
+
+				case MODIFY_ALARM:
+					ifsArg>>w;
+					ifsArg>>s;
+					ifsArg>>nowTimeStamp;
+
+					ofsCou.close();
+					ofsCou.open("../htmls/pagebuffer.txt");
+					ofsCou<<1<<endl;
+					ofsCou<<w<<endl;
+					ofsCou<<s<<endl;
+					ofsCou<<nowTimeStamp<<endl;
+
+					DeletePersonalAlarmClock();
+					ifsArg >> starttime >> kind >> acttime >> tp;
+					AddPersonalAlarmClock(starttime,kind,acttime,tp);
+					ShowPersonalAlarmClock();
+					break;	
+				case CHECK_ALARM:
+					ifsArg>>w;
+					ifsArg>>s;
+					ifsArg>>nowTimeStamp;
+
+					ofsCou.close();
+					ofsCou.open("../htmls/pagebuffer.txt");
+					ofsCou<<0<<endl;
+					ofsCou<<w<<endl;
+					ofsCou<<s<<endl;
+					ofsCou<<nowTimeStamp<<endl;
+					
+					ifsArg >> NTS;
+					SystemAlarmClock(NTS);
+					TempAlarmClock(NTS);
+					PersonalAlarmClock(NTS);
+				default:
+					ifsArg.close();
+					ofsCou.close();
+					CloseHandle(dirHandle);
+					save();
+					return ;
 				};
 
 			}
@@ -312,144 +418,23 @@ void student::ManageSystem()
 	}
 
 	CloseHandle(dirHandle);
-
-	// while (true)
-	// {
-	// 	int t;
-	// 	cout << "��Ҫ���еĲ������ͣ�1 �γ̱�չʾ��2 ���ң�3,���ӻ��4 ɾ�����5 �������ӣ�6 ɾ������ ��7 չʾ���� ��8 �˳�" << endl;
-	// 	cin >> t;
-
-	// 	if (t == 1)
-	// 	{
-	// 		cout << "��������Ҫչʾ�ڼ��ܵĿα���" << endl;
-	// 		int w;
-	// 		cin >> w;
-	// 		this->ShowClassSchedule(w);
-
-	// 	}
-	// 	else if (t == 2)
-	// 	{
-	// 		cout << "��������Ҫ���ҵ����ͣ�1 �γ̣�2 ������3 ���˻ ��4 ��ʱ����" << endl;
-	// 		int tp;
-	// 		cin >> tp;
-	// 		if (tp != 1 && tp != 2 && tp != 3 && tp != 4)
-	// 		{
-	// 			cout << "�������" << endl;
-	// 		}
-	// 		else
-	// 		{
-	// 			string s;
-	// 			cout << "����������" << endl;
-	// 			cin >> s;
-	// 			int week = Search(tp, s);
-	// 			if (week > 0)
-	// 			{
-	// 				ShowClassSchedule(week);
-	// 			}
-	// 			else
-	// 			{
-	// 				cout << "�����޸�����" << endl;
-	// 			}
-	// 		}
-	// 	}
-	// 	else if (t == 3)
-	// 	{
-	// 		cout << "��������Ҫ���ӵ���������;2 ���� ��3 ���˻ ��4 ��ʱ����" << endl;
-	// 		int tp;
-	// 		cin >> tp;
-	// 		if (tp == 1)
-	// 		{
-	// 			cout << "û��Ȩ�����ӿγ�" << endl;
-	// 		}
-	// 		else if (tp == 2)
-	// 		{
-	// 			AddGroupAct();
-	// 		}
-	// 		else if (tp == 3)
-	// 		{
-	// 			AddActivity();
-	// 		}
-	// 		else if (tp == 4)
-	// 		{
-	// 			AddTempAct();
-	// 		}
-	// 		else
-	// 		{
-	// 			cout << "�������" << endl;
-	// 		}
-
-	// 	}
-	// 	else if (t == 4)
-	// 	{
-	// 		cout << "��������Ҫɾ������������;2 ���� ��3 ���˻ ��4 ��ʱ����" << endl;
-	// 		int tp;
-	// 		cin >> tp;
-	// 		if (tp == 1)
-	// 		{
-	// 			cout << "û��Ȩ��ɾ���γ�" << endl;
-	// 		}
-	// 		else if (tp == 2)
-	// 		{
-	// 			DeleteGroupAct();
-	// 		}
-	// 		else if (tp == 3)
-	// 		{
-	// 			DeleteActivity();
-	// 		}
-	// 		else if (tp == 4)
-	// 		{
-	// 			DeleteTempAct();
-	// 		}
-	// 		else
-	// 		{
-	// 			cout << "�������" << endl;
-	// 		}
-	// 	}
-	// 	else if (t == 5)
-	// 	{
-	// 		int starttime, kind, endtime, acttime, type;
-	// 		cout << "����������ʱ�䣬�������ͣ����ʼʱ��" << endl;
-	// 		cin >> starttime >> kind >> acttime;
-	// 		cout << "���������ڣ�1 ���Σ�2 ÿ�죬3 ÿ��" << endl;
-	// 		cin >> type;
-	// 		AddPersonalAlarmClock(starttime, kind, acttime, type);
-	// 	}
-	// 	else if (t == 6)
-	// 	{
-	// 		DeletePersonalAlarmClock();
-	// 	}
-	// 	else if (t == 7)
-	// 	{
-	// 		ShowPersonalAlarmClock();
-	// 	}
-	// 	else if (t == 8)
-	// 	{
-	// 		cout << "�����˳���¼" << endl;
-	// 		break;
-	// 	}
-	// 	else 
-	// 	{
-	// 		cout << "�����ڴ˲���" << endl;
-	// 	}
-
-
-	// }
 }
 
 
 
-void student::Init()
+void student::Init(int now_time)
 {
 	memset(timeline, 0, sizeof(timeline));
-	InitCourseInformation();
+	InitCourseInformation(now_time);
 	InitGroupActInformation();
 	InitActivityInformation();
 	InitTempActInformation();
-	InitAlarmClockInformation();
-	stop = 0;
-	sysalarm = thread(&student::SystemAlarmClock,this);
-	tmpalarm = thread(&student::TempAlarmClock,this);
-	personalalarm = thread(&student::PersonalAlarmClock,this);
+	InitAlarmClockInformation(now_time);
+	cout << now_time << endl;
+	//stop = 0;
+	//sysalarm = thread(&student::SystemAlarmClock,this);
+	//tmpalarm = thread(&student::TempAlarmClock,this);
+	//personalalarm = thread(&student::PersonalAlarmClock,this);
 		//tmpalarm, personalalarm;
 	//thread sysalarm,tmpalarm,personalalarm;
 
@@ -457,13 +442,17 @@ void student::Init()
 }
 void student::save()
 {
-	sysalarm .join();
-	tmpalarm .join();
-	personalalarm.join();
-	this->stop = 1;
+	SaveGroupActInformation();
+	SaveActivityInformation();
+	SaveTempActInformation();
+	SaveAlarmClockInformation();
+	// sysalarm .join();
+	// tmpalarm .join();
+	// personalalarm.join();
+	// this->stop = 1;
 }
 
-void student::InitCourseInformation()
+void student::InitCourseInformation(int now_time)
 {
 	for (int i = 0; i < WEEK_NUM; i++)
 	{
@@ -473,8 +462,11 @@ void student::InitCourseInformation()
 	ifstream ifs;
 	int flag = 0;
 
-	ifs.open("../datas/course_message.txt", ios::in);
 
+	string filename = to_string(this->ClassNum);
+	filename = "../datas/" + filename + "course.txt";
+
+	ifs.open(filename, ios::in);
 	if (!ifs.is_open())
 	{
 		cout << "学生课程信息初始化错误" << endl;
@@ -514,6 +506,7 @@ void student::InitCourseInformation()
 			CourseNum[x]++;
 		}
 	}
+	ifs.close();
 }
 
 void student::InitActivityInformation()
@@ -525,9 +518,12 @@ void student::InitActivityInformation()
 	//ActivityIdx = { 0,0 };
 	int flag = 0;
 
+	string filename = to_string(this->id);
+	filename = "../datas/" + filename + "activity.txt";
+	// cout<<filename<<endl;
 	ifstream ifs;
 
-	ifs.open("../datas/activity_message.txt", ios::in);
+	ifs.open(filename, ios::in);
 
 	if (!ifs.is_open())
 	{
@@ -540,11 +536,13 @@ void student::InitActivityInformation()
 
 	string name;
 	int StartTime;
+	int EndTime;
 	int place;
 	int id;
 	int kind;
-	while (ifs >> name && ifs >> StartTime && ifs >> place && ifs >> id && ifs >> kind)
+	while (ifs >> name && ifs >> StartTime && ifs >> EndTime && ifs >> place && ifs >> id && ifs >> kind)
 	{
+		// cout << StartTime << endl;
 		int x = StartTime / 168;
 		if (id == this->id)//
 		{
@@ -577,6 +575,7 @@ void student::InitActivityInformation()
 	{
 		cout << "您有个人活动因冲突被删除" << endl;
 	}
+	ifs.close();
 }
 
 
@@ -590,9 +589,12 @@ void student::InitGroupActInformation()
 	//ifstream ifs;
 	//int flag = 0;
 
+	string filename = to_string(this->ClassNum);
+	filename = "../datas/" + filename + "groupact.txt";
+	// cout << filename <<endl;
 	ifstream ifs;
 
-	ifs.open("../datas/groupact_message.txt", ios::in);
+	ifs.open(filename, ios::in);
 
 	if (!ifs.is_open())
 	{
@@ -605,11 +607,11 @@ void student::InitGroupActInformation()
 
 	string name;
 	int StartTime;
-	//int EndTime;
+	int EndTime;
 	int place;
 	int Class;
 	int kind;
-	while (ifs >> name && ifs >> StartTime && ifs >> place && ifs >> Class && ifs >> kind)
+	while (ifs >> name && ifs >> StartTime && ifs >> EndTime && ifs >> place && ifs >> Class && ifs >> kind)
 	{
 		int x = StartTime / 168;
 		if (Class == this->ClassNum)//
@@ -632,6 +634,7 @@ void student::InitGroupActInformation()
 			GroupActNum[x]++;
 		}
 	}
+	ifs.close();
 }
 
 
@@ -647,7 +650,10 @@ void student::InitTempActInformation()
 
 	ifstream ifs;
 
-	ifs.open("../datas/tempact_message.txt", ios::in);
+	string filename = to_string(this->id);
+	filename = "../datas/" + filename + "tempact.txt";
+
+	ifs.open(filename, ios::in);
 
 	if (!ifs.is_open())
 	{
@@ -660,11 +666,11 @@ void student::InitTempActInformation()
 
 	string name;
 	int StartTime;
-	//int EndTime;
+	int EndTime;
 	int place;
 	int id;
 	int kind;
-	while (ifs >> name && ifs >> StartTime && ifs >> place && ifs >> id && ifs >> kind)
+	while (ifs >> name && ifs >> StartTime && ifs >> EndTime && ifs >> place && ifs >> id && ifs >> kind)
 	{
 		int x = StartTime / 168;
 		if (id == this->id)//
@@ -697,18 +703,20 @@ void student::InitTempActInformation()
 	{
 		cout << "您有临时事务因冲突被删除" << endl;
 	}
+	ifs.close();
 }
 
-void student::InitAlarmClockInformation()
+void student::InitAlarmClockInformation(int now_time)
 {
 	AlarmNum = 0;
 	AlarmIdx = 0;
 	int flag = 0;
 
+	string filename = to_string(this->id);
+	filename = "../datas/" + filename + "alarmclock.txt";
 	ifstream ifs;
 
-	ifs.open("../datas/alarmclock_message.txt", ios::in);
-
+	ifs.open(filename, ios::in);
 	if (!ifs.is_open())
 	{
 		cout << "闹钟信息初始化错误" << endl;
@@ -731,9 +739,121 @@ void student::InitAlarmClockInformation()
 			AlarmList[AlarmNum].ActTime = ActTime;
 			AlarmList[AlarmNum].id = id;
 			AlarmNum++;
-		}	
+		}
 	}
 }
+
+void student::SaveGroupActInformation()
+{
+	string filename = to_string(this->ClassNum);
+	filename = "../datas/" + filename + "groupact.txt";
+
+	ofstream ofs;
+	ofs.open(filename, ios::out | ios::trunc);
+
+	if (!ofs.is_open())
+	{
+		cout << "集体活动储存错误" << endl;
+		return;
+	}
+
+	for (int i = 0; i < WEEK_NUM; i++)
+	{
+		for (int j = 0; j < GroupActNum[i]; j++)
+		{
+			ofs << GroupActList[i][j].name << " "
+			<< GroupActList[i][j].StartTime << " "
+			<< GroupActList[i][j].EndTime << " "
+			<< GroupActList[i][j].place << " "
+			<< GroupActList[i][j].Class << " "
+			<< GroupActList[i][j].kind << endl;
+		}
+	}
+	ofs.close();
+}
+void student::SaveActivityInformation()
+{
+	string filename = to_string(this->id);
+	filename = "../datas/" + filename + "activity.txt";
+
+	ofstream ofs;
+	ofs.open(filename, ios::out | ios::trunc);
+
+	if (!ofs.is_open())
+	{
+		cout << "个人活动储存错误" << endl;
+		return;
+	}
+
+	for (int i = 0; i < WEEK_NUM; i++)
+	{
+		for (int j = 0; j < ActivityNum[i]; j++)
+		{
+			ofs << ActivityList[i][j].name << " "
+			<< ActivityList[i][j].StartTime << " "
+			<< ActivityList[i][j].EndTime << " "
+			<< ActivityList[i][j].place << " "
+			<< ActivityList[i][j].id << " "
+			<< ActivityList[i][j].kind << " "
+			<< ActivityList[i][j].type << endl;
+		}
+	}
+	ofs.close();
+}
+void student::SaveTempActInformation()
+{
+	string filename = to_string(this->id);
+	filename = "../datas/" + filename + "tempact.txt";
+
+	ofstream ofs;
+	ofs.open(filename, ios::out | ios::trunc);
+
+	if (!ofs.is_open())
+	{
+		cout << "个人活动储存错误" << endl;
+		return;
+	}
+
+	for (int i = 0; i < WEEK_NUM; i++)
+	{
+		for (int j = 0; j < TempActNum[i]; j++)
+		{
+			ofs << TempActList[i][j].name << " "
+			<< TempActList[i][j].StartTime << " "
+			<< TempActList[i][j].EndTime << " "
+			<< TempActList[i][j].place << " "
+			<< TempActList[i][j].id << " "
+			<< TempActList[i][j].kind << endl;
+		}
+	}
+	ofs.close();
+}
+void student::SaveAlarmClockInformation()
+{
+	string filename = to_string(this->id);
+	filename = "../datas/" + filename + "alarmclock.txt";
+
+	ofstream ofs;
+	ofs.open(filename, ios::out | ios::trunc);
+
+	if (!ofs.is_open())
+	{
+		cout << "个人活动储存错误" << endl;
+		return;
+	}
+
+	for (int i = AlarmIdx; i < AlarmNum; i++)
+	{
+		ofs << AlarmList[i].StartTime << " "
+		<< AlarmList[i].kind << " "
+		<< AlarmList[i].type << " "
+		<< AlarmList[i].ActTime << " "
+		<< AlarmList[i].id << endl;
+		
+	}
+	ofs.close();
+}
+
 
 void student::ShowClassSchedule(int week)
 {
@@ -743,6 +863,7 @@ void student::ShowClassSchedule(int week)
 	int TempActL = 0, TempActR = 0;
 	int w = week - 1;
 	int num = 0;
+	log1.wr(now_time, this->name, "查看课程表");
 
 	ofstream ofs;
 	ofs.open("../datas/coumes.txt");
@@ -874,21 +995,19 @@ void student::ShowClassSchedule(int week)
 			}
 		}
 	}
+	ofs.close();
 }
 
 
-int student::Search(int kind, string name)//半成品
+int student::Search(int kind, string name, int now_time)//半成品
 {
-	ofstream teststream;
-	teststream.open("../datas/test_message.txt");
-
-	teststream << name <<endl;
 	int w = now_time / 168;
 	int ret = -1;
 	int flag = 0;
 	//cout << now_time << " " << w << endl;
 	if (kind == 1)
 	{
+		log1.wr(now_time, this->name, "查询课程");
 		int x = w, y = 0;
 		for (y = 0; y < CourseNum[x]; y++)
 		{
@@ -903,7 +1022,7 @@ int student::Search(int kind, string name)//半成品
 			{
 				for (int j = y; j < CourseNum[i]; j++)
 				{
-					teststream << CourseList[i][j].name <<endl;
+					// teststream << CourseList[i][j].name <<endl;
 					if (CourseList[i][j].name == name)
 					{
 						flag = 1;
@@ -916,7 +1035,7 @@ int student::Search(int kind, string name)//半成品
 			{
 				for (int j = 0; j < CourseNum[i]; j++)
 				{
-					teststream << CourseList[i][j].name <<endl;
+					// teststream << CourseList[i][j].name <<endl;
 					if (CourseList[i][j].name == name)
 					{
 						flag = 1;
@@ -931,6 +1050,7 @@ int student::Search(int kind, string name)//半成品
 	}
 	else if (kind == 2)
 	{
+		log1.wr(now_time, this->name, "查询集体活动");
 		int x = w, y = 0;
 		for (y = 0; y < GroupActNum[x]; y++)
 		{
@@ -971,6 +1091,7 @@ int student::Search(int kind, string name)//半成品
 	}
 	else if (kind == 3)
 	{
+		log1.wr(now_time, this->name, "查询个人活动");
 		int x = w, y = 0;
 		for (y = 0; y < ActivityNum[y]; y++)
 		{
@@ -1011,6 +1132,7 @@ int student::Search(int kind, string name)//半成品
 	}
 	else if (kind == 4)
 	{
+		log1.wr(now_time, this->name, "查询临时事务");
 		int x = w, y = 0;
 		for (y = 0; y < TempActNum[y]; y++)
 		{
@@ -1050,8 +1172,8 @@ int student::Search(int kind, string name)//半成品
 		}
 	}
 
-	teststream << ret <<endl;
-	teststream.close();
+	// teststream << ret <<endl;
+	// teststream.close();
 	return ret + 1;
 
 }
@@ -1090,6 +1212,7 @@ void student::AddGroupAct()
 			}
 		}
 		timeline[tm] = 2;
+		log1.wr(now_time, this->name, "添加一个集体活动");
 	}
 	else
 	{
@@ -1137,6 +1260,7 @@ void student::AddActivity()
 		int place;
 		ifsArg >> tm >> name >> place;
 		AddSingleActivity(tm, name, place,tp);
+		log1.wr(now_time, this->name, "添加一个单次的个人活动");
 	}
 	else if (tp == 2)
 	{
@@ -1155,6 +1279,7 @@ void student::AddActivity()
 				ofsCou << "第" << w << "周星期"  << d << "活动有冲突，插入失败" << endl;
 			}
 		}
+		log1.wr(now_time, this->name, "添加一个每天的个人活动");
 	}
 	else if (tp == 3)
 	{
@@ -1173,6 +1298,7 @@ void student::AddActivity()
 				ofsCou << "第" << w << "周活动有冲突，插入失败" << endl;
 			}
 		}
+		log1.wr(now_time, this->name, "添加一个每周的个人活动");
 	}
 
 
@@ -1278,6 +1404,7 @@ void student::AddTempAct()
 			}
 		}
 		timeline[tm] = 4;
+		log1.wr(now_time, this->name, "添加一个临时事务");
 	}
 	else
 	{
@@ -1312,6 +1439,7 @@ void student::DeleteGroupAct()
 	}
 	GroupActNum[w]--;
 	timeline[tm] = 0;
+	log1.wr(now_time, this->name, "删除一个集体活动");
 }
 
 void student::DeleteActivity()
@@ -1339,6 +1467,7 @@ void student::DeleteActivity()
 	}
 	ActivityNum[w]--;
 	timeline[tm] = 0;
+	log1.wr(now_time, this->name, "删除一个个人活动");
 }
 
 void student::DeleteTempAct()
@@ -1383,156 +1512,177 @@ void student::DeleteTempAct()
 	}
 	if(!flag)
 		timeline[tm] = 0;
+	log1.wr(now_time, this->name, "删除一个临时事务");
 
 }
 
-void student::SystemAlarmClock()
+void student::SystemAlarmClock(int now_time)
 {
-	int flag = 0;
-
-	while (true)
+	//int flag = 0;
+	ofstream ofs;
+	ofs.open("../datas/systemAlarm.txt");
+	int w = now_time / 168;
+	if (now_time % 24 == 22)
 	{
-		Sleep(100);
-		if (this->stop)
-			break;
-		int w = now_time / 168;
-		if (now_time % 24 == 0 && flag == 0)
+		ofs << 1 << endl;
+		int CourseL = 0, CourseR = 0;
+		int GroupActL = 0, GroupActR = 0;
+		int ActivityL = 0, ActivityR = 0;
+		//int idx = 0;
+		for (CourseL = 0; CourseL < CourseNum[w]; CourseL++)
 		{
-			int idx = 0;
-			for (idx = 0; idx < CourseNum[w]; idx++)
+			if (CourseList[w][CourseL].StartTime >= now_time)
 			{
-				if (CourseList[w][idx].StartTime >= now_time)
-				{
-					break;
-				}
+				break;
 			}
-			for (int i = idx; i < CourseNum[w]; i++)
-			{
-				int tm = CourseList[w][i].StartTime;
-				if (tm >= now_time + 24)
-				{
-					break;
-				}
-				cout << "";//�����Ϣ��
-			}
-			for (idx = 0; idx < GroupActNum[w]; idx++)
-			{
-				if (GroupActList[w][idx].StartTime >= now_time)
-				{
-					break;
-				}
-			}
-			for (int i = idx; i < GroupActNum[w]; i++)
-			{
-				int tm = GroupActList[w][i].StartTime;
-				if (tm >= now_time + 24)
-				{
-					break;
-				}
-				cout << "";//�����Ϣ��
-			}
-			for (idx = 0; idx < ActivityNum[w]; idx++)
-			{
-				if (ActivityList[w][idx].StartTime >= now_time)
-				{
-					break;
-				}
-			}
-			for (int i = idx; i < ActivityNum[w]; i++)
-			{
-				int tm = ActivityList[w][i].StartTime;
-				if (tm >= now_time + 24)
-				{
-					break;
-				}
-				cout << "";//�����Ϣ��
-			}
-
 		}
-		else if (now_time % 24 != 0)
+		for (CourseR = CourseL; CourseR < CourseNum[w]; CourseR++)
 		{
-			flag = 0;
-		}
-	}
-
-}
-
-
-void student::TempAlarmClock()
-{
-	int flag = 0;
-
-	int tmpx, tmpy;
-
-	while (true)
-	{
-		Sleep(100);
-		if (this->stop)
-			break;
-		tmpx = CourseIdx.x, tmpy = CourseIdx.y;
-		if (now_time == CourseList[tmpx][tmpy].StartTime)
-		{
-			if (tmpy == CourseNum[tmpx] - 1)
+			int tm = CourseList[w][CourseR].StartTime;
+			if (tm >= now_time + 24)
 			{
-				CourseIdx.x++, CourseIdx.y = 0;
+				break;
+			}//输出信息；
+		}
+		for (GroupActL = 0; GroupActL < GroupActNum[w]; GroupActL++)
+		{
+			if (GroupActList[w][GroupActL].StartTime >= now_time)
+			{
+				break;
 			}
+		}
+		for (GroupActR = GroupActL; GroupActR < GroupActNum[w]; GroupActR++)
+		{
+			int tm = GroupActList[w][GroupActR].StartTime;
+			if (tm >= now_time + 24)
+			{
+				break;
+			}
+		}
+		for (ActivityL = 0; ActivityL < ActivityNum[w]; ActivityL++)
+		{
+			if (ActivityList[w][ActivityL].StartTime >= now_time)
+			{
+				break;
+			}
+		}
+		for (ActivityR = ActivityL; ActivityR < ActivityNum[w]; ActivityR++)
+		{
+			int tm = ActivityList[w][ActivityR].StartTime;
+			if (tm >= now_time + 24)
+			{
+				break;
+			}
+		}
+		int num = CourseR - CourseL + GroupActR - GroupActL + ActivityR - ActivityL;
+		ofs << num << endl;
+		while (1)
+		{
+			if (CourseR == CourseL && GroupActR == GroupActL && ActivityR == ActivityL)
+			{
+				break;
+			}
+			//int Ctm = CourseList[w][CourseL].StartTime, Gtm = GroupActList[w][GroupActL].StartTime, Atm = ActivityList[w][ActivityL].StartTime, Ttm = TempActList[w][TempActL].StartTime;
+			int Ctm, Gtm, Atm;
+			if (CourseL == CourseNum[w])
+				Ctm = 100000;
 			else
+				Ctm = CourseList[w][CourseL].StartTime;
+
+			if (GroupActL == GroupActNum[w])
+				Gtm = 100000;
+			else
+				Gtm = GroupActList[w][GroupActL].StartTime;
+
+			if (ActivityL == ActivityNum[w])
+				Atm = 100000;
+			else
+				Atm = ActivityList[w][ActivityL].StartTime;
+
+			if (Ctm < Atm && Ctm < Gtm)
 			{
-				CourseIdx.y++;
+				ofs << CourseList[w][CourseL].kind << " " << CourseList[w][CourseL].StartTime << " " << CourseList[w][CourseL].EndTime << " " << CourseList[w][CourseL].name << " " << CourseList[w][CourseL].place << " " << CourseList[w][CourseL].Class << endl;//输出课程；
+				CourseL++;
+			}
+			else if (Gtm < Atm && Gtm < Ctm)
+			{
+				ofs << GroupActList[w][GroupActL].kind << " " << GroupActList[w][GroupActL].StartTime << " " << GroupActList[w][GroupActL].EndTime << " " << GroupActList[w][CourseL].name << " " << GroupActList[w][GroupActL].place << " " << GroupActList[w][GroupActL].Class << endl;
+				GroupActL++;
+			}
+			else if (Atm < Ctm && Atm < Gtm)
+			{
+				ofs << ActivityList[w][ActivityL].kind << " " << ActivityList[w][ActivityL].StartTime << " " << ActivityList[w][ActivityL].EndTime << " " << ActivityList[w][ActivityL].name << " " << ActivityList[w][ActivityL].place << endl;//对应活动
+				ActivityL++;
 			}
 		}
-		tmpx = CourseIdx.x, tmpy = CourseIdx.y;
-		if (now_time == CourseList[tmpx][tmpy].StartTime - 1)
+
+	}
+	else
+		ofs << 0 <<endl;
+	ofs.close();
+}
+
+
+void student::TempAlarmClock(int now_time)
+{
+
+	//int flag = 0;
+	ofstream ofs;
+	ofs.open("../datas/tempAlarm.txt");
+	int tmpx, tmpy;
+	tmpx = CourseIdx.x, tmpy = CourseIdx.y;
+	if (now_time == CourseList[tmpx][tmpy].StartTime)
+	{
+		if (tmpy == CourseNum[tmpx] - 1)
 		{
-			if (flag == 0)
-			{
-				cout << "";//�����Ϣ
-				//���õ���
-				flag = 1;
-			}
+			CourseIdx.x++, CourseIdx.y = 0;
 		}
 		else
 		{
-			flag = 0;
+			CourseIdx.y++;
 		}
 	}
+	tmpx = CourseIdx.x, tmpy = CourseIdx.y;
+	if (now_time == CourseList[tmpx][tmpy].StartTime - 1)
+	{
+		ofs << 1 << endl;
+		ofs << CourseList[tmpx][tmpy].kind << " " << CourseList[tmpx][tmpy].StartTime << " " << CourseList[tmpx][tmpy].EndTime << " " << CourseList[tmpx][tmpy].name << " " << CourseList[tmpx][tmpy].Class << " " << CourseList[tmpx][tmpy].place << endl;//输出信息
+	}
+	else
+		ofs << 0 << endl;
+	ofs.close();
 }
 
 
-void student::PersonalAlarmClock()
+void student::PersonalAlarmClock(int now_time)
 {
-	int flag = 0;
-
-	while (true)
+	ofstream ofs;
+	ofs.open("../datas/personalAlarm.txt");
+	if (AlarmIdx < AlarmNum)
 	{
-		Sleep(100);
-		if (this->stop)
-			break;
-		if (AlarmIdx < AlarmNum)
+		if (now_time == AlarmList[AlarmIdx].StartTime)
 		{
-			if (now_time == AlarmList[AlarmIdx].StartTime)
+			ofs.close();
+			ShowInfo(AlarmList[AlarmIdx].kind, AlarmList[AlarmIdx].ActTime, 0);
+			//调用导航
+			if (AlarmList[AlarmIdx].type == 2)
 			{
-				if (flag == 0)
-				{
-					ShowInfo(AlarmList[AlarmIdx].kind, AlarmList[AlarmIdx].ActTime);
-					//���õ���
-					if (AlarmList[AlarmIdx].type == 2)
-					{
-						AddPersonalAlarmClock(AlarmList[AlarmIdx].StartTime + 24, AlarmList[AlarmIdx].kind, AlarmList[AlarmIdx].ActTime + 24, AlarmList[AlarmIdx].type);
-					}
-					if (AlarmList[AlarmIdx].type == 3)
-					{
-						AddPersonalAlarmClock(AlarmList[AlarmIdx].StartTime + 168, AlarmList[AlarmIdx].kind, AlarmList[AlarmIdx].ActTime + 168, AlarmList[AlarmIdx].type);
-					}
-					flag = 1;
-					AlarmIdx++;
-				}
+				AddPersonalAlarmClock(AlarmList[AlarmIdx].StartTime + 24, AlarmList[AlarmIdx].kind, AlarmList[AlarmIdx].ActTime + 24, AlarmList[AlarmIdx].type);
 			}
-			else
+			if (AlarmList[AlarmIdx].type == 3)
 			{
-				flag = 0;
+				AddPersonalAlarmClock(AlarmList[AlarmIdx].StartTime + 168, AlarmList[AlarmIdx].kind, AlarmList[AlarmIdx].ActTime + 168, AlarmList[AlarmIdx].type);
 			}
+			//flag = 1;
+			AlarmIdx++;
+
 		}
+		else
+		{
+			ofs << 0 << endl;
+			ofs.close();
+		}
+
 	}
 }
 
@@ -1568,12 +1718,24 @@ void student::AddPersonalAlarmClock(int starttime,int kind,int acttime,int tp)
 			break;
 		}
 	}
+	switch (tp)
+	{
+	case 1:
+		log1.wr(now_time, this->name, "添加一个单次闹钟");
+		break;
+	case 2:
+		log1.wr(now_time, this->name, "添加一个每天闹钟");
+		break;
+	case 3:
+		log1.wr(now_time, this->name, "添加一个每周闹钟");
+		break;
+	}
 }
 
 void student::DeletePersonalAlarmClock()
 {
 	int tm, idx;
-	cin >> tm;
+	ifsArg >> tm;
 	for (idx = AlarmIdx; idx < AlarmNum; idx++)
 	{
 		if (AlarmList[idx].StartTime == tm)
@@ -1586,22 +1748,30 @@ void student::DeletePersonalAlarmClock()
 		AlarmList[i] = AlarmList[i + 1];
 	}
 	AlarmNum--;
+	log1.wr(now_time, this->name, "删除一个单次闹钟");
 }
 
 
 void student::ShowPersonalAlarmClock()
 {
+	ofsAla.open("../datas/alarms.txt");
 	for (int i = AlarmIdx; i < AlarmNum; i++)
 	{
-		cout << AlarmList[i].StartTime << " " << AlarmList[i].kind << endl;
-		ShowInfo(AlarmList[i].kind, AlarmList[i].ActTime);
+		ofsAla << AlarmList[i].StartTime << " ";
+		ShowInfo(AlarmList[i].kind, AlarmList[i].ActTime, 1);
 	}
+	log1.wr(now_time, this->name, "展示闹钟信息");
+	ofsAla.close();
 }
 
-void student::ShowInfo(int kind, int ActTime)
+void student::ShowInfo(int kind, int ActTime, int type)
 {
 	int w = ActTime / 168;
-	int idx = 0;
+	int idx = -1;
+	ofstream ofs;
+	ofs.open("../datas/personalAlarm.txt");
+	if(type == 0)
+		ofs << 1 << endl;
 
 	if (kind == 1)
 	{
@@ -1613,7 +1783,15 @@ void student::ShowInfo(int kind, int ActTime)
 				break;
 			}
 		}
-		cout << CourseList[w][idx].name << " ";//��Ϣ��
+		if (idx == -1)
+		{
+			ofs.close();
+			return;
+		}
+		if(type == 0)
+			ofs << CourseList[w][idx].kind << " " << CourseList[w][idx].StartTime << " " << CourseList[w][idx].EndTime << " " << CourseList[w][idx].name << " " << CourseList[w][idx].place << " " << CourseList[w][idx].Class << endl;
+		else
+			ofsAla << CourseList[w][idx].kind << " " << CourseList[w][idx].StartTime << " " << CourseList[w][idx].EndTime << " " << CourseList[w][idx].name << " " << CourseList[w][idx].place << " " << CourseList[w][idx].Class << endl;
 	}
 	else if (kind == 2)
 	{
@@ -1625,7 +1803,15 @@ void student::ShowInfo(int kind, int ActTime)
 				break;
 			}
 		}
-		cout << GroupActList[w][idx].name << " ";
+		if (idx == -1)
+		{
+			ofs.close();
+			return;
+		}
+		if(type == 0)
+			ofs << GroupActList[w][idx].kind << " " << GroupActList[w][idx].StartTime << " " << GroupActList[w][idx].EndTime << " " << GroupActList[w][idx].name << " " << GroupActList[w][idx].place << " " << GroupActList[w][idx].Class << " " << 1 << endl;
+		else
+			ofsAla << GroupActList[w][idx].kind << " " << GroupActList[w][idx].StartTime << " " << GroupActList[w][idx].EndTime << " " << GroupActList[w][idx].name << " " << GroupActList[w][idx].place << " " << GroupActList[w][idx].Class << " " << 1 << endl;
 	}
 	else if (kind == 3)
 	{
@@ -1637,7 +1823,15 @@ void student::ShowInfo(int kind, int ActTime)
 				break;
 			}
 		}
-		cout << ActivityList[w][idx].name << " ";
+		if (idx == -1)
+		{
+			ofs.close();
+			return;
+		}
+		if(type == 0)
+			ofs << ActivityList[w][idx].kind << " " << ActivityList[w][idx].StartTime << " " << ActivityList[w][idx].EndTime << " " << ActivityList[w][idx].name << " " << ActivityList[w][idx].place << " " << ActivityList[w][idx].type << endl;
+		else
+			ofsAla << ActivityList[w][idx].kind << " " << ActivityList[w][idx].StartTime << " " << ActivityList[w][idx].EndTime << " " << ActivityList[w][idx].name << " " << ActivityList[w][idx].place << " " << ActivityList[w][idx].type << endl;
 	}
 	else if (kind == 4)
 	{
@@ -1649,11 +1843,36 @@ void student::ShowInfo(int kind, int ActTime)
 				break;
 			}
 		}
-		cout << TempActList[w][idx].name << " ";
+		if (idx == -1)
+		{
+			ofs.close();
+			return;
+		}
+		int tmpr = idx;
+		while (TempActList[w][tmpr].StartTime == TempActList[w][idx].StartTime && tmpr < TempActNum[w])
+		{
+			tmpr++;
+		}
+		if(type == 0)
+			ofs << TempActList[w][idx].kind << " " << TempActList[w][idx].StartTime << " " << TempActList[w][idx].EndTime << " " << tmpr - idx << " ";
+		else
+			ofsAla << TempActList[w][idx].kind << " " << TempActList[w][idx].StartTime << " " << TempActList[w][idx].EndTime << " " << tmpr - idx << " ";
+		while (idx < tmpr)
+		{
+			if(type == 0)
+				ofs << TempActList[w][idx].name << " " << TempActList[w][idx].place << " ";
+			else
+				ofsAla << TempActList[w][idx].name << " " << TempActList[w][idx].place << " ";
+			idx++;
+		}
+		if(type == 0)
+			ofs << endl;
+		else 
+			ofsAla << endl;
 	}
-
-
+	ofs.close();
 }
+
 
 
 
@@ -1661,6 +1880,144 @@ void student::ShowInfo(int kind, int ActTime)
 bool cmp(course a, course b)
 {
 	return a.StartTime < b.StartTime;
+}
+
+void manager::ManageSystem()
+{
+	init();
+	fUpdate();
+	ofsCou.open("../htmls/pagebuffer.txt");
+	ofsCou << -1 << endl;
+
+	DWORD cbBytes;
+	char notify[1024];
+	char buffer[256];
+    _getcwd(buffer,256);
+	TCHAR dir[256];
+    #ifdef UNICODE
+        MultiByteToWideChar(CP_ACP,0,buffer,-1,dir,256);
+    #else
+        strcpy(dir,buffer);
+    #endif
+    cout<<buffer<<endl;
+    cout<<dir<<endl;
+	
+	HANDLE dirHandle = CreateFile(dir,
+								  GENERIC_READ | GENERIC_WRITE | FILE_LIST_DIRECTORY,
+								  FILE_SHARE_READ | FILE_SHARE_WRITE,
+								  NULL,
+								  OPEN_EXISTING,
+								  FILE_FLAG_BACKUP_SEMANTICS,
+								  NULL);
+
+	if (dirHandle == INVALID_HANDLE_VALUE)
+	{
+		cout << "error" + GetLastError() << endl;
+	}
+
+	memset(notify, 0, strlen(notify));
+	FILE_NOTIFY_INFORMATION *pnotify = (FILE_NOTIFY_INFORMATION *)notify;
+
+	cout << "Start Monitor..." << endl;
+
+	
+	int flag=0;
+	long long lastTS = 0, nowTS = 0;
+	// int level=0;
+	while (true)
+	{
+		cout<<"Monitoring"<<endl;
+		if (ReadDirectoryChangesW(dirHandle, &notify, 1024, true,
+								  FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_LAST_ACCESS,
+								  &cbBytes, NULL, NULL))
+		{
+			nowTS = time(0);
+			if(nowTS - lastTS <= 1)
+			{
+				lastTS = nowTS;
+				cout<<nowTS<<endl;
+				continue;
+			}
+			lastTS = nowTS;
+
+			switch (pnotify->Action)
+			{	
+			case FILE_ACTION_MODIFIED:
+                cout<<"Modified"<<endl;
+				cout<<"test"<<endl;
+				long long nowTimeStamp;
+				ifsArg.open("js2exe.txt");
+				ifsArg >> flag;
+				cout << flag;
+				switch(flag)
+				{
+					case ADD_STUDENT :
+						ifsArg >> nowTimeStamp;
+
+						ofsCou.close();
+						ofsCou.open("../htmls/pagebuffer.txt");
+						ofsCou << 0 << endl;
+						ofsCou << nowTimeStamp << endl;
+						add_student();
+						break;
+					case DEL_STUDENT :
+						ifsArg >> nowTimeStamp;
+
+						ofsCou.close();
+						ofsCou.open("../htmls/pagebuffer.txt");
+						ofsCou << 0 << endl;
+						ofsCou << nowTimeStamp << endl;
+						delete_student();
+						break;
+					case MODIFY_STUDENT :
+						ifsArg >> nowTimeStamp;
+
+						ofsCou.close();
+						ofsCou.open("../htmls/pagebuffer.txt");
+						ofsCou << 0 << endl;
+						ofsCou << nowTimeStamp << endl;
+						change_student();
+						break;
+					case ADD_COURSE :
+						ifsArg >> nowTimeStamp;
+
+						ofsCou.close();
+						ofsCou.open("../htmls/pagebuffer.txt");
+						ofsCou << 1 << endl;
+						ofsCou << nowTimeStamp << endl;
+						add_class();
+						break;
+					case DEL_COURSE :
+						ifsArg >> nowTimeStamp;
+
+						ofsCou.close();
+						ofsCou.open("../htmls/pagebuffer.txt");
+						ofsCou << 1 << endl;
+						ofsCou << nowTimeStamp << endl;
+						delete_class();
+						break;
+					case MODIFY_COURSE :
+						ifsArg >> nowTimeStamp;
+
+						ofsCou.close();
+						ofsCou.open("../htmls/pagebuffer.txt");
+						ofsCou << 1 << endl;
+						ofsCou << nowTimeStamp << endl;
+						change_class();
+						break;
+					default :
+						ifsArg.close();
+						ofsCou.close();
+						CloseHandle(dirHandle);
+						connection();
+						translate();
+						return ;
+				}
+			}
+			ifsArg.close();
+		}
+	}
+	CloseHandle(dirHandle);
 }
 void manager::init()
 {
@@ -1679,19 +2036,19 @@ void manager::init()
 		ifs >> c.Class;
 		ifs >> c.period;
 
-		ifs >> c.c_week;//���ε����0
-		ifs >> c.week;//���ε����0
+		ifs >> c.c_week;//单次的设成0
+		ifs >> c.week;//单次的设成0
 		course_Array.push_back(c);
 	}
 	ifs.close();
-	ifs.open("student.txt", ios::in);
+	ifs.open("../datas/studentmessage.txt", ios::in);
 	ifs >> count_student;
 	for (int i = 0; i < count_student; i++)
 	{
+		ifs >> s.id;
+		ifs >> s.ClassNum;
 		ifs >> s.name;
 		ifs >> s.password;
-		ifs >> s.ClassNum;
-		ifs >> s.id;
 
 		student_Array.push_back(s);
 	}
@@ -1700,48 +2057,47 @@ void manager::add_class()
 {
 	int num, j = 0;
 	course c;
-	cout << "��ѡ��Ҫ���ӵĿγ�����" << endl;
-	cin >> num;
+	// cout << "请选择要添加的课程数：" << endl;
+	ifsArg >> num;
 	for (int i = 0; i < num; i++)
 	{
-		while (1)
+			// cout << "请输入第" << i + 1 << "个课程的名称" << endl;
+		ifsArg >> c.name;
+		c.name = UTF8_To_string(c.name);
+		for (j = 0; j < count_course; j++)
 		{
-			cout << "�������" << i + 1 << "���γ̵����ƣ�" << endl;
-			cin >> c.name;
-			for (j = 0; j < count_course; j++)
+			if (course_Array[j].name == c.name)
 			{
-				if (course_Array[j].name == c.name)
-				{
-					cout << "�ÿγ��Ѵ��ڣ�" << endl;
-					break;
-				}
+				ofsCou << 1 << endl;
+				ofsCou << "该课程已存在！" << endl;
+				return ;
 			}
-			if (j == count_course)
-				break;
 		}
-		cout << "�������" << i + 1 << "���γ̵Ŀ�ʼʱ�䣺" << endl;
-		cin >> c.StartTime;
-		cout << "�������" << i + 1 << "���γ̵Ľ���ʱ�䣺" << endl;
-		cin >> c.EndTime;
-		cout << "�������" << i + 1 << "���γ̵��Ͽεص㣺" << endl;
-		cin >> c.place;
-		cout << "�������" << i + 1 << "���γ̵��Ͽΰ༶��" << endl;
-		cin >> c.Class;
-		cout << "��" << i + 1 << "���γ��Ƿ�Ϊ���οΣ�" << endl;
-		cout << "1.��	2.��" << endl;
-		cin >> c.period;
+		// if (j == count_course)
+		// 	return;
+		// cout << "请输入第" << i + 1 << "个课程的开始时间" << endl;
+		ifsArg >> c.StartTime;
+		// cout << "请输入第" << i + 1 << "个课程的结束时间" << endl;
+		ifsArg >> c.EndTime;
+		// cout << "请输入第" << i + 1 << "个课程的上课地点" << endl;
+		ifsArg >> c.place;
+		// cout << "请输入第" << i + 1 << "个课程的上课班级" << endl;
+		ifsArg >> c.Class;
+		// cout << "第" << i + 1 << "个课程是否为单次课" << endl;
+		// cout << "1.是	2.否" << endl;
+		ifsArg >> c.period;
 		if (c.period == 2)
 		{
-			cout << "�������" << i + 1 << "���γ̵��Ͽ�������" << endl;
-			cin >> c.c_week;
-			cout << "�����������" << i + 1 << "���γ̵��Ͽ��ܣ�" << endl;
-			cin >> c.week;
+			// cout << "请输入第" << i + 1 << "个课程的上课周数" << endl;
+			ifsArg >> c.c_week;
+			// cout << "请依次输入第" << i + 1 << "个课程的上课周" << endl;
+			ifsArg >> c.week;
 		}
 		else
 		{
 			c.c_week = 1;
-			cout << "�����������" << i + 1 << "���γ̵��Ͽ��ܣ�" << endl;
-			cin >> c.week;
+			// cout << "请依次输入第" << i + 1 << "个课程的上课周" << endl;
+			ifsArg >> c.week;
 		}
 		course_Array.push_back(c);
 		count_course++;
@@ -1749,100 +2105,100 @@ void manager::add_class()
 	
 	sort(course_Array.begin(), course_Array.end(), cmp);
 	fUpdate();
-	cout << "���ӳɹ���" << endl;
+	// cout << "添加成功！" << endl;
 }
 void manager::delete_class()
 {
 	string name;
 	int num, i = 0;
-	while (1)
+		// cout << "请输入要删除的课程名称：" << endl;
+	ifsArg >> name;
+	name=UTF8_To_string(name);
+	for (i = 0; i < count_course; i++)
 	{
-		cout << "������Ҫɾ���Ŀγ����ƣ�" << endl;
-		cin >> name;
-
-		for (i = 0; i < count_course; i++)
+		if (course_Array[i].name == name)
 		{
-			if (course_Array[i].name == name)
-			{
-				num = i;
-				break;
-			}
-		}
-		if (i == count_course)
-			cout << "�ÿγ̲����ڣ�" << endl;
-		else
+			num = i;
 			break;
+		}
 	}
+	if (i == count_course)
+	{
+		ofsCou << 1 << endl;
+		ofsCou << "该课程不存在！" << endl;
+		return ;
+	}
+		
 	auto it = course_Array.begin() + num;
 	course_Array.erase(it);
 	count_course--;
 	fUpdate();
-	cout << "ɾ���ɹ���" << endl;
+	// cout << "删除成功！" << endl;
 }
 void manager::change_class()
 {
 	string name;
 	int num, j = 0, i = 0;
 	course c;
-	while (1)
+		// cout << "请输入要修改的课程名称：" << endl;
+	ifsArg >> name;
+	name = UTF8_To_string(name);
+	for (i = 0; i < count_course; i++)
 	{
-		cout << "������Ҫ�޸ĵĿγ����ƣ�" << endl;
-		cin >> name;
-		for (i = 0; i < count_course; i++)
+		if (course_Array[i].name == name)
 		{
-			if (course_Array[i].name == name)
-			{
-				num = i;
-				break;
-			}
-		}
-		if (i == count_course)
-			cout << "�ÿγ̲����ڣ�" << endl;
-		else
+			num = i;
 			break;
+		}
 	}
-	while (1)
+	if (i == count_course)
 	{
-		cout << "�������޸ĺ�γ̵����ƣ�" << endl;
-		cin >> c.name;
-		for (j = 0; j < count_course; j++)
-		{
-			if (course_Array[j].name == c.name && num != j)
-			{
-				cout << "�ÿγ��Ѵ��ڣ�" << endl;
-				break;
-			}
-		}
-		if (j == count_course)
-			break;
+		ofsCou << 1 <<endl;
+		ofsCou << "该课程不存在！" << endl;
+		return ;
 	}
-	cout << "�������޸ĺ�γ̵Ŀ�ʼʱ�䣺" << endl;
-	cin >> c.StartTime;
-	cout << "�������޸ĺ�γ̵Ľ���ʱ�䣺" << endl;
-	cin >> c.EndTime;
-	cout << "�������޸ĺ�γ̵��Ͽεص㣺" << endl;
-	cin >> c.place;
-	cout << "�������޸ĺ�γ̵��Ͽΰ༶��" << endl;
-	cin >> c.Class;
-	cout << "�޸ĺ�γ��Ƿ�Ϊ���οΣ�" << endl;
-	cout << "1.��	2.��" << endl;
-	cin >> c.period;
+			
+		// cout << "请输入修改后课程的名称：" << endl;
+	ifsArg >> c.name;
+	c.name = UTF8_To_string(c.name);
+	for (j = 0; j < count_course; j++)
+	{
+		if (course_Array[j].name == c.name && num != j)
+		{
+			ofsCou << 1 << endl;
+			ofsCou << "该课程已存在！" << endl;
+			return;
+		}
+	}
+	// if (j == count_course)
+	// 	return ;
+	// cout << "请输入修改后课程的开始时间：" << endl;
+	ifsArg >> c.StartTime;
+	// cout << "请输入修改后课程的结束时间：" << endl;
+	ifsArg >> c.EndTime;
+	// cout << "请输入修改后课程的上课地点：" << endl;
+	ifsArg >> c.place;
+	// cout << "请输入修改后课程的上课班级：" << endl;
+	ifsArg >> c.Class;
+	// cout << "修改后课程是否为单次课：" << endl;
+	// cout << "1.是	2.否" << endl;
+	ifsArg >> c.period;
 	if (c.period == 2)
 	{
-		cout << "�������޸ĺ�γ̵��Ͽ�������" << endl;
-		cin >> c.c_week;
-		cout << "�����������޸ĺ�γ̵��Ͽ��ܣ�" << endl;
-		cin >> c.week;
+		// cout << "请输入修改后课程的上课周数：" << endl;
+		ifsArg >> c.c_week;
+		// cout << "请依次输入修改后课程的上课周：" << endl;
+		ifsArg >> c.week;
 	}
 	else
 	{
 		c.week = 1;
-		cout << "�����������޸ĺ�γ̵��Ͽ��ܣ�" << endl;
-		cin >> c.week;
+		// cout << "请依次输入修改后课程的上课周：" << endl;
+		ifsArg >> c.week;
 	}
 	course_Array[num] = c;
 	fUpdate();
-	cout << "�޸ĳɹ���" << endl;
+	// cout << "修改成功！" << endl;
 }
 void manager::add_student()
 {
@@ -1850,112 +2206,119 @@ void manager::add_student()
 	student s;
 	string s2;
 	string s1 = "2021";
-	cout << "��ѡ��Ҫ���ӵ�ѧ������" << endl;
-	cin >> num;
+	// cout << "请选择要添加的学生数：" << endl;
+	string filename1, filename2, filename3;
+	ofstream ofs;
+	ifsArg >> num;
 	for (int i = 0; i < num; i++)
 	{
-		while (1)
+			// cout << "请输入第" << i + 1 << "个学生的id" << endl;
+		ifsArg >> s.id;
+		for (j = 0; j < count_student; j++)
 		{
-			cout << "�������" << i + 1 << "��ѧ����id��" << endl;
-			cin >> s.id;
-			for (j = 0; j < count_student; j++)
+			if (student_Array[j].id == s.id)
 			{
-				if (student_Array[j].id == s.id)
-				{
-					cout << "��ѧ���Ѵ��ڣ�" << endl;
-					break;
-				}
+				ofsCou << 1 << endl;
+				ofsCou << "该学生已存在！" << endl;
+				return;
 			}
-			if (j == count_student)
-				break;
 		}
-		cout << "�������" << i + 1 << "��ѧ����������" << endl;
-		cin >> s.name;
-		cout << "�������" << i + 1 << "��ѧ���İ༶��" << endl;
-		cin >> s.ClassNum;
+		// if (j == count_student)
+		// 	break;
+		// cout << "请输入第" << i + 1 << "个学生的姓名" << endl;
+		ifsArg >> s.name;
+		s.name = UTF8_To_string(s.name);
+		// cout << "请输入第" << i + 1 << "个学生的班级" << endl;
+		ifsArg >> s.ClassNum;
 		s2 = to_string(s.id);
 		s1 = "2021";
 		s1 = s1 + s2;
-		s.password = s1;//����Ĭ������
+		s.password = s1;//设置默认密码
 		student_Array.push_back(s);
+		filename1 = ".. / datas / " + s2 + "personal" + ".txt";
+		filename2 = ".. / datas / " + s2 + "temp" + ".txt";
+		filename3 = ".. / datas / " + s2 + "alarm" + ".txt";
+		
+		ofs.open(filename1, std::ios::out);
+		ofs.close();
+		ofs.open(filename2, std::ios::out);
+		ofs.close();
+		ofs.open(filename3, std::ios::out);
+		ofs.close();
 		count_student++;
 	}
 	fUpdate();
-	cout << "���ӳɹ���" << endl;
+	// cout << "添加成功" << endl;
 }
 void manager::delete_student()
 {
 	int id;
 	int num, i = 0;
-	while (1)
-	{
-		cout << "������Ҫɾ����ѧ��id��" << endl;
-		cin >> id;
+		// cout << "请输入要删除的学生id" << endl;
+	ifsArg >> id;
 
-		for (i = 0; i < count_student; i++)
+	for (i = 0; i < count_student; i++)
+	{
+		if (student_Array[i].id == id)
 		{
-			if (student_Array[i].id == id)
-			{
-				num = i;
-				break;
-			}
-		}
-		if (i == count_student)
-			cout << "��ѧ�������ڣ�" << endl;
-		else
+			num = i;
 			break;
+		}
+	}
+	if (i == count_student)
+	{
+		ofsCou << 1 << endl;
+		ofsCou << "该学生不存在！" << endl;
+		return ;
 	}
 	auto it = student_Array.begin() + num;
 	student_Array.erase(it);
 	count_student--;
 	fUpdate();
-	cout << "ɾ���ɹ���" << endl;
+	// cout << "删除成功" << endl;
 }
 void manager::change_student()
 {
 	int id;
 	int num, j = 0, i = 0;
 	student s;
-	while (1)
+		// cout << "请输入要修改的学生id：" << endl;
+	ifsArg >> id;
+	for (i = 0; i < count_student; i++)
 	{
-		cout << "������Ҫ�޸ĵ�ѧ����id��" << endl;
-		cin >> id;
-		for (i = 0; i < count_student; i++)
+		if (student_Array[i].id == id)
 		{
-			if (student_Array[i].id == id)
-			{
-				num = i;
-				break;
-			}
-		}
-		if (i == count_student)
-			cout << "��ѧ�������ڣ�" << endl;
-		else
+			num = i;
 			break;
+		}
 	}
-	while (1)
+	if (i == count_student)
 	{
-		cout << "�������޸ĺ��id��" << endl;
-		cin >> s.id;
-		for (j = 0; j < count_student; j++)
-		{
-			if (student_Array[j].id == s.id && num != j)
-			{
-				cout << "��ѧ���Ѵ��ڣ�" << endl;
-				break;
-			}
-		}
-		if (j == count_student)
-			break;
+		ofsCou << 1 << endl;
+		ofsCou << "该学生不存在！" << endl;
+		return ;
 	}
-	cout << "�������޸ĺ�ѧ����������" << endl;
-	cin >> s.name;
-	cout << "�������޸ĺ�ѧ���İ༶��" << endl;
-	cin >> s.ClassNum;
-	s.password = student_Array[num].password;
+		// cout << "请输入修改后的id" << endl;
+	ifsArg >> s.id;
+	for (j = 0; j < count_student; j++)
+	{
+		if (student_Array[j].id == s.id && num != j)
+		{
+			ofsCou << 1 << endl;
+			ofsCou << "该学生已存在" << endl;
+			return;
+		}
+	}
+	// cout << "请输入修改后学生的姓名" << endl;
+	ifsArg >> s.name;
+	s.name = UTF8_To_string(s.name);
+	// cout << "请输入修改后学生的班级" << endl;
+	ifsArg >> s.ClassNum;
+	string s1 = "2021";
+	s.password = s1 + to_string(s.id);
 	student_Array[num] = s;
 	fUpdate();
-	cout << "�޸ĳɹ���" << endl;
+	// cout << "修改成功！" << endl;
 }
 void manager::fUpdate()
 {
@@ -1964,31 +2327,31 @@ void manager::fUpdate()
 	ofs << count_course << endl;
 	for (int i = 0; i < count_course; i++)
 	{
-		ofs << course_Array[i].name << "\t"
-			<< course_Array[i].StartTime << "\t"
-			<< course_Array[i].EndTime << "\t"
-			<< course_Array[i].place << "\t"
-			<< course_Array[i].Class << "\t"
-			<< course_Array[i].period << "\t"
-			<< course_Array[i].c_week << "\t"
+		ofs << course_Array[i].name << " "
+			<< course_Array[i].StartTime << " "
+			<< course_Array[i].EndTime << " "
+			<< course_Array[i].place << " "
+			<< course_Array[i].Class << " "
+			<< course_Array[i].period << " "
+			<< course_Array[i].c_week << " "
 			<< course_Array[i].week << endl;
 	}//д�ļ�����
 	ofs.close();
-	ofs.open("../datas/student.txt", ios::out);
+	ofs.open("../datas/studentmessage.txt", ios::out);
 	ofs << count_student << endl;
 	for (int i = 0; i < count_student; i++)
 	{
-		ofs << student_Array[i].name << "\t"
-			<< student_Array[i].password << "\t"
-			<< student_Array[i].ClassNum << "\t"
-			<< student_Array[i].id << endl;
+		ofs << student_Array[i].id << " "
+			<< student_Array[i].ClassNum << " "
+			<< student_Array[i].name << " "
+			<< student_Array[i].password << endl;
 	}//д�ļ�����
 	ofs.close();
 }
 void manager::connection()
 {
 	ofstream ofs;
-	ofs.open("course_list.txt", ios::out);
+	ofs.open("../datas/course_list.txt", ios::out);
 	vector<course> temp;
 	temp = course_Array;
 	int m_time = 0;
@@ -1998,11 +2361,11 @@ void manager::connection()
 		{
 			if (temp[k].check[j] == 1)
 			{
-				ofs << temp[k].name << "\t";
-				ofs << temp[k].StartTime << "\t";
-				ofs << temp[k].EndTime << "\t";
-				ofs << temp[k].place << "\t";
-				ofs << temp[k].Class << "\t";
+				ofs << temp[k].name << " ";
+				ofs << temp[k].StartTime << " ";
+				ofs << temp[k].EndTime << " ";
+				ofs << temp[k].place << " ";
+				ofs << temp[k].Class << " ";
 				ofs << temp[k].kind << endl;
 				m_time = temp[k].EndTime;
 			}

@@ -40,7 +40,7 @@ class student : public user
 {
 public:
 	int ClassNum;
-	int stop;
+	//  int stop;
 
 	int timeline[5000];
 
@@ -64,27 +64,31 @@ public:
 	int AlarmNum;
 	int AlarmIdx;
 	void ManageSystem();
-	thread sysalarm, tmpalarm, personalalarm;
-	void SystemAlarmClock();
-	void TempAlarmClock();
-	void PersonalAlarmClock();
+	//thread sysalarm, tmpalarm, personalalarm;
+	void SystemAlarmClock(int now_time);
+	void TempAlarmClock(int now_time);
+	void PersonalAlarmClock(int now_time);
 	student();
 	~student();
 private:
 	//CBPlusTree Course;
-	void Init();
+	void Init(int now_time);
 	void save();
 	void course_showinfo();
-	void InitCourseInformation();
+	void InitCourseInformation(int now_time);
 	void InitActivityInformation();
 	void InitGroupActInformation();
 	void InitTempActInformation();
-	void InitAlarmClockInformation();
+	void InitAlarmClockInformation(int now_time);
+	void SaveGroupActInformation();
+	void SaveActivityInformation();
+	void SaveTempActInformation();
+	void SaveAlarmClockInformation();
 	void ShowClassSchedule(int week);
 
 
 
-	int Search(int kind, string name);
+	int Search(int kind, string name,int now_time);
 	void AddGroupAct();
 	void AddActivity();
 	int AddSingleActivity(int tm, string name, int place, int type);
@@ -97,7 +101,7 @@ private:
 	void AddPersonalAlarmClock(int starttime, int kind, int acttime, int tp);
 	void DeletePersonalAlarmClock();
 	void ShowPersonalAlarmClock();
-	void ShowInfo(int kind, int ActTime);
+	void ShowInfo(int kind, int ActTime, int type);
 
 	//student(int id, int ClassNum, string name, string password);
 };
@@ -115,6 +119,7 @@ public:
 	void init();
 	void connection();
 	void translate();
+	void ManageSystem();
 	vector<course> course_Array;
 	int count_course = 0;
 	vector<student> student_Array;
