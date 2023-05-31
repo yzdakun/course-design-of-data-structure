@@ -60,7 +60,7 @@ window.onload = function() {
     switch(Number(buffer[0]))
     {
         case -1:
-            initTime(new Date().getTime());
+            initTime(new Date("2023-02-20").getTime());
             changePage(0);
             timeSet(1);
             // initact();
@@ -87,7 +87,7 @@ window.onload = function() {
 
             initact();
             initAlarm();
-
+            
             if(Number(buffer[4]) === 1)
             {
                 tips.style.display='block';
@@ -158,6 +158,36 @@ window.onload = function() {
 
             changePage(2);
             drawWay();
+            break;
+        case 5:
+            changePage(0);
+
+            selectdom.selectedIndex=Number(buffer[1])-1;
+            if(buffer[2]!="null")
+            {
+                calen.value=buffer[2];
+                chacalen(0);
+            }
+            else
+                chacalen(1);
+
+            initTime(Number(buffer[3]));
+            timeSet(1);
+
+            initact();
+            initAlarm();
+            
+            timeWalkPace = Number(buffer[4]);
+            if(timeWalkPace === 1000)
+                timeSet(1);
+            else if(timeWalkPace === 1000 * 60 * 6)
+                timeSet(2);
+            else 
+                timeSet(3);
+            checkPAT();
+            checkSAT();
+            checkTAT();
+            break;
         default:
             break;
     }
@@ -221,7 +251,16 @@ function initTime(domTime) {
 function timeWalk() {
     var nowTimStamp=new Date(nowTime).getTime();
     nowTimStamp+=timeWalkPace;
+    var oriHour = nowTime.getHours();
     nowTime=new Date(nowTimStamp);
+    var newHour = nowTime.getHours();
+    if(newHour != oriHour)
+    {
+        var week = selectdom.selectedIndex + 1;
+        var para = document.createElement("a");
+        para.href = 'closeexe://&&12&&' + week + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + timeWalkPace + '&&' + jsHour2exe();
+        para.click();
+    }
     timeBox.innerHTML=nowTime.toLocaleString();
 }
 setInterval(timeWalk,1000);//控制时间前进
@@ -265,10 +304,11 @@ function timeCon(flag) {
     else
         timeSetterBox.style.display='none';
     timeControler[1].click();
-    timeWalk();
+    var nowTimStamp=new Date(nowTime).getTime();
+    nowTime=new Date(nowTimStamp);
     nowWeek = selectdom.selectedIndex+1;
     var para = document.createElement("a");
-    para.href='closeexe://&&11&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + jsHour2exe();
+    para.href='closeexe://&&13&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + jsHour2exe();
     para.click();
 }//时间修改器的开启与关闭
 
@@ -652,6 +692,8 @@ function goMultiple(info) {
         var delbut=document.getElementById('delPoint');
         delbut.click();
     }
+    var endPoint = document.getElementById('endPoint');
+    endPoint.selectedIndex = 0;
     var num=Number(info[3]);
     var now=5;
 
@@ -1231,12 +1273,13 @@ function initAlarm() {
     alarms=alarms.split("\r").join("");
     alarms=alarms.split("\n");
     // console.log(alarms);
-    var i = 0;
-    console.log(alarms);
-    while(alarms[i] != "")
+    var k = 0;
+    console.log(alarms[2]);
+    while(alarms[k] != "")
     {
-        console.log(i);
-        var info=alarms[i].split(" ");
+        console.log(k);
+        
+        var info=alarms[k].split(" ");
         // console.log(info);
         var newtr=document.createElement("tr");
         
@@ -1334,7 +1377,7 @@ function initAlarm() {
         newtr.appendChild(ops);
 
         alarmInfo.appendChild(newtr);
-        i++;
+        k++;
     }
 }//初始化闹钟列表
 
@@ -1390,14 +1433,17 @@ function compModifyAlarm(info,lop) {
 function closePAT() {
     var PAT=document.getElementById('personalAlarmTip');
     PAT.style.display = 'none';
+    timeSet(1);
 }
 function closeTAT() {
     var TAT=document.getElementById('tempAlarmTip');
     TAT.style.display = 'none';
+    timeSet(1);
 }
 function closeSAT() {
     var SAT=document.getElementById('systemAlarmTip');
     SAT.style.display = 'none';
+    timeSet(1);
 }
 
 function checkPAT() {
@@ -1406,6 +1452,7 @@ function checkPAT() {
     PA = PA.split("\n");
     if(PA[0] === '1')
     {
+        timeSet(0);
         var info = PA[1].split(" ");
         var PAT = document.getElementById('personalAlarmTip');
         PAT.style.display = 'block';
@@ -1416,34 +1463,34 @@ function checkPAT() {
         var PAplac = document.getElementById('PAplac');
         var PAbutton = document.getElementById('PAbutton');
 
-        if(PA[1] === '2')
+        if(info[0] === '2')
         {
             var name = info[3];
             var sTime = Number(info[1])%24;
             var eTime = Number(info[2])%24;
-            var plac = Number(info[5]);
+            var plac = Number(info[4]);
 
             PAtype.innerHTML = "日程类型：集体活动";
             PAname.innerHTML = '名称：' + name;
             PAtime.innerHTML = '时间：' + sTime + ':00 ~ ' + eTime + ':00';
             PAplac.innerHTML = '地点：' + writePlace(plac);
             PAbutton.onclick = function() {
-                tipSingleWay(plac);
+                tipSingleWay(plac,PAT);
             }
         }
-        else if(PA[1] === '3')
+        else if(info[0] === '3')
         {
-            var name = info[4];
+            var name = info[3];
             var sTime = Number(info[1])%24;
             var eTime = Number(info[2])%24;
-            var plac = Number(info[3]);
+            var plac = Number(info[4]);
 
             PAtype.innerHTML = "日程类型：个人活动";
             PAname.innerHTML = '名称：' + name;
             PAtime.innerHTML = '时间：' + sTime + ':00 ~ ' + eTime + ':00';
             PAplac.innerHTML = '地点：' + writePlace(plac);
             PAbutton.onclick = function() {
-                tipSingleWay(plac);
+                tipSingleWay(plac,PAT);
             }
         }
         else
@@ -1466,7 +1513,7 @@ function checkPAT() {
             PAname.innerHTML = '名称：' + name;
             PAplac.innerHTML = '地点：' + plac;
             PAbutton.onclick = function() {
-                tipMultiWay(info);
+                tipMultiWay(info,PAT);
             }
         }
     }
@@ -1478,6 +1525,8 @@ function checkTAT() {
     TA = TA.split("\n");
     if(TA[0] === '1')
     {
+        timeSet(0);
+        var info = TA[1].split(" ");
         var TAT = document.getElementById('tempAlarmTip');
         TAT.style.display = 'block';
 
@@ -1487,28 +1536,30 @@ function checkTAT() {
         var TAclas = document.getElementById('TAclas');
         var TAbutton = document.getElementById('TAbutton');
 
-        var sTime = Number(TA[3])%24;
-        var eTime = Number(TA[4])%24;
-        var name = TA[5];
-        var clas = TA[6];
-        var plac = Number(TA[7]);
+        var sTime = Number(info[1])%24;
+        var eTime = Number(info[2])%24;
+        var name = info[3];
+        var clas = info[4];
+        var plac = Number(info[5]);
 
         TAname.innerHTML = '课程名称：' + name;
         TAtime.innerHTML = '上课时间：' + sTime + ':00 ~ ' + eTime + ':00';
         TAplac.innerHTML = '上课地点：' + writePlace(plac);
         TAclas.innerHTML = '上课班级：' + clas;
         TAbutton.onclick = function() {
-            tipSingleWay(plac);
+            tipSingleWay(plac,TAT);
         }
     }
 }
 
 function checkSAT() {
+    
     var SA = load("../datas/systemAlarm.txt");
     SA = SA.split("\r").join("");
     SA = SA.split("\n");
     if(SA[0] === '1')
     {
+        timeSet(0);
         var SAT = document.getElementById('systemAlarmTip');
         SAT.style.display = 'block';
 
@@ -1546,7 +1597,7 @@ function checkSAT() {
             tdPlac.innerHTML = plac;
 
             var tdClas = document.createElement("td");
-            if(type === '1' || type === '3')
+            if(type === '1' || type === '2')
             {
                 var clas = info[5];
                 tdClas.innerHTML = clas;
@@ -1561,6 +1612,41 @@ function checkSAT() {
             tr.appendChild(tdClas);
             SAtable.append(tr);
         }
+    }
+}
+
+function tipSingleWay(plac,XAT) {
+    XAT.style.display = 'none';
+    cit[2].click();
+    while(middlePointsNum>0)
+    {
+        var delbut=document.getElementById('delPoint');
+        delbut.click();
+    }
+    var endPoint=document.getElementById('endPoint');
+    endPoint.selectedIndex = Number(plac);
+}
+
+function tipMultiWay(info,XAT) {
+    XAT.style.display = 'none';
+    cit[2].click();
+    while(middlePointsNum>0)
+    {
+        var delbut=document.getElementById('delPoint');
+        delbut.click();
+    }
+    var endPoint = document.getElementById('endPoint');
+    endPoint.selectedIndex = 0;
+    var num=Number(info[3]);
+    var now=5;
+
+    var newbut=document.getElementById('buildNewPoint');
+    for(var i=1;i<=num;i++)
+    {
+        newbut.click();
+        var newP=document.querySelectorAll('#middlePoint')[i-1];
+        newP.selectedIndex=Number(info[now]);
+        now=now+2;
     }
 }
 
@@ -1822,7 +1908,7 @@ function dateHour2exe(date,hour)
 function jsHour2exe()
 {
     var oridate=new Date("2023-02-20");
-    return parseInt(parseInt(parseInt((nowTime.getTime() - oridate.getTime())/1000)/60)/60) + 7;
+    return parseInt(parseInt(parseInt((nowTime.getTime() - oridate.getTime())/1000)/60)/60) + 8;
 }
 function exeHour2js(hour)
 {

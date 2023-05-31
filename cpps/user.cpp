@@ -4,6 +4,7 @@
 #include<wchar.h>
 #include<direct.h>
 #include<string>
+#include<chrono>
 #include"user.h"
 #include"Time.h"
 #include"stringop.h"
@@ -23,6 +24,7 @@ using namespace std;
 #define MODIFY_ALARM 10
 #define INIT 11
 #define CHECK_ALARM 12
+#define SET_TIME 13
 
 #define ADD_STUDENT 1
 #define DEL_STUDENT 2
@@ -90,6 +92,8 @@ void student::ManageSystem()
 
 	
 	int flag=0;
+
+	
 	long long lastTS = 0, nowTS = 0;
 	// int level=0;
 	while (true)
@@ -99,8 +103,11 @@ void student::ManageSystem()
 								  FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_LAST_ACCESS,
 								  &cbBytes, NULL, NULL))
 		{
-			nowTS = time(0);
-			if(nowTS - lastTS <= 1)
+			std::chrono::milliseconds ms = std::chrono::duration_cast< std::chrono::milliseconds >(
+        		std::chrono::system_clock::now().time_since_epoch()
+    		);
+			nowTS = ms.count();
+			if(nowTS - lastTS <= 500)
 			{
 				lastTS = nowTS;
 				cout<<nowTS<<endl;
@@ -122,6 +129,7 @@ void student::ManageSystem()
 				int searchWeek;
 				string searchName;
 				long long nowTimeStamp;
+				int timeWalkPace;
 				int c_point,end,start;
 				int starttime,kind,acttime,tp;
 				int point[50];
@@ -388,21 +396,50 @@ void student::ManageSystem()
 					ShowPersonalAlarmClock();
 					break;	
 				case CHECK_ALARM:
+					
 					ifsArg>>w;
 					ifsArg>>s;
 					ifsArg>>nowTimeStamp;
+					ifsArg>>timeWalkPace;
 
 					ofsCou.close();
 					ofsCou.open("../htmls/pagebuffer.txt");
-					ofsCou<<0<<endl;
+					ofsCou<<5<<endl;
 					ofsCou<<w<<endl;
 					ofsCou<<s<<endl;
 					ofsCou<<nowTimeStamp<<endl;
-					
+					ofsCou<<timeWalkPace<<endl;
+
 					ifsArg >> NTS;
+					cout<<NTS<<endl;
 					SystemAlarmClock(NTS);
 					TempAlarmClock(NTS);
 					PersonalAlarmClock(NTS);
+					break;
+				case SET_TIME:
+					ifsArg>>w;
+					ifsArg>>s;
+					ifsArg>>nowTimeStamp;
+					
+					ofsCou.close();
+					ofsCou.open("../htmls/pagebuffer.txt");
+					ofsCou<<5<<endl;
+					ofsCou<<w<<endl;
+					ofsCou<<s<<endl;
+					ofsCou<<nowTimeStamp<<endl;
+					ofsCou<<1000<<endl;
+					
+					ifsArg >> NTS;
+					memset(timeline,0,sizeof(timeline));
+					SaveAlarmClockInformation();
+					InitCourseInformation(NTS);
+					InitAlarmClockInformation(NTS);
+					this->ShowClassSchedule(w);
+					ShowPersonalAlarmClock();
+					SystemAlarmClock(NTS);
+					TempAlarmClock(NTS);
+					PersonalAlarmClock(NTS);
+					break;
 				default:
 					ifsArg.close();
 					ofsCou.close();
@@ -682,7 +719,7 @@ void student::InitTempActInformation()
 				flag = 1;
 			}*/
 			int i = TempActNum[x];
-			if (timeline[StartTime] == 0)
+			if (timeline[StartTime] == 0 || timeline[StartTime] == 4)
 			{
 				timeline[StartTime] = kind;
 				TempActList[x][i].name = name;
@@ -728,19 +765,22 @@ void student::InitAlarmClockInformation(int now_time)
 
 	int StartTime;
 	int kind;
+	int type;
 	int ActTime;
 	int id;
-	while (ifs >> StartTime && ifs >> kind && ifs >> ActTime && ifs >> id)
+	while (ifs >> StartTime && ifs >> kind && ifs >> type && ifs >> ActTime && ifs >> id)
 	{
 		if (StartTime >= now_time && id == this->id)
 		{
 			AlarmList[AlarmNum].StartTime = StartTime;
 			AlarmList[AlarmNum].kind = kind;
+			AlarmList[AlarmNum].type = type;
 			AlarmList[AlarmNum].ActTime = ActTime;
 			AlarmList[AlarmNum].id = id;
 			AlarmNum++;
 		}
 	}
+	ifs.close();
 }
 
 void student::SaveGroupActInformation()
@@ -1683,6 +1723,11 @@ void student::PersonalAlarmClock(int now_time)
 			ofs.close();
 		}
 
+	}
+	else
+	{
+		ofs << 0 << endl;
+		ofs.close();
 	}
 }
 

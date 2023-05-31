@@ -179,7 +179,7 @@ window.onload = function() {
     switch(Number(s[0]))
     {
         case -1:
-            initTime(new Date().getTime());
+            initTime(new Date("2023-02-20").getTime());
             timeSet(1);
             stu.click();
             break;
