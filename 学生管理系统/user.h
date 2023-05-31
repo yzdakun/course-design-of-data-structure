@@ -80,6 +80,10 @@ private:
 	void InitGroupActInformation();
 	void InitTempActInformation();
 	void InitAlarmClockInformation(int now_time);
+	void SaveGroupActInformation();
+	void SaveActivityInformation();
+	void SaveTempActInformation();
+	void SaveAlarmClockInformation();
 	void ShowClassSchedule(int week);
 
 
