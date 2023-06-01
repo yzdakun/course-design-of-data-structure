@@ -26,7 +26,7 @@ void student::ManageSystem()
 	while (true)
 	{
 		int t;
-		cout << "您要进行的操作类型：1 课程表展示，2 查找，3,添加活动，4 删除活动，5 添加闹钟，6 删除闹钟 ，7 展示闹钟 ，8 退出 ,9 查看时间" << endl;
+		cout << "您要进行的操作类型：1 课程表展示，2 查找，3,添加活动，4 删除活动，5 添加闹钟，6 删除闹钟 ，7 展示闹钟 ，8 退出 " << endl;
 		cin >> t;
 
 		if (t == 1)
@@ -138,11 +138,6 @@ void student::ManageSystem()
 			cout << "即将退出登录" << endl;
 			break;
 		}
-		else if (t == 9)
-		{
-		cout << now_time << endl;
-		}
-
 		else
 		{
 			cout << "不存在此操作" << endl;
