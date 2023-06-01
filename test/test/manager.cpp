@@ -130,62 +130,66 @@ void manager::delete_class()
 }
 void manager::change_class()
 {
-	int id;
+	string name;
 	int num, j = 0, i = 0;
-	string s2;
-	string s1;
-	string filename1, filename2, filename3;
-	string oldfilename1, oldfilename2, oldfilename3;
-	student s;
+	course c;
 	while (1)
 	{
-		cout << "请输入要修改的学生的id：" << endl;
-		cin >> id;
-		for (i = 0; i < count_student; i++)
+		cout << "请输入要修改的课程名称：" << endl;
+		cin >> name;
+		for (i = 0; i < count_course; i++)
 		{
-			if (student_Array[i].id == id)
+			if (course_Array[i].name == name)
 			{
 				num = i;
 				break;
 			}
 		}
-		if (i == count_student)
-			cout << "该学生不存在！" << endl;
+		if (i == count_course)
+			cout << "该课程不存在！" << endl;
 		else
 			break;
 	}
 	while (1)
 	{
-		cout << "请输入修改后的id：" << endl;
-		cin >> s.id;
-		for (j = 0; j < count_student; j++)
+		cout << "请输入修改后课程的名称：" << endl;
+		cin >> c.name;
+		for (j = 0; j < count_course; j++)
 		{
-			if (student_Array[j].id == s.id && num != j)
+			if (course_Array[j].name == c.name && num != j)
 			{
-				cout << "该学生已存在！" << endl;
+				cout << "该课程已存在！" << endl;
 				break;
 			}
 		}
-		if (j == count_student)
+		if (j == count_course)
 			break;
 	}
-	cout << "请输入修改后学生的姓名：" << endl;
-	cin >> s.name;
-	cout << "请输入修改后学生的班级：" << endl;
-	cin >> s.ClassNum;
-	s1 = to_string(id);
-	s2 = to_string(s.id);
-	s.password = student_Array[num].password;
-	oldfilename1 = s1 + "personal" + ".txt";
-	oldfilename2 = s1 + "temp" + ".txt";
-	oldfilename3 = s1 + "alarm" + ".txt";
-	filename1 = s2 + "personal" + ".txt";
-	filename2 = s2 + "temp" + ".txt";
-	filename3 = s2 + "alarm" + ".txt";
-	rename(oldfilename1.c_str(), filename1.c_str());
-	rename(oldfilename2.c_str(), filename2.c_str());
-	rename(oldfilename3.c_str(), filename3.c_str());
-	student_Array[num] = s;
+	cout << "请输入修改后课程的开始时间：" << endl;
+	cin >> c.StartTime;
+	cout << "请输入修改后课程的结束时间：" << endl;
+	cin >> c.EndTime;
+	cout << "请输入修改后课程的上课地点：" << endl;
+	cin >> c.place;
+	cout << "请输入修改后课程的上课班级：" << endl;
+	cin >> c.Class;
+	cout << "修改后课程是否为单次课：" << endl;
+	cout << "1.是	2.否" << endl;
+	cin >> c.period;
+	if (c.period == 2)
+	{
+		cout << "请输入修改后课程的上课周数：" << endl;
+		cin >> c.c_week;
+		cout << "请依次输入修改后课程的上课周：" << endl;
+		cin >> c.week;
+	}
+	else
+	{
+		c.week = 1;
+		cout << "请依次输入修改后课程的上课周：" << endl;
+		cin >> c.week;
+	}
+	course_Array[num] = c;
 	fUpdate();
 	cout << "修改成功！" << endl;
 }
@@ -273,6 +277,10 @@ void manager::change_student()
 {
 	int id;
 	int num, j = 0, i = 0;
+	string s2;
+	string s1;
+	string filename1, filename2, filename3;
+	string oldfilename1, oldfilename2, oldfilename3;
 	student s;
 	while (1)
 	{
@@ -310,7 +318,18 @@ void manager::change_student()
 	cin >> s.name;
 	cout << "请输入修改后学生的班级：" << endl;
 	cin >> s.ClassNum;
+	s1 = to_string(id);
+	s2 = to_string(s.id);
 	s.password = student_Array[num].password;
+	oldfilename1 = s1 + "personal" + ".txt";
+	oldfilename2 = s1 + "temp" + ".txt";
+	oldfilename3 = s1 + "alarm" + ".txt";
+	filename1 = s2 + "personal" + ".txt";
+	filename2 = s2 + "temp" + ".txt";
+	filename3 = s2 + "alarm" + ".txt";
+	rename(oldfilename1.c_str(), filename1.c_str());
+	rename(oldfilename2.c_str(), filename2.c_str());
+	rename(oldfilename3.c_str(), filename3.c_str());
 	student_Array[num] = s;
 	fUpdate();
 	cout << "修改成功！" << endl;
