@@ -1653,7 +1653,7 @@ void student::SystemAlarmClock(int now_time)
 			}
 			else if (Gtm < Atm && Gtm < Ctm)
 			{
-				ofs << GroupActList[w][GroupActL].kind << " " << GroupActList[w][GroupActL].StartTime << " " << GroupActList[w][GroupActL].EndTime << " " << GroupActList[w][CourseL].name << " " << GroupActList[w][GroupActL].place << " " << GroupActList[w][GroupActL].Class << endl;
+				ofs << GroupActList[w][GroupActL].kind << " " << GroupActList[w][GroupActL].StartTime << " " << GroupActList[w][GroupActL].EndTime << " " << GroupActList[w][GroupActL].name << " " << GroupActList[w][GroupActL].place << " " << GroupActList[w][GroupActL].Class << endl;
 				GroupActL++;
 			}
 			else if (Atm < Ctm && Atm < Gtm)
