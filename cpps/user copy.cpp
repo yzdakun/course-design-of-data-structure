@@ -7,10 +7,10 @@
 #include<chrono>
 #include"user.h"
 #include"Time.h"
-#include "CLog.h"
 #include"stringop.h"
 #include"findWay.h"
-// #include"CLog.cpp"
+#include"Clog.h"
+#include"CLog.cpp"
 using namespace std;
 
 #define ASK_FOR_COURSE 1
@@ -44,7 +44,6 @@ manager ManagerList[MAX_PEOPLE];
 int ManagerCnt;
 
 graph g;
-CLog log1;
 
 student::student() {};
 student::~student() {};
@@ -59,7 +58,7 @@ void student::ManageSystem()
 	ofsCou.open("../htmls/pagebuffer.txt");
 	ofsCou<<-1<<endl;
 	this->ShowClassSchedule(1);
-	
+	log1.wr(now_time, this->name , "登陆了学生管理系统");
 	
 
 	DWORD cbBytes;
@@ -137,16 +136,14 @@ void student::ManageSystem()
 				int starttime,kind,acttime,tp;
 				int point[50];
 				int type;
-				
 				// DelLineData(2);
+
 				switch (flag)
 				{
 				case INIT:
-					log1.init("../datas/log.txt");
 					ifsArg>>w;
 					ifsArg>>s;
 					ifsArg>>nowTimeStamp;
-					log1.wr(this->name , "登陆了学生管理系统");
 
 					ofsCou.close();
 					ofsCou.open("../htmls/pagebuffer.txt");
@@ -158,6 +155,7 @@ void student::ManageSystem()
 					ifsArg >> NTS;
 					Init(NTS);
 					this->ShowClassSchedule(w);
+					// cout << 3 <<endl;
 					ShowPersonalAlarmClock();
 					break;
 
@@ -468,8 +466,11 @@ void student::Init(int now_time)
 	InitCourseInformation(now_time);
 	InitGroupActInformation();
 	InitActivityInformation();
+	// cout << 1 <<endl;
 	InitTempActInformation();
+	// cout << 2 <<endl;
 	InitAlarmClockInformation(now_time);
+
 	cout << now_time << endl;
 	//stop = 0;
 	//sysalarm = thread(&student::SystemAlarmClock,this);
@@ -543,6 +544,7 @@ void student::InitCourseInformation(int now_time)
 			CourseList[x][i].place = place;
 			CourseList[x][i].Class = Class;
 			CourseList[x][i].kind = kind;
+			// cout << CourseList[x][i].StartTime << endl;
 			CourseNum[x]++;
 		}
 	}
@@ -599,7 +601,7 @@ void student::InitActivityInformation()
 				timeline[StartTime] = kind;
 				ActivityList[x][i].name = name;
 				ActivityList[x][i].StartTime = StartTime;
-				ActivityList[x][i].EndTime = EndTime;
+				ActivityList[x][i].EndTime = StartTime + 1;
 				ActivityList[x][i].place = place;
 				ActivityList[x][i].id = id;
 				ActivityList[x][i].kind = kind;
@@ -630,11 +632,11 @@ void student::InitGroupActInformation()
 	}
 	//GroupActIdx = { 0,0 };
 	//ifstream ifs;
-	int flag = 0;
+	//int flag = 0;
 
 	string filename = to_string(this->ClassNum);
 	filename = "../datas/" + filename + "groupact.txt";
-
+	// cout << filename <<endl;
 	ifstream ifs;
 
 	ifs.open(filename, ios::in);
@@ -649,8 +651,8 @@ void student::InitGroupActInformation()
 	ifs.seekg(0, ios::beg);
 
 	string name;
-	int StartTime, EndTime;
-	//int EndTime;
+	int StartTime;
+	int EndTime;
 	int place;
 	int Class;
 	int kind;
@@ -667,28 +669,17 @@ void student::InitGroupActInformation()
 				flag = 1;
 			}*/
 			int i = GroupActNum[x];
-			if (timeline[StartTime] == 0)
-			{
-				timeline[StartTime] = kind;
-				GroupActList[x][i].name = name;
-				GroupActList[x][i].StartTime = StartTime;
-				GroupActList[x][i].EndTime = EndTime;
-				GroupActList[x][i].place = place;
-				GroupActList[x][i].Class = Class;
-				GroupActList[x][i].kind = kind;
-				GroupActList[x][i].type = type;
-				GroupActNum[x]++;
-			}
-			else
-			{
-				flag = 1;
-			}
+			
+			timeline[StartTime] = kind;
+			GroupActList[x][i].name = name;
+			GroupActList[x][i].StartTime = StartTime;
+			GroupActList[x][i].EndTime = StartTime + 1;
+			GroupActList[x][i].place = place;
+			GroupActList[x][i].Class = Class;
+			GroupActList[x][i].kind = kind;
+			GroupActList[x][i].type = tp;
+			GroupActNum[x]++;
 		}
-	}
-	if (flag)
-	{
-		ofsCou << 1 << endl;
-		ofsCou << "您有集体活动因冲突被删除" << endl;
 	}
 	ifs.close();
 }
@@ -743,10 +734,11 @@ void student::InitTempActInformation()
 				timeline[StartTime] = kind;
 				TempActList[x][i].name = name;
 				TempActList[x][i].StartTime = StartTime;
-				TempActList[x][i].EndTime = EndTime;
+				TempActList[x][i].EndTime = StartTime + 1;
 				TempActList[x][i].place = place;
 				TempActList[x][i].id = id;
 				TempActList[x][i].kind = kind;
+				// cout << TempActList[x][i].StartTime << endl;
 				TempActNum[x]++;
 			}
 			else
@@ -924,7 +916,7 @@ void student::ShowClassSchedule(int week)
 	int TempActL = 0, TempActR = 0;
 	int w = week - 1;
 	int num = 0;
-	log1.wr(this->name, "查看课程表");
+	log1.wr(now_time, this->name, "查看课程表");
 
 	ofstream ofs;
 	ofs.open("../datas/coumes.txt");
@@ -987,6 +979,7 @@ void student::ShowClassSchedule(int week)
 			}
 
 		}
+		cout << i <<endl;
 		//int num = CourseR - CourseL + GroupActR - GroupActL + ActivityR - ActivityL + TempActR - TempActL;
 		ofs << num << endl;
 		while (1)
@@ -1068,7 +1061,7 @@ int student::Search(int kind, string name, int now_time)//半成品
 	//cout << now_time << " " << w << endl;
 	if (kind == 1)
 	{
-		log1.wr(this->name, "查询课程");
+		log1.wr(now_time, this->name, "查询课程");
 		int x = w, y = 0;
 		for (y = 0; y < CourseNum[x]; y++)
 		{
@@ -1111,7 +1104,7 @@ int student::Search(int kind, string name, int now_time)//半成品
 	}
 	else if (kind == 2)
 	{
-		log1.wr(this->name, "查询集体活动");
+		log1.wr(now_time, this->name, "查询集体活动");
 		int x = w, y = 0;
 		for (y = 0; y < GroupActNum[x]; y++)
 		{
@@ -1152,7 +1145,7 @@ int student::Search(int kind, string name, int now_time)//半成品
 	}
 	else if (kind == 3)
 	{
-		log1.wr(this->name, "查询个人活动");
+		log1.wr(now_time, this->name, "查询个人活动");
 		int x = w, y = 0;
 		for (y = 0; y < ActivityNum[y]; y++)
 		{
@@ -1193,7 +1186,7 @@ int student::Search(int kind, string name, int now_time)//半成品
 	}
 	else if (kind == 4)
 	{
-		log1.wr(this->name, "查询临时事务");
+		log1.wr(now_time, this->name, "查询临时事务");
 		int x = w, y = 0;
 		for (y = 0; y < TempActNum[y]; y++)
 		{
@@ -1273,7 +1266,7 @@ void student::AddGroupAct()
 			}
 		}
 		timeline[tm] = 2;
-		log1.wr(this->name, "添加一个集体活动");
+		log1.wr(now_time, this->name, "添加一个集体活动");
 	}
 	else
 	{
@@ -1321,7 +1314,7 @@ void student::AddActivity()
 		int place;
 		ifsArg >> tm >> name >> place;
 		AddSingleActivity(tm, name, place,tp);
-		log1.wr(this->name, "添加一个单次的个人活动");
+		log1.wr(now_time, this->name, "添加一个单次的个人活动");
 	}
 	else if (tp == 2)
 	{
@@ -1340,7 +1333,7 @@ void student::AddActivity()
 				ofsCou << "第" << w << "周星期"  << d << "活动有冲突，插入失败" << endl;
 			}
 		}
-		log1.wr(this->name, "添加一个每天的个人活动");
+		log1.wr(now_time, this->name, "添加一个每天的个人活动");
 	}
 	else if (tp == 3)
 	{
@@ -1359,7 +1352,7 @@ void student::AddActivity()
 				ofsCou << "第" << w << "周活动有冲突，插入失败" << endl;
 			}
 		}
-		log1.wr(this->name, "添加一个每周的个人活动");
+		log1.wr(now_time, this->name, "添加一个每周的个人活动");
 	}
 
 
@@ -1465,7 +1458,7 @@ void student::AddTempAct()
 			}
 		}
 		timeline[tm] = 4;
-		log1.wr(this->name, "添加一个临时事务");
+		log1.wr(now_time, this->name, "添加一个临时事务");
 	}
 	else
 	{
@@ -1500,7 +1493,7 @@ void student::DeleteGroupAct()
 	}
 	GroupActNum[w]--;
 	timeline[tm] = 0;
-	log1.wr(this->name, "删除一个集体活动");
+	log1.wr(now_time, this->name, "删除一个集体活动");
 }
 
 void student::DeleteActivity()
@@ -1528,7 +1521,7 @@ void student::DeleteActivity()
 	}
 	ActivityNum[w]--;
 	timeline[tm] = 0;
-	log1.wr(this->name, "删除一个个人活动");
+	log1.wr(now_time, this->name, "删除一个个人活动");
 }
 
 void student::DeleteTempAct()
@@ -1573,7 +1566,7 @@ void student::DeleteTempAct()
 	}
 	if(!flag)
 		timeline[tm] = 0;
-	log1.wr(this->name, "删除一个临时事务");
+	log1.wr(now_time, this->name, "删除一个临时事务");
 
 }
 
@@ -1724,7 +1717,7 @@ void student::PersonalAlarmClock(int now_time)
 		if (now_time == AlarmList[AlarmIdx].StartTime)
 		{
 			ofs.close();
-			ShowInfo(AlarmIdx,AlarmList[AlarmIdx].kind, AlarmList[AlarmIdx].ActTime, 0);
+			ShowInfo(AlarmList[AlarmIdx].kind, AlarmList[AlarmIdx].ActTime, 0);
 			//调用导航
 			if (AlarmList[AlarmIdx].type == 2)
 			{
@@ -1787,13 +1780,13 @@ void student::AddPersonalAlarmClock(int starttime,int kind,int acttime,int tp)
 	switch (tp)
 	{
 	case 1:
-		log1.wr(this->name, "添加一个单次闹钟");
+		log1.wr(now_time, this->name, "添加一个单次闹钟");
 		break;
 	case 2:
-		log1.wr(this->name, "添加一个每天闹钟");
+		log1.wr(now_time, this->name, "添加一个每天闹钟");
 		break;
 	case 3:
-		log1.wr(this->name, "添加一个每周闹钟");
+		log1.wr(now_time, this->name, "添加一个每周闹钟");
 		break;
 	}
 }
@@ -1814,7 +1807,7 @@ void student::DeletePersonalAlarmClock()
 		AlarmList[i] = AlarmList[i + 1];
 	}
 	AlarmNum--;
-	log1.wr(this->name, "删除一个单次闹钟");
+	log1.wr(now_time, this->name, "删除一个单次闹钟");
 }
 
 
@@ -1824,13 +1817,14 @@ void student::ShowPersonalAlarmClock()
 	// cout << AlarmNum - AlarmIdx << endl;
 	for (int i = AlarmIdx; i < AlarmNum; i++)
 	{
-		ShowInfo(i,AlarmList[i].kind, AlarmList[i].ActTime, 1);
+		ofsAla << AlarmList[i].StartTime << " ";
+		ShowInfo(AlarmList[i].kind, AlarmList[i].ActTime, 1);
 	}
-	log1.wr(this->name, "展示闹钟信息");
+	log1.wr(now_time, this->name, "展示闹钟信息");
 	ofsAla.close();
 }
 
-void student::ShowInfo(int loc, int kind, int ActTime, int type)
+void student::ShowInfo(int kind, int ActTime, int type)
 {
 	int w = ActTime / 168;
 	int idx = -1;
@@ -1855,9 +1849,9 @@ void student::ShowInfo(int loc, int kind, int ActTime, int type)
 			return;
 		}
 		if(type == 0)
-			ofs <<  CourseList[w][idx].kind << " " << CourseList[w][idx].StartTime << " " << CourseList[w][idx].EndTime << " " << CourseList[w][idx].name << " " << CourseList[w][idx].place << " " << CourseList[w][idx].Class << endl;
+			ofs << CourseList[w][idx].kind << " " << CourseList[w][idx].StartTime << " " << CourseList[w][idx].EndTime << " " << CourseList[w][idx].name << " " << CourseList[w][idx].place << " " << CourseList[w][idx].Class << endl;
 		else
-			ofsAla << AlarmList[loc].StartTime << " " << CourseList[w][idx].kind << " " << CourseList[w][idx].StartTime << " " << CourseList[w][idx].EndTime << " " << CourseList[w][idx].name << " " << CourseList[w][idx].place << " " << CourseList[w][idx].Class << endl;
+			ofsAla << CourseList[w][idx].kind << " " << CourseList[w][idx].StartTime << " " << CourseList[w][idx].EndTime << " " << CourseList[w][idx].name << " " << CourseList[w][idx].place << " " << CourseList[w][idx].Class << endl;
 	}
 	else if (kind == 2)
 	{
@@ -1877,7 +1871,7 @@ void student::ShowInfo(int loc, int kind, int ActTime, int type)
 		if(type == 0)
 			ofs << GroupActList[w][idx].kind << " " << GroupActList[w][idx].StartTime << " " << GroupActList[w][idx].EndTime << " " << GroupActList[w][idx].name << " " << GroupActList[w][idx].place << " " << GroupActList[w][idx].Class << " " << 1 << endl;
 		else
-			ofsAla << AlarmList[loc].StartTime << " " << GroupActList[w][idx].kind << " " << GroupActList[w][idx].StartTime << " " << GroupActList[w][idx].EndTime << " " << GroupActList[w][idx].name << " " << GroupActList[w][idx].place << " " << GroupActList[w][idx].Class << " " << 1 << endl;
+			ofsAla << GroupActList[w][idx].kind << " " << GroupActList[w][idx].StartTime << " " << GroupActList[w][idx].EndTime << " " << GroupActList[w][idx].name << " " << GroupActList[w][idx].place << " " << GroupActList[w][idx].Class << " " << 1 << endl;
 	}
 	else if (kind == 3)
 	{
@@ -1897,7 +1891,7 @@ void student::ShowInfo(int loc, int kind, int ActTime, int type)
 		if(type == 0)
 			ofs << ActivityList[w][idx].kind << " " << ActivityList[w][idx].StartTime << " " << ActivityList[w][idx].EndTime << " " << ActivityList[w][idx].name << " " << ActivityList[w][idx].place << " " << ActivityList[w][idx].type << endl;
 		else
-			ofsAla << AlarmList[loc].StartTime << " " << ActivityList[w][idx].kind << " " << ActivityList[w][idx].StartTime << " " << ActivityList[w][idx].EndTime << " " << ActivityList[w][idx].name << " " << ActivityList[w][idx].place << " " << ActivityList[w][idx].type << endl;
+			ofsAla << ActivityList[w][idx].kind << " " << ActivityList[w][idx].StartTime << " " << ActivityList[w][idx].EndTime << " " << ActivityList[w][idx].name << " " << ActivityList[w][idx].place << " " << ActivityList[w][idx].type << endl;
 	}
 	else if (kind == 4)
 	{
@@ -1922,7 +1916,7 @@ void student::ShowInfo(int loc, int kind, int ActTime, int type)
 		if(type == 0)
 			ofs << TempActList[w][idx].kind << " " << TempActList[w][idx].StartTime << " " << TempActList[w][idx].EndTime << " " << tmpr - idx << " ";
 		else
-			ofsAla << AlarmList[loc].StartTime << " " << TempActList[w][idx].kind << " " << TempActList[w][idx].StartTime << " " << TempActList[w][idx].EndTime << " " << tmpr - idx << " ";
+			ofsAla << TempActList[w][idx].kind << " " << TempActList[w][idx].StartTime << " " << TempActList[w][idx].EndTime << " " << tmpr - idx << " ";
 		while (idx < tmpr)
 		{
 			if(type == 0)
@@ -2074,9 +2068,9 @@ void manager::ManageSystem()
 					default :
 						ifsArg.close();
 						ofsCou.close();
-						CloseHandle(dirHandle);
-						connection();
 						translate();
+						connection();
+						CloseHandle(dirHandle);
 						return ;
 				}
 			}
@@ -2417,16 +2411,19 @@ void manager::fUpdate()
 void manager::connection()
 {
 	ofstream ofs;
-	ofs.open("../datas/8course.txt", ios::out);
+	ofs.open("../datas/8course.txt");
 	vector<course> temp;
 	temp = course_Array;
 	int m_time = 0;
+	cout << count_course << endl;
 	for (int j = 1; j <= 19; j++)
 	{
 		for (int k = 0; k < count_course; k++)
 		{
+			cout << temp[k].check[j] << endl;
 			if (temp[k].check[j] == 1)
 			{
+				cout << temp[k].StartTime << " ";
 				ofs << temp[k].name << " ";
 				ofs << temp[k].StartTime << " ";
 				ofs << temp[k].EndTime << " ";

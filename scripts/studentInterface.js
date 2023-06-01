@@ -289,6 +289,8 @@ function timeCha() {
     var timeSetter=document.getElementById('timeSetter');
     timeSetterBox.style.display='block';
     timeSetter.value=nowTime;
+    var page01 = document.getElementById('page01');
+    console.log(document.page01.scrollTop);
 }//更改当前时间
 
 function timeCon(flag) {

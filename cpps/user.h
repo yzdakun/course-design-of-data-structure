@@ -101,7 +101,7 @@ private:
 	void AddPersonalAlarmClock(int starttime, int kind, int acttime, int tp);
 	void DeletePersonalAlarmClock();
 	void ShowPersonalAlarmClock();
-	void ShowInfo(int kind, int ActTime, int type);
+	void ShowInfo(int loc, int kind, int ActTime, int type);
 
 	//student(int id, int ClassNum, string name, string password);
 };

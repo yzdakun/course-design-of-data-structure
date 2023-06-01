@@ -15,6 +15,7 @@
 #include "Log_control.cpp"
 #include "user.cpp"
 #include "Time.cpp"
+// #include "CLog.cpp"
 // #include "manager.cpp"
 #include "course.cpp"
 using namespace std;

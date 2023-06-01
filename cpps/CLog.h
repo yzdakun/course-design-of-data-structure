@@ -3,34 +3,52 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<chrono>
 using namespace std;
 class CLog
 {
 private:
-	ofstream ofs;
+	ofstream ofsCLog;
 public:
-	CLog(const string filename)
+	void init(const string filename)
 	{
-		this->ofs.open(filename.c_str(), ios::trunc);
-		if (ofs.is_open())
+		this->ofsCLog.open(filename.c_str(), ios::trunc);
+		if (ofsCLog.is_open())
 		{
-			ofs.close();
+			ofsCLog.close();
 		}
-		this->ofs.open(filename.c_str(), ios::out | ios::app);
+		this->ofsCLog.open(filename.c_str(), ios::out | ios::app);
+		if(this->ofsCLog.is_open())
+			cout << "opened" << endl;
+		else
+			cout << "closed" << endl;
 		return;
 	}
 	~CLog()
 	{
-		if (this->ofs.is_open())
+		if (this->ofsCLog.is_open())
 		{
-			ofs.close();
+			ofsCLog.close();
 		}
 	}
 
-	void wr(const int now_time, const string name, const string content)
+	void wr(const string name, const string content)
 	{
-		// cout << now_time << "," << name << "," << content << endl;
- 		this->ofs << now_time << "," << name << "," << content << endl;
+		auto now = std::chrono::system_clock::now();
+		time_t tt = std::chrono::system_clock::to_time_t(now);
+		auto time_tm = localtime(&tt);
+		char strTime[25] = { 0 };
+		sprintf(strTime, "%d-%02d-%02d %02d:%02d:%02d", time_tm->tm_year + 1900,
+			time_tm->tm_mon + 1, time_tm->tm_mday, time_tm->tm_hour,
+			time_tm->tm_min, time_tm->tm_sec);
+
+		if(this->ofsCLog.is_open())
+			cout << "opened" << endl;
+		else
+			cout << "closed" << endl;
+
+ 		this->ofsCLog << strTime << ", " << name << "," << content << endl;
+		this->ofsCLog.flush();
 		return;
 	}
 };
