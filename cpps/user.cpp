@@ -596,7 +596,7 @@ void student::InitActivityInformation()
 				timeline[StartTime] = kind;
 				ActivityList[x][i].name = name;
 				ActivityList[x][i].StartTime = StartTime;
-				ActivityList[x][i].EndTime = StartTime + 1;
+				ActivityList[x][i].EndTime = EndTime;
 				ActivityList[x][i].place = place;
 				ActivityList[x][i].id = id;
 				ActivityList[x][i].kind = kind;
@@ -668,7 +668,7 @@ void student::InitGroupActInformation()
 			timeline[StartTime] = kind;
 			GroupActList[x][i].name = name;
 			GroupActList[x][i].StartTime = StartTime;
-			GroupActList[x][i].EndTime = StartTime + 1;
+			GroupActList[x][i].EndTime = EndTime;
 			GroupActList[x][i].place = place;
 			GroupActList[x][i].Class = Class;
 			GroupActList[x][i].kind = kind;
@@ -729,7 +729,7 @@ void student::InitTempActInformation()
 				timeline[StartTime] = kind;
 				TempActList[x][i].name = name;
 				TempActList[x][i].StartTime = StartTime;
-				TempActList[x][i].EndTime = StartTime + 1;
+				TempActList[x][i].EndTime = EndTime;
 				TempActList[x][i].place = place;
 				TempActList[x][i].id = id;
 				TempActList[x][i].kind = kind;
