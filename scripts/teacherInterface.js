@@ -1,7 +1,9 @@
 var stu=document.querySelector('#stu');
 var cou=document.querySelector('#cou');
+var itm03=document.querySelector('#itm03');
 var page01 = document.getElementById('page01');
 var page02 = document.getElementById('page02');
+var page03 = document.getElementById('page03');
 var btnadd = document.getElementById('btnadd');
 var selectdom = document.querySelector('select');
 var calen = document.getElementById('date');
@@ -17,8 +19,11 @@ var nowTime=new Date();
 var timeWalkPace=1000;
 
 var num2plac=load("./num2placTable.txt");
+var log = load("../datas/log.txt");
 num2plac=num2plac.split("\r").join("");
 num2plac=num2plac.split("\n");
+log=log.split("\r").join("");
+log=log.split("\n");
 
 function initTime(domTime) {
     nowTime=new Date(domTime);
@@ -172,6 +177,18 @@ stu.addEventListener('click', ()=> {
     page01.style.display = 'block';
 })
 
+itm03.addEventListener('click',()=> {
+    initLog();
+    changePage();
+    itm03.style.color='#57EEEB';
+    itm03.style.border='2px solid #57EEEB';
+    cou.style='none';
+    cou.style.border='2px solid aliceblue';
+    stu.style='none';
+    stu.style.border='2px solid aliceblue';
+    page03.style.display = 'block';
+})
+
 window.onload = function() {
     // initpage();
     // initstudent();
@@ -250,6 +267,8 @@ function chooseStu() {
     stu.style.border='2px solid #57EEEB';
     cou.style='none';
     cou.style.border='2px solid aliceblue';
+    itm03.style='none';
+    itm03.style.border='2px solid aliceblue';
     level="0";
     console.log(level);
 }
@@ -259,6 +278,8 @@ function chooseCou() {
     cou.style.border='2px solid #57EEEB';
     stu.style='none';
     stu.style.border='2px solid aliceblue';
+    itm03.style='none';
+    itm03.style.border='2px solid aliceblue';
     // stu.style.color='black';
     level="1";
     console.log(level);
@@ -281,8 +302,9 @@ function load(name) {
 
 function initstudent() {
     let text=load("../datas/studentmessage.txt");
-    var num=Number(text[0]);
+    text = text.split("\r").join("");
     var s=text.split("\n");
+    var num=Number(s[0]);
     // console.log(num);
     for(var i=1;i<=num;i++)
     {
@@ -547,6 +569,17 @@ function writePlace(ind)
 {
     return num2plac[ind];
 }//数字地点转中文
+
+function initLog() {
+    var i = 0;
+    while(log[i] != "")
+    {
+        var newp = document.createElement("p");
+        newp.innerHTML = log[i];
+        page03.append(newp);
+        i++;
+    }
+}
 
 // function initpage() {
     

@@ -13,9 +13,9 @@ public:
 	void init(const string filename)
 	{
 		this->ofsCLog.open(filename.c_str(), ios::trunc);
-		if (ofsCLog.is_open())
+		if (this->ofsCLog.is_open())
 		{
-			ofsCLog.close();
+			this->ofsCLog.close();
 		}
 		this->ofsCLog.open(filename.c_str(), ios::out | ios::app);
 		if(this->ofsCLog.is_open())

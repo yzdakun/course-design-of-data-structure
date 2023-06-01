@@ -27,10 +27,13 @@ var tips=document.getElementById('tips');
 var coodinates=load("./coodinates.txt");
 var num2plac=load("./num2placTable.txt");
 var buffer=load("./pagebuffer.txt");
+var log = load("../datas/log.txt");
 coodinates=coodinates.split("\n");
 buffer=buffer.split("\r").join("");
 num2plac=num2plac.split("\r").join("");
 num2plac=num2plac.split("\n");
+log=log.split("\r").join("");
+log=log.split("\n");
 var balls=[];
 
 const canvas=document.querySelector('canvas');
@@ -56,7 +59,7 @@ function load(name) {
 
 window.onload = function() {
     buffer=buffer.split("\n");
-
+    initLog();
     switch(Number(buffer[0]))
     {
         case -1:
@@ -290,7 +293,7 @@ function timeCha() {
     timeSetterBox.style.display='block';
     timeSetter.value=nowTime;
     var page01 = document.getElementById('page01');
-    console.log(document.page01.scrollTop);
+    console.log(page01.scrollTop);
 }//更改当前时间
 
 function timeCon(flag) {
@@ -1869,6 +1872,18 @@ function drawArrow(ctx, fromX, fromY, toX, toY, theta, headlen, width, color) {
     ctx.lineWidth = width;
     ctx.stroke();
     ctx.restore();
+}
+
+function initLog() {
+    var i = 0;
+    var page04 = document.getElementById("page04");
+    while(log[i] != "")
+    {
+        var newp = document.createElement("p");
+        newp.innerHTML = log[i];
+        page04.append(newp);
+        i++;
+    }
 }
 
 function addOption(obj)

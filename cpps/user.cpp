@@ -446,6 +446,7 @@ void student::ManageSystem()
 				default:
 					ifsArg.close();
 					ofsCou.close();
+					log1.~CLog();
 					CloseHandle(dirHandle);
 					save();
 					return ;
@@ -1952,6 +1953,7 @@ void manager::ManageSystem()
 {
 	init();
 	fUpdate();
+	log1.init("../datas/log.txt");
 	ofsCou.open("../htmls/pagebuffer.txt");
 	ofsCou << -1 << endl;
 
@@ -2077,6 +2079,7 @@ void manager::ManageSystem()
 						CloseHandle(dirHandle);
 						connection();
 						translate();
+						log1.~CLog();
 						return ;
 				}
 			}
@@ -2168,7 +2171,7 @@ void manager::add_class()
 		course_Array.push_back(c);
 		count_course++;
 	}
-	
+	log1.wr(this->name, "添加了一门课程");
 	sort(course_Array.begin(), course_Array.end(), cmp);
 	fUpdate();
 	// cout << "添加成功！" << endl;
@@ -2198,6 +2201,7 @@ void manager::delete_class()
 	auto it = course_Array.begin() + num;
 	course_Array.erase(it);
 	count_course--;
+	log1.wr(this->name, "删除了一门课程");
 	fUpdate();
 	// cout << "删除成功！" << endl;
 }
@@ -2258,11 +2262,12 @@ void manager::change_class()
 	}
 	else
 	{
-		c.week = 1;
+		c.c_week = 1;
 		// cout << "请依次输入修改后课程的上课周：" << endl;
 		ifsArg >> c.week;
 	}
 	course_Array[num] = c;
+	log1.wr(this->name, "修改了一门课程");
 	fUpdate();
 	// cout << "修改成功！" << endl;
 }
@@ -2313,6 +2318,7 @@ void manager::add_student()
 		ofs.close();
 		count_student++;
 	}
+	log1.wr(this->name, "添加了一名学生");
 	fUpdate();
 	// cout << "添加成功" << endl;
 }
@@ -2340,6 +2346,7 @@ void manager::delete_student()
 	auto it = student_Array.begin() + num;
 	student_Array.erase(it);
 	count_student--;
+	log1.wr(this->name, "删除了一名学生");
 	fUpdate();
 	// cout << "删除成功" << endl;
 }
@@ -2383,6 +2390,7 @@ void manager::change_student()
 	string s1 = "2021";
 	s.password = s1 + to_string(s.id);
 	student_Array[num] = s;
+	log1.wr(this->name, "修改了一名学生");
 	fUpdate();
 	// cout << "修改成功！" << endl;
 }
