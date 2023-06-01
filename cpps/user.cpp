@@ -128,7 +128,7 @@ void student::ManageSystem()
 				ifsArg.open("js2exe.txt",ios::in);
 				ifsArg>>flag;
 				cout<<flag<<endl;
-				int w,NTS;
+				int w,NTS,scrollTop;
 				int searchWeek;
 				string searchName;
 				long long nowTimeStamp;
@@ -143,17 +143,12 @@ void student::ManageSystem()
 				{
 				case INIT:
 					log1.init("../datas/log.txt");
-					ifsArg>>w;
-					ifsArg>>s;
-					ifsArg>>nowTimeStamp;
+					ifsArg>>w>>s>>nowTimeStamp>>scrollTop;
 					log1.wr(this->name , "登陆了学生管理系统");
 
 					ofsCou.close();
 					ofsCou.open("../htmls/pagebuffer.txt");
-					ofsCou<<0<<endl;
-					ofsCou<<w<<endl;
-					ofsCou<<s<<endl;
-					ofsCou<<nowTimeStamp<<endl;
+					ofsCou<<0<<endl<<w<<endl<<s<<endl<<nowTimeStamp<<endl<<scrollTop<<endl;
 					
 					ifsArg >> NTS;
 					Init(NTS);
@@ -162,32 +157,22 @@ void student::ManageSystem()
 					break;
 
 				case ASK_FOR_COURSE:
-					ifsArg>>w;
-					ifsArg>>s;
-					ifsArg>>nowTimeStamp;
+					ifsArg>>w>>s>>nowTimeStamp>>scrollTop;
 
 					ofsCou.close();
 					ofsCou.open("../htmls/pagebuffer.txt");
-					ofsCou<<0<<endl;
-					ofsCou<<w<<endl;
-					ofsCou<<s<<endl;
-					ofsCou<<nowTimeStamp<<endl;
+					ofsCou<<0<<endl<<w<<endl<<s<<endl<<nowTimeStamp<<endl<<scrollTop<<endl;
 					// ofsCou<<0<<endl;
 					ofsCou.close();
 					this->ShowClassSchedule(w);
 					break;
 
 				case ADD_ACTIVITY:
-					ifsArg>>w;
-					ifsArg>>s;
-					ifsArg>>nowTimeStamp;
+					ifsArg>>w>>s>>nowTimeStamp>>scrollTop;
 
 					ofsCou.close();
 					ofsCou.open("../htmls/pagebuffer.txt");
-					ofsCou<<0<<endl;
-					ofsCou<<w<<endl;
-					ofsCou<<s<<endl;
-					ofsCou<<nowTimeStamp<<endl;
+					ofsCou<<0<<endl<<w<<endl<<s<<endl<<nowTimeStamp<<endl<<scrollTop<<endl;
 
 					ifsArg>>type;
 					if(type == 2)
@@ -209,16 +194,11 @@ void student::ManageSystem()
 					break;
 
 				case DEL_ACTIVITY:
-					ifsArg>>w;
-					ifsArg>>s;
-					ifsArg>>nowTimeStamp;
+					ifsArg>>w>>s>>nowTimeStamp>>scrollTop;
 
 					ofsCou.close();
 					ofsCou.open("../htmls/pagebuffer.txt");
-					ofsCou<<0<<endl;
-					ofsCou<<w<<endl;
-					ofsCou<<s<<endl;
-					ofsCou<<nowTimeStamp<<endl;
+					ofsCou<<0<<endl<<w<<endl<<s<<endl<<nowTimeStamp<<endl<<scrollTop<<endl;
 
 					ifsArg>>type;
 					if(type == 2)
@@ -239,16 +219,11 @@ void student::ManageSystem()
 					break;
 
 				case MODIFY_ACTIVITY:
-					ifsArg>>w;
-					ifsArg>>s;
-					ifsArg>>nowTimeStamp;
+					ifsArg>>w>>s>>nowTimeStamp>>scrollTop;
 
 					ofsCou.close();
 					ofsCou.open("../htmls/pagebuffer.txt");
-					ofsCou<<0<<endl;
-					ofsCou<<w<<endl;
-					ofsCou<<s<<endl;
-					ofsCou<<nowTimeStamp<<endl;
+					ofsCou<<0<<endl<<w<<endl<<s<<endl<<nowTimeStamp<<endl<<scrollTop<<endl;
 
 					ifsArg>>type;
 					if(type == 2)
@@ -283,9 +258,7 @@ void student::ManageSystem()
 					break;
 
 				case SEARCH_ACTIVITY:
-					ifsArg>>w;
-					ifsArg>>s;
-					ifsArg>>nowTimeStamp;
+					ifsArg>>w>>s>>nowTimeStamp>>scrollTop;
 
 					ofsCou.close();
 					ofsCou.open("../htmls/pagebuffer.txt");
@@ -302,6 +275,7 @@ void student::ManageSystem()
 						ofsCou<<searchWeek<<endl;
 						ofsCou<<"null"<<endl;
 						ofsCou<<nowTimeStamp<<endl;
+						ofsCou<<scrollTop<<endl;
 						this->ShowClassSchedule(searchWeek);
 					}
 					else
@@ -309,6 +283,7 @@ void student::ManageSystem()
 						ofsCou<<w<<endl;
 						ofsCou<<s<<endl;
 						ofsCou<<nowTimeStamp<<endl;
+						ofsCou<<scrollTop<<endl;
 						this->ShowClassSchedule(w);
 
 						ofsCou<<1<<endl;
@@ -405,6 +380,7 @@ void student::ManageSystem()
 					ifsArg>>w;
 					ifsArg>>s;
 					ifsArg>>nowTimeStamp;
+					ifsArg>>scrollTop;
 					ifsArg>>timeWalkPace;
 
 					ofsCou.close();
@@ -413,6 +389,7 @@ void student::ManageSystem()
 					ofsCou<<w<<endl;
 					ofsCou<<s<<endl;
 					ofsCou<<nowTimeStamp<<endl;
+					ofsCou<<scrollTop<<endl;
 					ofsCou<<timeWalkPace<<endl;
 
 					ifsArg >> NTS;
@@ -425,6 +402,7 @@ void student::ManageSystem()
 					ifsArg>>w;
 					ifsArg>>s;
 					ifsArg>>nowTimeStamp;
+					ifsArg>>scrollTop;
 					
 					ofsCou.close();
 					ofsCou.open("../htmls/pagebuffer.txt");
@@ -432,6 +410,7 @@ void student::ManageSystem()
 					ofsCou<<w<<endl;
 					ofsCou<<s<<endl;
 					ofsCou<<nowTimeStamp<<endl;
+					ofsCou<<scrollTop<<endl;
 					ofsCou<<1000<<endl;
 					
 					ifsArg >> NTS;
@@ -1956,6 +1935,7 @@ void manager::ManageSystem()
 	log1.init("../datas/log.txt");
 	ofsCou.open("../htmls/pagebuffer.txt");
 	ofsCou << -1 << endl;
+	log1.wr(this->name, "登录了教师系统");
 
 	DWORD cbBytes;
 	char notify[1024];
@@ -1999,8 +1979,11 @@ void manager::ManageSystem()
 								  FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_LAST_ACCESS,
 								  &cbBytes, NULL, NULL))
 		{
-			nowTS = time(0);
-			if(nowTS - lastTS <= 1)
+			std::chrono::milliseconds ms = std::chrono::duration_cast< std::chrono::milliseconds >(
+        		std::chrono::system_clock::now().time_since_epoch()
+    		);
+			nowTS = ms.count();
+			if(nowTS - lastTS <= 500)
 			{
 				lastTS = nowTS;
 				cout<<nowTS<<endl;
@@ -2077,8 +2060,9 @@ void manager::ManageSystem()
 						ifsArg.close();
 						ofsCou.close();
 						CloseHandle(dirHandle);
-						connection();
 						translate();
+						connection();
+						
 						log1.~CLog();
 						return ;
 				}
@@ -2306,15 +2290,15 @@ void manager::add_student()
 		s1 = s1 + s2;
 		s.password = s1;//设置默认密码
 		student_Array.push_back(s);
-		filename1 = ".. / datas / " + s2 + "personal" + ".txt";
-		filename2 = ".. / datas / " + s2 + "temp" + ".txt";
-		filename3 = ".. / datas / " + s2 + "alarm" + ".txt";
-		
-		ofs.open(filename1, std::ios::out);
+		filename1 = "../datas/" + s2 + "activity" + ".txt";
+		filename2 = "../datas/" + s2 + "tempact" + ".txt";
+		filename3 = "../datas/" + s2 + "alarmclock" + ".txt";
+		cout << filename1 << endl;
+		ofs.open(filename1, ios::app|ios::out);
 		ofs.close();
-		ofs.open(filename2, std::ios::out);
+		ofs.open(filename2, ios::app|ios::out);
 		ofs.close();
-		ofs.open(filename3, std::ios::out);
+		ofs.open(filename3, ios::app|ios::out);
 		ofs.close();
 		count_student++;
 	}
@@ -2355,6 +2339,10 @@ void manager::change_student()
 	int id;
 	int num, j = 0, i = 0;
 	student s;
+	string s2;
+	string s1;
+	string filename1, filename2, filename3;
+	string oldfilename1, oldfilename2, oldfilename3;
 		// cout << "请输入要修改的学生id：" << endl;
 	ifsArg >> id;
 	for (i = 0; i < count_student; i++)
@@ -2387,8 +2375,20 @@ void manager::change_student()
 	s.name = UTF8_To_string(s.name);
 	// cout << "请输入修改后学生的班级" << endl;
 	ifsArg >> s.ClassNum;
-	string s1 = "2021";
-	s.password = s1 + to_string(s.id);
+
+	s1 = to_string(id);
+	s2 = to_string(s.id);
+	oldfilename1 = "../datas/" + s1 + "activity" + ".txt";
+	oldfilename2 = "../datas/" + s1 + "tempact" + ".txt";
+	oldfilename3 = "../datas/" + s1 + "alarmclock" + ".txt";
+	filename1 = "../datas/" + s2 + "activity" + ".txt";
+	filename2 = "../datas/" + s2 + "tempact" + ".txt";
+	filename3 = "../datas/" + s2 + "alarmclock" + ".txt";
+	rename(oldfilename1.c_str(), filename1.c_str());
+	rename(oldfilename2.c_str(), filename2.c_str());
+	rename(oldfilename3.c_str(), filename3.c_str());
+	string s3 = "2021";
+	s.password = s3 + to_string(s.id);
 	student_Array[num] = s;
 	log1.wr(this->name, "修改了一名学生");
 	fUpdate();

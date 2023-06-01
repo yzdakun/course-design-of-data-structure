@@ -90,8 +90,9 @@ window.onload = function() {
 
             initact();
             initAlarm();
-            
-            if(Number(buffer[4]) === 1)
+            var page01 = document.getElementById('page01');
+            page01.scrollBy(0,Number(buffer[4]));
+            if(Number(buffer[5]) === 1)
             {
                 tips.style.display='block';
                 var i=5;
@@ -176,11 +177,12 @@ window.onload = function() {
 
             initTime(Number(buffer[3]));
             timeSet(1);
-
+            var page01 = document.getElementById('page01');
+            page01.scrollBy(0,Number(buffer[4]))
             initact();
             initAlarm();
             
-            timeWalkPace = Number(buffer[4]);
+            timeWalkPace = Number(buffer[5]);
             if(timeWalkPace === 1000)
                 timeSet(1);
             else if(timeWalkPace === 1000 * 60 * 6)
@@ -257,11 +259,12 @@ function timeWalk() {
     var oriHour = nowTime.getHours();
     nowTime=new Date(nowTimStamp);
     var newHour = nowTime.getHours();
+    var page01 = document.getElementById('page01');
     if(newHour != oriHour)
     {
         var week = selectdom.selectedIndex + 1;
         var para = document.createElement("a");
-        para.href = 'closeexe://&&12&&' + week + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + timeWalkPace + '&&' + jsHour2exe();
+        para.href = 'closeexe://&&12&&' + week + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop + '&&' + timeWalkPace + '&&' + jsHour2exe();
         para.click();
     }
     timeBox.innerHTML=nowTime.toLocaleString();
@@ -292,8 +295,7 @@ function timeCha() {
     var timeSetter=document.getElementById('timeSetter');
     timeSetterBox.style.display='block';
     timeSetter.value=nowTime;
-    var page01 = document.getElementById('page01');
-    console.log(page01.scrollTop);
+    
 }//更改当前时间
 
 function timeCon(flag) {
@@ -312,8 +314,9 @@ function timeCon(flag) {
     var nowTimStamp=new Date(nowTime).getTime();
     nowTime=new Date(nowTimStamp);
     nowWeek = selectdom.selectedIndex+1;
+    var page01 = document.getElementById('page01');
     var para = document.createElement("a");
-    para.href='closeexe://&&13&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + jsHour2exe();
+    para.href='closeexe://&&13&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop + '&&' + jsHour2exe();
     para.click();
 }//时间修改器的开启与关闭
 
@@ -741,6 +744,8 @@ function addActivity() {
     var exeTime=dateHour2exe(newActdate,startTime);
 
     var nowWeek=selectdom.selectedIndex+1;
+    var page01 = document.getElementById('page01');
+    console.log(page01.scrollTop);
     
     var indAct=document.getElementById('indAct');
     var groAct=document.getElementById('groAct');
@@ -762,7 +767,7 @@ function addActivity() {
             var Actname=document.getElementById('Actname').value;
             var Actplac=document.getElementById('Actplac').selectedIndex;
 
-            para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+            para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + lop
                                 + '&&' + exeTime + '&&' + Actname + '&&' + Actplac;
             para.click();
@@ -775,7 +780,7 @@ function addActivity() {
             var endDate=document.getElementById('endDate').value;
             var endExeTime=Number(dateHour2exe(endDate,startTime)+1);
 
-            para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+            para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + lop
                                 + '&&' + exeTime + '&&' + endExeTime + '&&' + Actname + '&&' + Actplac;
             para.click();
@@ -788,7 +793,7 @@ function addActivity() {
             var endDate=document.getElementById('endDate').value;
             var endExeTime=dateHour2exe(endDate,startTime)+1;
 
-            para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+            para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + lop
                                 + '&&' + exeTime + '&&' + endExeTime + '&&' + Actname + '&&' + Actplac;
             para.click();
@@ -803,7 +808,7 @@ function addActivity() {
         var Actname=document.getElementById('Actname').value;
         var Actplac=document.getElementById('Actplac').selectedIndex;
 
-        para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+        para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type
                                 + '&&' + exeTime + '&&' + Actname + '&&' + Actplac;
         para.click();
@@ -812,7 +817,7 @@ function addActivity() {
     else if(indEve.checked===true)
     {
         type=4;
-        para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+        para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + num;
         
         for(var i=1;i<=num;i++)
@@ -830,13 +835,14 @@ function addActivity() {
 
 function delActicity(info) {
     var nowWeek=selectdom.selectedIndex+1;
+    var page01 = document.getElementById('page01');
 
     var type = Number(info[0]);
     var para = document.createElement("a");
     var startTime = Number(info[1]);
     if(type === 2 || type === 3)
     {
-        para.href='closeexe://&&3&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+        para.href='closeexe://&&3&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + startTime;
         para.click();
         // console.log(para.href);
@@ -844,7 +850,7 @@ function delActicity(info) {
     else
     {
         var num = Number(info[3]);
-        para.href='closeexe://&&3&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+        para.href='closeexe://&&3&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + num;
         var now = 4;
 
@@ -865,6 +871,7 @@ function modifyActivity(info) {
     var exeTime=dateHour2exe(newActdate,startTime);
 
     var nowWeek=selectdom.selectedIndex+1;
+    var page01=document.getElementById('page01');
     
     var type=0;
     var lop=0;
@@ -874,7 +881,7 @@ function modifyActivity(info) {
     var oldStartTime = Number(info[1]);
     if(type === 3)
     {
-        para.href = 'closeexe://&&4&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+        para.href = 'closeexe://&&4&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + oldStartTime;
 
         var onTime=document.getElementById('onTime');
@@ -917,7 +924,7 @@ function modifyActivity(info) {
     }
     else if(type === 2)
     {
-        para.href = 'closeexe://&&4&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+        para.href = 'closeexe://&&4&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + oldStartTime;
 
         var Actname=document.getElementById('Actname').value;
@@ -929,7 +936,7 @@ function modifyActivity(info) {
     }
     else if(type === 4)
     {
-        para.href = 'closeexe://&&4&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+        para.href = 'closeexe://&&4&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type;
 
         var oldNum = Number(info[3]);
@@ -957,9 +964,10 @@ function modifyActivity(info) {
 function searchActivity() {
     var searchName = document.getElementById('searchName').value;
     var searchType = document.getElementById('searchType').value;
+    var page01 = document.getElementById('page01');
     para = document.createElement("a");
     var nowWeek=selectdom.selectedIndex+1;
-    para.href = 'closeexe://&&5&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+    para.href = 'closeexe://&&5&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + searchType + '&&' + searchName + '&&' + "0";
     para.click();
 }
