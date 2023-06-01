@@ -29,7 +29,8 @@ public:
 
 	void wr(const int now_time, const string name, const string content)
 	{
-		this->ofs << now_time << "," << name << "," << content << endl;
+		// cout << now_time << "," << name << "," << content << endl;
+ 		this->ofs << now_time << "," << name << "," << content << endl;
 		return;
 	}
 };

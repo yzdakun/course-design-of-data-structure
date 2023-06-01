@@ -9,6 +9,7 @@
 #include"Time.h"
 #include"stringop.h"
 #include"findWay.h"
+#include"Clog.h"
 #include"CLog.cpp"
 using namespace std;
 
@@ -57,6 +58,7 @@ void student::ManageSystem()
 	ofsCou.open("../htmls/pagebuffer.txt");
 	ofsCou<<-1<<endl;
 	this->ShowClassSchedule(1);
+	log1.wr(now_time, this->name , "登陆了学生管理系统");
 	
 
 	DWORD cbBytes;
@@ -430,10 +432,8 @@ void student::ManageSystem()
 					ofsCou<<1000<<endl;
 					
 					ifsArg >> NTS;
-					memset(timeline,0,sizeof(timeline));
-					SaveAlarmClockInformation();
-					InitCourseInformation(NTS);
-					InitAlarmClockInformation(NTS);
+					save();
+					Init(NTS);
 					this->ShowClassSchedule(w);
 					ShowPersonalAlarmClock();
 					SystemAlarmClock(NTS);
@@ -577,7 +577,8 @@ void student::InitActivityInformation()
 	int place;
 	int id;
 	int kind;
-	while (ifs >> name && ifs >> StartTime && ifs >> EndTime && ifs >> place && ifs >> id && ifs >> kind)
+	int tp;
+	while (ifs >> name && ifs >> StartTime && ifs >> EndTime && ifs >> place && ifs >> id && ifs >> kind && ifs >> tp)
 	{
 		// cout << StartTime << endl;
 		int x = StartTime / 168;
@@ -599,6 +600,7 @@ void student::InitActivityInformation()
 				ActivityList[x][i].place = place;
 				ActivityList[x][i].id = id;
 				ActivityList[x][i].kind = kind;
+				ActivityList[x][i].type = tp;
 				ActivityNum[x]++;
 			}
 			else
@@ -610,7 +612,8 @@ void student::InitActivityInformation()
 	}
 	if (flag)
 	{
-		cout << "您有个人活动因冲突被删除" << endl;
+		ofsCou << 1 << endl;
+		ofsCou << "您有个人活动因冲突被删除" << endl;
 	}
 	ifs.close();
 }
@@ -648,7 +651,8 @@ void student::InitGroupActInformation()
 	int place;
 	int Class;
 	int kind;
-	while (ifs >> name && ifs >> StartTime && ifs >> EndTime && ifs >> place && ifs >> Class && ifs >> kind)
+	int tp;
+	while (ifs >> name && ifs >> StartTime && ifs >> EndTime && ifs >> place && ifs >> Class && ifs >> kind && ifs >> tp)
 	{
 		int x = StartTime / 168;
 		if (Class == this->ClassNum)//
@@ -668,6 +672,7 @@ void student::InitGroupActInformation()
 			GroupActList[x][i].place = place;
 			GroupActList[x][i].Class = Class;
 			GroupActList[x][i].kind = kind;
+			GroupActList[x][i].type = tp;
 			GroupActNum[x]++;
 		}
 	}
@@ -738,7 +743,8 @@ void student::InitTempActInformation()
 	}
 	if (flag)
 	{
-		cout << "您有临时事务因冲突被删除" << endl;
+		ofsCou << 1 << endl;
+		ofsCou << "您有临时事务因冲突被删除" << endl;
 	}
 	ifs.close();
 }
@@ -806,7 +812,8 @@ void student::SaveGroupActInformation()
 			<< GroupActList[i][j].EndTime << " "
 			<< GroupActList[i][j].place << " "
 			<< GroupActList[i][j].Class << " "
-			<< GroupActList[i][j].kind << endl;
+			<< GroupActList[i][j].kind << " "
+			<< GroupActList[i][j].type << endl;
 		}
 	}
 	ofs.close();
@@ -1800,6 +1807,7 @@ void student::DeletePersonalAlarmClock()
 void student::ShowPersonalAlarmClock()
 {
 	ofsAla.open("../datas/alarms.txt");
+	// cout << AlarmNum - AlarmIdx << endl;
 	for (int i = AlarmIdx; i < AlarmNum; i++)
 	{
 		ofsAla << AlarmList[i].StartTime << " ";
@@ -2396,7 +2404,7 @@ void manager::fUpdate()
 void manager::connection()
 {
 	ofstream ofs;
-	ofs.open("../datas/course_list.txt", ios::out);
+	ofs.open("../datas/8course.txt", ios::out);
 	vector<course> temp;
 	temp = course_Array;
 	int m_time = 0;
@@ -2421,6 +2429,7 @@ void manager::connection()
 			temp[k].EndTime += 168;
 		}
 	}
+	ofs.close();
 }
 void manager::translate()
 {

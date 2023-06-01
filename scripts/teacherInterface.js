@@ -7,6 +7,7 @@ var selectdom = document.querySelector('select');
 var calen = document.getElementById('date');
 var couta = document.getElementById('coutable');
 var tips = document.getElementById('tips');
+var exit = document.getElementById('exit');
 var modifyStuForm = document.getElementById('modifyStudentForm');
 var courseForm = document.getElementById('courseForm');
 var addCourseButton = document.getElementById('addCourseButton');
@@ -28,6 +29,12 @@ document.querySelectorAll('select').forEach(el=>{
     if(el.id!="week" && el.id!="searchType")
         addOption(el);
 })
+
+exit.onclick = function() {
+    var para = document.createElement("a");
+    para.href = 'closeexe://&&20&&';
+    para.click();
+}
 
 function timeWalk() {
     var nowTimStamp=new Date(nowTime).getTime();
