@@ -47,7 +47,7 @@ void manager::init()
 }
 void manager::add_class()
 {
-	int num, j = 0;
+	int num, j = 0, k = 0;
 	course c;
 	cout << "请选择要添加的课程数：" << endl;
 	cin >> num;
@@ -68,10 +68,33 @@ void manager::add_class()
 			if (j == count_course)
 				break;
 		}
-		cout << "请输入第" << i + 1 << "个课程的开始时间：" << endl;
-		cin >> c.StartTime;
-		cout << "请输入第" << i + 1 << "个课程的结束时间：" << endl;
-		cin >> c.EndTime;
+		while (1)
+		{
+			cout << "请输入第" << i + 1 << "个课程的开始时间：" << endl;
+			cin >> c.StartTime;
+			cout << "请输入第" << i + 1 << "个课程的结束时间：" << endl;
+			cin >> c.EndTime;
+			for (k = 0; k < count_course; k++)
+			{
+				if ((course_Array[k].StartTime > c.StartTime) && (course_Array[k].EndTime < c.StartTime))
+				{
+					cout << "该上课时间存在冲突！" << endl;
+					break;
+				}
+				else if ((course_Array[k].StartTime > c.EndTime) && (course_Array[k].EndTime < c.EndTime))
+				{
+					cout << "该上课时间存在冲突！" << endl;
+					break;
+				}
+				else if ((course_Array[k].StartTime = c.StartTime) && (course_Array[k].EndTime = c.EndTime))
+				{
+					cout << "该上课时间存在冲突！" << endl;
+					break;
+				}
+			}
+			if (k == count_course)
+				break;
+		}
 		cout << "请输入第" << i + 1 << "个课程的上课地点：" << endl;
 		cin >> c.place;
 		cout << "请输入第" << i + 1 << "个课程的上课班级：" << endl;
@@ -94,11 +117,6 @@ void manager::add_class()
 		}
 		course_Array.push_back(c);
 		count_course++;
-	}
-	
-	sort(course_Array.begin(), course_Array.end(), cmp);
-	fUpdate();
-	cout << "添加成功！" << endl;
 }
 void manager::delete_class()
 {
@@ -131,7 +149,7 @@ void manager::delete_class()
 void manager::change_class()
 {
 	string name;
-	int num, j = 0, i = 0;
+	int num, j = 0, i = 0 , k = 0;
 	course c;
 	while (1)
 	{
@@ -165,10 +183,33 @@ void manager::change_class()
 		if (j == count_course)
 			break;
 	}
-	cout << "请输入修改后课程的开始时间：" << endl;
-	cin >> c.StartTime;
-	cout << "请输入修改后课程的结束时间：" << endl;
-	cin >> c.EndTime;
+	while (1)
+	{
+		cout << "请输入修改后课程的开始时间：" << endl;
+		cin >> c.StartTime;
+		cout << "请输入修改后课程的结束时间：" << endl;
+		cin >> c.EndTime;
+		for (k = 0; k < count_course; k++)
+		{
+			if ((course_Array[k].StartTime > c.StartTime) && (course_Array[k].EndTime < c.StartTime))
+			{
+				cout << "该上课时间存在冲突！" << endl;
+				break;
+			}
+			else if ((course_Array[k].StartTime > c.EndTime) && (course_Array[k].EndTime < c.EndTime))
+			{
+				cout << "该上课时间存在冲突！" << endl;
+				break;
+			}
+			else if ((course_Array[k].StartTime = c.StartTime) && (course_Array[k].EndTime = c.EndTime))
+			{
+				cout << "该上课时间存在冲突！" << endl;
+				break;
+			}
+		}
+		if (k == count_course)
+			break;
+	}
 	cout << "请输入修改后课程的上课地点：" << endl;
 	cin >> c.place;
 	cout << "请输入修改后课程的上课班级：" << endl;
