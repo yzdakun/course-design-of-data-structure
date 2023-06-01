@@ -15,6 +15,7 @@
 #include "Log_control.cpp"
 #include "user.cpp"
 #include "Time.cpp"
+// #include "CLog.cpp"
 // #include "manager.cpp"
 #include "course.cpp"
 using namespace std;
@@ -28,7 +29,6 @@ void HideWindow();
 string CharToStr(char * contentChar);
 void DelLineData(int lineNum);
 
-thread TH;
 
 int main(int argc, char** argv)
 {
@@ -40,9 +40,6 @@ int main(int argc, char** argv)
     strcpy(path,a.c_str());
     SetCurrentDirectoryA(path);
 
-	TH = thread(time_run);
-	St = 1;
-	TH.join();
 	fileWatcher();
 
 	
@@ -95,7 +92,8 @@ void fileWatcher()
 
 	
 	int flag=0;
-	int level=0;
+	long long lastTS = 0, nowTS = 0;
+	// int level=0;
 	while (true)
 	{
 		cout<<"Monitoring"<<endl;
@@ -103,13 +101,14 @@ void fileWatcher()
 								  FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_LAST_ACCESS,
 								  &cbBytes, NULL, NULL))
 		{
-			if(level == 0)
-				level = 1;
-			else
+			nowTS = time(0);
+			if(nowTS - lastTS <= 1)
 			{
-				level = 0;
+				lastTS = nowTS;
+				cout<<nowTS<<endl;
 				continue;
 			}
+			lastTS = nowTS;
 			switch (pnotify->Action)
 			{	
 			case FILE_ACTION_MODIFIED:
@@ -127,12 +126,6 @@ void fileWatcher()
 					// cout<<"LOGIN_COMMAND"<<endl;
 					Login();
 					ifs.close();
-					break;
-
-				// case ASK_FOR_COURSE:
-				// 	int w;
-				// 	ifs>>w;
-				// 	break;
 				
 				default:
 					break;

@@ -13,12 +13,12 @@
             <header>
                 <div style="display: none;" id="timeSetterBox">
                     <input  min="2023-02-20T00:00" max="2023-07-02T23:59"
-                            type="datetime-local" id="timeSetter" style="width: 150px;">
+                            type="datetime-local" id="timeSetter" style="width: 200px;">
                     <button type="button" id="timeCon" style="margin: 0; display: inline-flex;" onclick="timeCon(1)">确定</button>
                     <button type="button" id="timeCan" style="margin: 0; display: inline-flex;" onclick="timeCon(2)">取消</button>
                 </div>
                 <div id="timeBox" style="font-size: large; padding: 10px 10px; " onclick="timeCha()">
-                    我是学生
+                    
                     
                 </div>
                 
@@ -30,7 +30,7 @@
                 </div>
                 
                     
-                <a href="login.html"><button class="chooseItem" style="margin-left: auto;">退出登录</button></a>
+                <a href="login.html"><button class="chooseItem" style="margin-left: auto;" id="exit">退出登录</button></a>
             </header>
         </div>
         <div class="main-wrapper">
@@ -38,14 +38,115 @@
                 <aside>
                     <div class="chooseItem-row" id="stu">学生管理</div>
                     <div class="chooseItem-row" id="cou">课程管理</div>
-                    
+                    <div class="chooseItem-row" id="itm03">操作日志</div>
                 </aside>
             </div>
             <div class="main">
+                <div class="overlay" id="tips" style="overflow: scroll">
+                    <form style="background-color: aliceblue; margin: 100px auto;">
+                        <p id="tipsContent">
+                    
+                        </p>
+                        <button type="button" onclick="closeTips()">确定</button>
+                    </form>
+                    
+                </div>
+                <div class="overlay" id="modifyStudentForm" style="overflow: scroll;">
+                    <form id="modifyForm" class="addForm" style="background-color: aliceblue; margin: 100px auto;">
+                        <h1>修改学生信息</h1>
+                        <section>
+                            <p>
+                                <span>学生姓名：</span>
+                                <input type="text" id="newName">
+                            </p>
+                            <p>
+                                <span>学生班级：</span>
+                                <input type="text" id="newClass">
+                            </p>
+                            <p>
+                                <span>学生id：</span>
+                                <input type="text" id="newId">
+                            </p>
+                        </section>
+                        <div>
+                            <button type="button" id="comp" onclick="modifyStudent()">确认</button>
+                            <button type="button" onclick="Canc()" id="canc">取消</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="overlay" id="courseForm" style="overflow: scroll;">
+                    <form id="addCourseForm" class="addForm" style="background-color: aliceblue; margin: 100px auto;">
+                        <h1 id="courseTitle">添加新的课程</h1>
+                        <section>
+                            <p>
+                                <span>课程名称：</span>
+                                <input type="text" id="courseName">
+                            </p>
+                            </p>
+                        </section>
+                        <section>
+                            <p>
+                                <span>星期：</span>
+                                <input type="number" id="courseDay" min="1" max="7"> 
+                            </p>
+                            <p>
+                                <span>起始时间：</span>
+                                <input type="number" id="startTime" min="6" max="21">
+                                <span>终止时间：</span>
+                                <input type="number" id="endTime" min="7" max="22">
+                            </p>
+                        </section>
+                        <section>
+                            <p>
+                                <span>上课地点：</span>
+                                <select id="coursePlac"></select>
+                            </p>
+                            <p>
+                                <span>上课班级：</span>
+                                <input type="number" id="courseClas">
+                            </p>
+                        </section>
+                        <section>
+                            <fieldset>
+                                <legend>是否为单次课</legend>
+
+                                <p>
+                                <input type="radio" name="once" id="Y" value="Y" onchange="gener(this)">
+                                <label>是</label>
+                                </p>
+
+                                <p>
+                                <input type="radio" name="once" id="N" value="N" onchange="gener(this)" checked>
+                                <label>否</label>
+                                </p>
+                            </fieldset>
+                        </section>
+                        <section id="oneWeek" style="display: none;">
+                            <p>
+                                <span>上课周：</span>
+                                <input type="number" id="courseWeek" value="1">
+                            </p>
+                        </section>
+                        <section id="multiWeek">
+                            <p>
+                                <span>上课周数：</span>
+                                <input type="number" id="weekNum" min="2" value="2">
+                            </p>
+                            <p>
+                                <span>上课周：</span>
+                                <input type="text" id="startWeek" style="width: 250px;" placeholder="输入示例：1,3-6,8-18 限英文逗号">
+                            </p>
+                        </section>
+                        <div>
+                            <button type="button" id="compCourse">确认</button>
+                            <button type="button" onclick="closeCourse()" id="canc">取消</button>
+                        </div>
+                    </form>
+                </div>
                 <div id="page01" class=" page" style="display: block">
                     <div id="inputstu" text-align="center">
                         <input type="text" id="name">
-                        <input type="text" id="number">
+                        <!-- <input type="text" id="number"> -->
                         <input type="text" id="class">
                         <input type="text" id="stuid">
                         <input type="button" value="添加" id="btnadd">
@@ -62,6 +163,9 @@
                     </table>
                 </div>
                 <div id="page02" class=" page" style="display: none; overflow: scroll; height: 80vh;">
+                    <div style="margin: 20px auto;">
+                        <button type="button" id="addCourseButton">添加新的课程</button>
+                    </div>
                     <table>
                         <caption>课程信息表</caption>
                         <tr>
@@ -70,12 +174,16 @@
                             <th>时间</th>
                             <th>班级</th>
                             <th>地点</th>
-                            <th>周数</th>
+                            <th>上课周数</th>
+                            <th>上课周</th>
                             <!-- <th>考试时间</th>
                             <th>考试地点</th> -->
                             <th>操作</th>
                         </tr>
                     </table>
+                </div>
+                <div id="page03" class=" page" style="display: none;">
+                    
                 </div>
             </div>
             

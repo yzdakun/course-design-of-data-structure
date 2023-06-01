@@ -3,6 +3,7 @@ var calen = document.getElementById('date');
 var couta = document.getElementById('coutable');
 var cit = document.querySelectorAll('.chooseItem-row');
 var timeControler=document.querySelectorAll('div.chooseItem');
+var exit = document.getElementById('exit');
 var nowTime=new Date();
 var timeWalkPace=1000;
 var timeBox=document.getElementById('timeBox');
@@ -26,16 +27,20 @@ var tips=document.getElementById('tips');
 var coodinates=load("./coodinates.txt");
 var num2plac=load("./num2placTable.txt");
 var buffer=load("./pagebuffer.txt");
+var log = load("../datas/log.txt");
 coodinates=coodinates.split("\n");
 buffer=buffer.split("\r").join("");
 num2plac=num2plac.split("\r").join("");
 num2plac=num2plac.split("\n");
+log=log.split("\r").join("");
+log=log.split("\n");
 var balls=[];
 
 const canvas=document.querySelector('canvas');
 const ctx=canvas.getContext('2d');
 var num=1;
 var middlePointsNum=0;
+var SANum=0;
 var level;
 
 document.querySelectorAll('select').forEach(el=>{
@@ -54,15 +59,19 @@ function load(name) {
 
 window.onload = function() {
     buffer=buffer.split("\n");
-
+    initLog();
     switch(Number(buffer[0]))
     {
         case -1:
-            initTime(new Date().getTime());
+            initTime(new Date("2023-02-20").getTime());
             changePage(0);
             timeSet(1);
-            initact();
-            initAlarm();
+            // initact();
+            // initAlarm();
+            var nowWeek = selectdom.selectedIndex+1;
+            var para = document.createElement("a");
+            para.href='closeexe://&&11&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + jsHour2exe();
+            para.click();
             break;
         case 0:
             changePage(0);
@@ -78,6 +87,42 @@ window.onload = function() {
 
             initTime(Number(buffer[3]));
             timeSet(1);
+
+            initact();
+            initAlarm();
+            var page01 = document.getElementById('page01');
+            page01.scrollBy(0,Number(buffer[4]));
+            if(Number(buffer[5]) === 1)
+            {
+                tips.style.display='block';
+                var i=5;
+                var tipsContent=document.getElementById('tipsContent');
+                while(buffer[i]!="")
+                {
+                    if(buffer[i]==="1")
+                    {
+                        i++;
+                        continue;
+                    }
+                    if(Number(buffer[i]) > 1 && Number(buffer[i] <= 10000))
+                        buffer[i]=exeHour2js(buffer[i]);
+                    var newp=document.createElement("p");
+                    newp.innerHTML=buffer[i];
+                    tipsContent.appendChild(newp);
+                    i++;
+                }
+            }
+            break;
+
+        case 1:
+            case 0:
+            changePage(1);
+
+            selectdom.selectedIndex=Number(buffer[1])-1;
+            calen.value=buffer[2];
+            chacalen(0);
+            initTime(Number(buffer[3]));
+            timeSet(0);
 
             initact();
             initAlarm();
@@ -117,6 +162,37 @@ window.onload = function() {
 
             changePage(2);
             drawWay();
+            break;
+        case 5:
+            changePage(0);
+
+            selectdom.selectedIndex=Number(buffer[1])-1;
+            if(buffer[2]!="null")
+            {
+                calen.value=buffer[2];
+                chacalen(0);
+            }
+            else
+                chacalen(1);
+
+            initTime(Number(buffer[3]));
+            timeSet(1);
+            var page01 = document.getElementById('page01');
+            page01.scrollBy(0,Number(buffer[4]))
+            initact();
+            initAlarm();
+            
+            timeWalkPace = Number(buffer[5]);
+            if(timeWalkPace === 1000)
+                timeSet(1);
+            else if(timeWalkPace === 1000 * 60 * 6)
+                timeSet(2);
+            else 
+                timeSet(3);
+            checkPAT();
+            checkSAT();
+            checkTAT();
+            break;
         default:
             break;
     }
@@ -165,6 +241,11 @@ cit[3].onclick = function() {
 dele.onclick = function() {
     del(dele);
 }
+exit.onclick = function() {
+    var para = document.createElement("a");
+    para.href = 'closeexe://&&20&&';
+    para.click();
+}
 
 function initTime(domTime) {
 
@@ -175,7 +256,17 @@ function initTime(domTime) {
 function timeWalk() {
     var nowTimStamp=new Date(nowTime).getTime();
     nowTimStamp+=timeWalkPace;
+    var oriHour = nowTime.getHours();
     nowTime=new Date(nowTimStamp);
+    var newHour = nowTime.getHours();
+    var page01 = document.getElementById('page01');
+    if(newHour != oriHour)
+    {
+        var week = selectdom.selectedIndex + 1;
+        var para = document.createElement("a");
+        para.href = 'closeexe://&&12&&' + week + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop + '&&' + timeWalkPace + '&&' + jsHour2exe();
+        para.click();
+    }
     timeBox.innerHTML=nowTime.toLocaleString();
 }
 setInterval(timeWalk,1000);//控制时间前进
@@ -198,6 +289,36 @@ function timeSet(i) {
         timeWalkPace=1000*60*60;
 }//设置时间前进的快慢
 
+function timeCha() {
+    timeControler[0].click();
+    var timeSetterBox=document.getElementById('timeSetterBox');
+    var timeSetter=document.getElementById('timeSetter');
+    timeSetterBox.style.display='block';
+    timeSetter.value=nowTime;
+    
+}//更改当前时间
+
+function timeCon(flag) {
+    var timeSetterBox=document.getElementById('timeSetterBox');
+    var timeSetter=document.getElementById('timeSetter');
+    if(flag===1 && timeSetter.value!="")
+    {
+        console.log(timeSetter.value)
+        nowTime=timeSetter.value;
+        timeBox.innerHTML=nowTime.toLocaleString();
+        timeSetterBox.style.display='none';
+    }
+    else
+        timeSetterBox.style.display='none';
+    timeControler[1].click();
+    var nowTimStamp=new Date(nowTime).getTime();
+    nowTime=new Date(nowTimStamp);
+    nowWeek = selectdom.selectedIndex+1;
+    var page01 = document.getElementById('page01');
+    var para = document.createElement("a");
+    para.href='closeexe://&&13&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop + '&&' + jsHour2exe();
+    para.click();
+}//时间修改器的开启与关闭
 
 function changePage(i) {
     level=i;
@@ -439,7 +560,7 @@ function addEve(ind,top,bot,hei,bl,info,type) {
     if(type!=1)
     {
         createAlarm.onclick = function() {
-            addAlarm(info);
+            addAlarm(info,type);
         }
     }
     if(type===1)
@@ -579,6 +700,8 @@ function goMultiple(info) {
         var delbut=document.getElementById('delPoint');
         delbut.click();
     }
+    var endPoint = document.getElementById('endPoint');
+    endPoint.selectedIndex = 0;
     var num=Number(info[3]);
     var now=5;
 
@@ -621,6 +744,8 @@ function addActivity() {
     var exeTime=dateHour2exe(newActdate,startTime);
 
     var nowWeek=selectdom.selectedIndex+1;
+    var page01 = document.getElementById('page01');
+    console.log(page01.scrollTop);
     
     var indAct=document.getElementById('indAct');
     var groAct=document.getElementById('groAct');
@@ -642,7 +767,7 @@ function addActivity() {
             var Actname=document.getElementById('Actname').value;
             var Actplac=document.getElementById('Actplac').selectedIndex;
 
-            para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+            para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + lop
                                 + '&&' + exeTime + '&&' + Actname + '&&' + Actplac;
             para.click();
@@ -655,7 +780,7 @@ function addActivity() {
             var endDate=document.getElementById('endDate').value;
             var endExeTime=Number(dateHour2exe(endDate,startTime)+1);
 
-            para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+            para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + lop
                                 + '&&' + exeTime + '&&' + endExeTime + '&&' + Actname + '&&' + Actplac;
             para.click();
@@ -668,7 +793,7 @@ function addActivity() {
             var endDate=document.getElementById('endDate').value;
             var endExeTime=dateHour2exe(endDate,startTime)+1;
 
-            para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+            para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + lop
                                 + '&&' + exeTime + '&&' + endExeTime + '&&' + Actname + '&&' + Actplac;
             para.click();
@@ -683,7 +808,7 @@ function addActivity() {
         var Actname=document.getElementById('Actname').value;
         var Actplac=document.getElementById('Actplac').selectedIndex;
 
-        para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+        para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type
                                 + '&&' + exeTime + '&&' + Actname + '&&' + Actplac;
         para.click();
@@ -692,7 +817,7 @@ function addActivity() {
     else if(indEve.checked===true)
     {
         type=4;
-        para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+        para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + num;
         
         for(var i=1;i<=num;i++)
@@ -710,13 +835,14 @@ function addActivity() {
 
 function delActicity(info) {
     var nowWeek=selectdom.selectedIndex+1;
+    var page01 = document.getElementById('page01');
 
     var type = Number(info[0]);
     var para = document.createElement("a");
     var startTime = Number(info[1]);
     if(type === 2 || type === 3)
     {
-        para.href='closeexe://&&3&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+        para.href='closeexe://&&3&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + startTime;
         para.click();
         // console.log(para.href);
@@ -724,7 +850,7 @@ function delActicity(info) {
     else
     {
         var num = Number(info[3]);
-        para.href='closeexe://&&3&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+        para.href='closeexe://&&3&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + num;
         var now = 4;
 
@@ -745,6 +871,7 @@ function modifyActivity(info) {
     var exeTime=dateHour2exe(newActdate,startTime);
 
     var nowWeek=selectdom.selectedIndex+1;
+    var page01=document.getElementById('page01');
     
     var type=0;
     var lop=0;
@@ -754,7 +881,7 @@ function modifyActivity(info) {
     var oldStartTime = Number(info[1]);
     if(type === 3)
     {
-        para.href = 'closeexe://&&4&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+        para.href = 'closeexe://&&4&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + oldStartTime;
 
         var onTime=document.getElementById('onTime');
@@ -797,7 +924,7 @@ function modifyActivity(info) {
     }
     else if(type === 2)
     {
-        para.href = 'closeexe://&&4&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+        para.href = 'closeexe://&&4&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + oldStartTime;
 
         var Actname=document.getElementById('Actname').value;
@@ -809,7 +936,7 @@ function modifyActivity(info) {
     }
     else if(type === 4)
     {
-        para.href = 'closeexe://&&4&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+        para.href = 'closeexe://&&4&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type;
 
         var oldNum = Number(info[3]);
@@ -837,9 +964,10 @@ function modifyActivity(info) {
 function searchActivity() {
     var searchName = document.getElementById('searchName').value;
     var searchType = document.getElementById('searchType').value;
+    var page01 = document.getElementById('page01');
     para = document.createElement("a");
     var nowWeek=selectdom.selectedIndex+1;
-    para.href = 'closeexe://&&5&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime()
+    para.href = 'closeexe://&&5&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + searchType + '&&' + searchName + '&&' + "0";
     para.click();
 }
@@ -1111,7 +1239,7 @@ function del(obj) {
 }//日程信息表删除多个临时事务
 
 
-function addAlarm(info) {
+function addAlarm(info,type) {
     addAct.style.display='block';
     var head=document.getElementsByTagName('h1')[0];
     head.innerHTML="添加新的闹钟";
@@ -1125,17 +1253,32 @@ function addAlarm(info) {
     var actTime=document.getElementById('actTime');
 
     // newAlarmDate.value=getDate();
-    alarmTime.value=Number(info[1])-1;
-    alarmTime.max=Number(info[1])-1;
-    actTime.innerHTML="活动时间："+Number(info[1]);
+    alarmTime.value=(Number(info[1])-1)%24;
+    alarmTime.max=(Number(info[1])-1)%24;
+    actTime.innerHTML="活动时间："+(Number(info[1])%24);
 
     var comp=document.getElementById('comp');
     comp.onclick = function() {
-        compAlarm();
+        compAddAlarm(info,type);
     }
     actSection.style.display='none';
     alarmSection.style.display='block';
 }//添加新的闹钟
+
+function compAddAlarm(info,type) {
+    var nowWeek=selectdom.selectedIndex+1;
+    var alarmTime=document.getElementById('alarmTime').value;
+    var actTime=Number(info[1]);
+    alarmTime = actTime - (actTime%24-alarmTime);
+
+    var para = document.createElement("a");
+    para.href = para.href = 'closeexe://&&8&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + alarmTime + '&&' + type + '&&' + actTime;
+    if(type === 3)
+        para.href += '&&' + info[5][0];
+    else para.href += '&&' + '1';
+
+    para.click();
+}
 
 function initAlarm() {
     var alarmInfo=document.getElementById('alarmInfo');
@@ -1143,80 +1286,93 @@ function initAlarm() {
     alarms=alarms.split("\r").join("");
     alarms=alarms.split("\n");
     // console.log(alarms);
-    var alarmNum=Number(alarms[0]);
-    for(var i=1;i<=alarmNum;i++)
+    var k = 0;
+    console.log(alarms[2]);
+    while(alarms[k] != "")
     {
-        var info=alarms[i].split(" ");
+        console.log(k);
+        
+        var info=alarms[k].split(" ");
         // console.log(info);
         var newtr=document.createElement("tr");
         
         var type=document.createElement("td");
-        info[0]=Number(info[0]);
-        if(info[0]===0)
+        info[1]=Number(info[1]);
+        if(info[1]===3)
             type.innerHTML="个人活动";
-        else if(info[0]===1)
+        else if(info[1]===2)
             type.innerHTML="集体活动";
-        else if(info[0]===2)
+        else if(info[1]===4)
             type.innerHTML="临时事务";
         newtr.appendChild(type);
 
-        var time=document.createElement("td");
-        time.innerHTML=Number(info[1]);
-        newtr.appendChild(time);
+        var alarmTime = document.createElement("td");
+        alarmTime.innerHTML = Number(info[0])%24 + ':00';
+        newtr.appendChild(alarmTime);
 
-        var actTime=document.createElement("td");
-        actTime.innerHTML=Number(info[2]);
+        var actTime = document.createElement("td");
+        var sTime = Number(info[2])%24;
+        var eTime = Number(info[3])%24;
+        actTime.innerHTML = sTime + ':00 ~ ' + eTime + ':00';
         newtr.appendChild(actTime);
 
-        var date=document.createElement("td");
-        date.innerHTML=info[3];
+        var date = document.createElement("td");
+        date.innerHTML = exeHour2Date(Number(info[0]));
         newtr.appendChild(date);
 
-        var lop=document.createElement("td");
-        info[4]=Number(info[4]);
-        if(info[4]===0)
-            lop.innerHTML="单次";
-        else if(info[4]===1)
-            lop.innerHTML="每天";
+        var tdlop = document.createElement("td");
+        var lop = 0;
+        if(info[1] === 2)
+            lop = Number(info[7]);
+        else if(info[1] === 3)
+            lop = Number(info[6]);
+        if(lop === 0)
+            tdlop.innerHTML = '-';
+        else if(lop === 1)
+            tdlop.innerHTML = "单次";
+        else if(lop === 2)
+            tdlop.innerHTML = "每天";
         else
-            lop.innerHTML="每周";
-        newtr.appendChild(lop);
+            tdlop.innerHTML = "每周";
+        newtr.appendChild(tdlop);
 
-        var name=document.createElement("td");
-        var plac=document.createElement("td");
-        
-        if(info[0]===2)
+        var tdName = document.createElement("td");
+        var tdPlac = document.createElement("td");
+        var tdClas = document.createElement("td");
+        if(info[1] === 2 || info[1] === 3)
         {
-            name.innerHTML="";plac.innerHTML="";
-            var eveNum=Number(info[5]);
-            for(var j=1;j<=eveNum;j++)
+            tdName.innerHTML = info[4];
+            tdPlac.innerHTML = writePlace(Number(info[5]));
+        }
+        if(info[1] === 2)
+            tdClas.innerHTML = info[6];
+        else
+            tdClas.innerHTML = '-';
+        if(info[1] === 4)
+        {
+            tdName.innerHTML = "";
+            tdPlac.innerHTML = "";
+            var num = Number(info[4]);
+            var now = 5;
+            for(var i=1;i<=num;i++)
             {
-                var newp0=document.createElement("p");
-                newp0.innerHTML=info[5+j*2-1];
-                var newp1=document.createElement("p");
-                newp1.innerHTML=writePlace(Number(info[5+j*2]));
-                
-                name.appendChild(newp0);
-                plac.appendChild(newp1);
+                var newp1 = document.createElement("p");
+                newp1.innerHTML = info[now];
+                var newp2 = document.createElement("p");
+                newp2.innerHTML = writePlace(info[now+1]);
+                tdName.appendChild(newp1);
+                tdPlac.appendChild(newp2);
+                now += 2;
             }
         }
-        else
-        {
-            name.innerHTML=info[5];
-            plac.innerHTML=writePlace(Number(info[6]));
-        }
-        newtr.appendChild(name);
-        newtr.appendChild(plac);
-
-        var classes=document.createElement("td");
-        if(info[0]===1)
-            classes.innerHTML=info[7];
-        newtr.appendChild(classes);
-
+        newtr.appendChild(tdName);
+        newtr.appendChild(tdPlac);
+        newtr.appendChild(tdClas);
+        
         var delbut=document.createElement("button");
         delbut.type="button";
         delbut.onclick=function() {
-            delAlarm(this);
+            delAlarm(Number(info[0]),date.innerHTML);
         }
         delbut.innerHTML="删除";
 
@@ -1224,7 +1380,7 @@ function initAlarm() {
         modifybut.type="button";
         modifybut.id=info.join("&");
         modifybut.onclick=function() {
-            modifyAlarm(this.id);
+            modifyAlarm(this.id,lop);
         }
         modifybut.innerHTML="修改";
 
@@ -1234,14 +1390,18 @@ function initAlarm() {
         newtr.appendChild(ops);
 
         alarmInfo.appendChild(newtr);
+        k++;
     }
 }//初始化闹钟列表
 
-function delAlarm(obj) {
-    
+function delAlarm(time,date) {
+    var nowWeek=selectdom.selectedIndex+1;
+    var para=document.createElement("a");
+    para.href = 'closeexe://&&9&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + dateHour2exe(date,time);
+    para.click();
 }//删除闹钟
 
-function modifyAlarm(info) {
+function modifyAlarm(info,lop) {
     info=info.split("&");
 
     addAct.style.display='block';
@@ -1255,23 +1415,258 @@ function modifyAlarm(info) {
     var alarmTime=document.getElementById('alarmTime');
     var actTime=document.getElementById('actTime');
     // newAlarmDate.value=info[2];
-    alarmTime.value=Number(info[1]);
-    alarmTime.max=Number(info[2])-1;
-    actTime.innerHTML="活动时间："+Number(info[2]);
+    alarmTime.value=Number(info[0])%24;
+    alarmTime.max=Number(info[2])%24-1;
+    actTime.innerHTML="活动时间："+(Number(info[2])%24);
 
     var comp=document.getElementById('comp');
     comp.onclick = function() {
-        compAlarm();
+        compModifyAlarm(info,lop);
     }
     actSection.style.display='none';
     alarmSection.style.display='block';
+}
 
+function compModifyAlarm(info,lop) {
+    var para = document.createElement("a");
+    var nowWeek=selectdom.selectedIndex+1;
+    para.href = para.href = 'closeexe://&&10&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime();
+
+    var alarmTime=document.getElementById('alarmTime').value;
+    var actTime=Number(info[2]);
+    alarmTime = actTime - (actTime%24-alarmTime);
+
+    para.href += '&&' + info[0] + '&&' + alarmTime + '&&' + Number(info[1]) + '&&' + actTime;
+    if(lop === 0)
+        lop = 1;
+    para.href += '&&' + lop;
+    para.click();
+}
+
+function closePAT() {
+    var PAT=document.getElementById('personalAlarmTip');
+    PAT.style.display = 'none';
+    timeSet(1);
+}
+function closeTAT() {
+    var TAT=document.getElementById('tempAlarmTip');
+    TAT.style.display = 'none';
+    timeSet(1);
+}
+function closeSAT() {
+    var SAT=document.getElementById('systemAlarmTip');
+    SAT.style.display = 'none';
+    timeSet(1);
+}
+
+function checkPAT() {
+    var PA = load("../datas/personalAlarm.txt");
+    PA = PA.split("\r").join("");
+    PA = PA.split("\n");
+    if(PA[0] === '1')
+    {
+        timeSet(0);
+        var info = PA[1].split(" ");
+        var PAT = document.getElementById('personalAlarmTip');
+        PAT.style.display = 'block';
+
+        var PAtype = document.getElementById('PAtype');
+        var PAname = document.getElementById('PAname');
+        var PAtime = document.getElementById('PAtime');
+        var PAplac = document.getElementById('PAplac');
+        var PAbutton = document.getElementById('PAbutton');
+
+        if(info[0] === '2')
+        {
+            var name = info[3];
+            var sTime = Number(info[1])%24;
+            var eTime = Number(info[2])%24;
+            var plac = Number(info[4]);
+
+            PAtype.innerHTML = "日程类型：集体活动";
+            PAname.innerHTML = '名称：' + name;
+            PAtime.innerHTML = '时间：' + sTime + ':00 ~ ' + eTime + ':00';
+            PAplac.innerHTML = '地点：' + writePlace(plac);
+            PAbutton.onclick = function() {
+                tipSingleWay(plac,PAT);
+            }
+        }
+        else if(info[0] === '3')
+        {
+            var name = info[3];
+            var sTime = Number(info[1])%24;
+            var eTime = Number(info[2])%24;
+            var plac = Number(info[4]);
+
+            PAtype.innerHTML = "日程类型：个人活动";
+            PAname.innerHTML = '名称：' + name;
+            PAtime.innerHTML = '时间：' + sTime + ':00 ~ ' + eTime + ':00';
+            PAplac.innerHTML = '地点：' + writePlace(plac);
+            PAbutton.onclick = function() {
+                tipSingleWay(plac,PAT);
+            }
+        }
+        else
+        {
+            var sTime = Number(info[1])%24;
+            var eTime = Number(info[2])%24;
+            PAtype.innerHTML = "日程类型：临时事务";
+            PAtime.innerHTML = '时间：' + sTime + ':00 ~ ' + eTime + ':00';
+
+            var num = Number(info[3]);
+            var now = 6;
+            var name = info[4];
+            var plac = writePlace(info[5]);
+            for(var i=2;i<=num;i++)
+            {
+                name += '，' + info[now];
+                plac += '，' + writePlace(info[now+1]);
+                now += 2;
+            }
+            PAname.innerHTML = '名称：' + name;
+            PAplac.innerHTML = '地点：' + plac;
+            PAbutton.onclick = function() {
+                tipMultiWay(info,PAT);
+            }
+        }
+    }
+}
+
+function checkTAT() {
+    var TA = load("../datas/tempAlarm.txt");
+    TA = TA.split("\r").join("");
+    TA = TA.split("\n");
+    if(TA[0] === '1')
+    {
+        timeSet(0);
+        var info = TA[1].split(" ");
+        var TAT = document.getElementById('tempAlarmTip');
+        TAT.style.display = 'block';
+
+        var TAname = document.getElementById('TAname');
+        var TAtime = document.getElementById('TAtime');
+        var TAplac = document.getElementById('TAplac');
+        var TAclas = document.getElementById('TAclas');
+        var TAbutton = document.getElementById('TAbutton');
+
+        var sTime = Number(info[1])%24;
+        var eTime = Number(info[2])%24;
+        var name = info[3];
+        var clas = info[4];
+        var plac = Number(info[5]);
+
+        TAname.innerHTML = '课程名称：' + name;
+        TAtime.innerHTML = '上课时间：' + sTime + ':00 ~ ' + eTime + ':00';
+        TAplac.innerHTML = '上课地点：' + writePlace(plac);
+        TAclas.innerHTML = '上课班级：' + clas;
+        TAbutton.onclick = function() {
+            tipSingleWay(plac,TAT);
+        }
+    }
+}
+
+function checkSAT() {
     
+    var SA = load("../datas/systemAlarm.txt");
+    SA = SA.split("\r").join("");
+    SA = SA.split("\n");
+    if(SA[0] === '1')
+    {
+        timeSet(0);
+        var SAT = document.getElementById('systemAlarmTip');
+        SAT.style.display = 'block';
+
+        var SAtable = document.getElementById('SAtable');
+        var oldtrs = SAtable.getElementsByTagName("tr");
+        for(var i=1;i<=SANum;i++)
+            SAtable.removeChild(oldtrs[i]);
+        var num = Number(SA[1]);
+        SANum = num;
+        for(var i=1;i<=num;i++)
+        {
+            var info = SA[i+1].split(" ");
+            var tr = document.createElement("tr");
+
+            var tdType = document.createElement("td");
+            var type = info[0];
+            if(type === '1')
+                tdType.innerHTML = "课程";
+            else if(type === '2')
+                tdType.innerHTML = "集体活动";
+            else if(type === '3')
+                tdType.innerHTML = "个人活动";
+            
+            var sTime = Number(info[1])%24;
+            var eTime = Number(info[2])%24;
+            var tdTime = document.createElement("td");
+            tdTime.innerHTML = sTime + ':00 ~ ' + eTime + ':00';
+
+            var tdName = document.createElement("td");
+            var name = info[3];
+            tdName.innerHTML = name;
+
+            var tdPlac = document.createElement("td");
+            var plac = writePlace(Number(info[4]));
+            tdPlac.innerHTML = plac;
+
+            var tdClas = document.createElement("td");
+            if(type === '1' || type === '2')
+            {
+                var clas = info[5];
+                tdClas.innerHTML = clas;
+            }
+            else
+                tdClas.innerHTML = '-';
+            
+            tr.appendChild(tdType);
+            tr.appendChild(tdTime);
+            tr.appendChild(tdPlac);
+            tr.appendChild(tdName);
+            tr.appendChild(tdClas);
+            SAtable.append(tr);
+        }
+    }
+}
+
+function tipSingleWay(plac,XAT) {
+    XAT.style.display = 'none';
+    cit[2].click();
+    while(middlePointsNum>0)
+    {
+        var delbut=document.getElementById('delPoint');
+        delbut.click();
+    }
+    var endPoint=document.getElementById('endPoint');
+    endPoint.selectedIndex = Number(plac);
+}
+
+function tipMultiWay(info,XAT) {
+    XAT.style.display = 'none';
+    cit[2].click();
+    while(middlePointsNum>0)
+    {
+        var delbut=document.getElementById('delPoint');
+        delbut.click();
+    }
+    var endPoint = document.getElementById('endPoint');
+    endPoint.selectedIndex = 0;
+    var num=Number(info[3]);
+    var now=5;
+
+    var newbut=document.getElementById('buildNewPoint');
+    for(var i=1;i<=num;i++)
+    {
+        newbut.click();
+        var newP=document.querySelectorAll('#middlePoint')[i-1];
+        newP.selectedIndex=Number(info[now]);
+        now=now+2;
+    }
 }
 
 function closeTips() {
     tips.style.display='none';
 }
+
 
 function newPoint() {
     var middlePoints=document.getElementById('middlePoints');
@@ -1487,6 +1882,18 @@ function drawArrow(ctx, fromX, fromY, toX, toY, theta, headlen, width, color) {
     ctx.restore();
 }
 
+function initLog() {
+    var i = 0;
+    var page04 = document.getElementById("page04");
+    while(log[i] != "")
+    {
+        var newp = document.createElement("p");
+        newp.innerHTML = log[i];
+        page04.append(newp);
+        i++;
+    }
+}
+
 function addOption(obj)
 {
     for(var i=0;i<120;i++)
@@ -1523,9 +1930,27 @@ function dateHour2exe(date,hour)
     return res;
 }
 
+function jsHour2exe()
+{
+    var oridate=new Date("2023-02-20");
+    return parseInt(parseInt(parseInt((nowTime.getTime() - oridate.getTime())/1000)/60)/60) + 8;
+}
 function exeHour2js(hour)
 {
     var res="";
     res=(Number(hour)%24) + ':00 ~ ' + (Number(hour)%24+1) + ':00';
     return res;
+}
+
+function exeHour2Date(hour)
+{
+    var oridate = new Date("2023-02-20");
+    var oriST = oridate.getTime();
+    oriST=Number(oriST+hour*1000*60*60);
+    var newDate = new Date(oriST);
+    var year=newDate.getFullYear();
+    var month=("0"+(newDate.getMonth()+1)).slice(-2);
+    var day=("0"+newDate.getDate()).slice(-2);
+    var mydate=year+'-'+month+'-'+day;
+    return mydate;
 }

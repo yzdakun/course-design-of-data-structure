@@ -12,6 +12,12 @@
     <div class="total-container">
         <div class="header-container" style="margin: 20px;">
             <header>
+                <div style="display: none;" id="timeSetterBox">
+                    <input  min="2023-02-20T00:00" max="2023-07-02T23:59"
+                            type="datetime-local" id="timeSetter" style="width: 200px;">
+                    <button type="button" id="timeCon" style="margin: 0; display: inline-flex;" onclick="timeCon(1)">确定</button>
+                    <button type="button" id="timeCan" style="margin: 0; display: inline-flex;" onclick="timeCon(2)">取消</button>
+                </div>
                 <div id="timeBox" style="font-size: large; padding: 10px 10px; " onclick="timeCha()">
                     我是学生
                     
@@ -25,7 +31,7 @@
                 </div>
                 <div></div>
                 <div></div>
-                <a href="login.html"><button class="chooseItem" style="margin-left: auto;">退出登录</button></a>
+                <a href="login.html"><button id="exit" class="chooseItem" style="margin-left: auto;">退出登录</button></a>
             </header>
         </div>
         <div class="main-wrapper">
@@ -41,7 +47,7 @@
             </div>
             <div class="main">
                 <div class="overlay" id="tips" style="overflow: scroll">
-                    <form style="background-color: aliceblue; margin: 100px auto;">
+                    <form class="tips" style="background-color: aliceblue; margin: 100px auto;">
                         <p id="tipsContent">
                     
                         </p>
@@ -160,6 +166,45 @@
                             <button type="button" id="comp">确认</button>
                             <button type="button" onclick="Canc()" id="canc">取消</button>
                         </div>
+                    </form>
+                </div>
+                <div class="overlay" id="personalAlarmTip">
+                    <form class="tips" style="background-color: aliceblue; margin: 100px auto;">
+                        <h1>闹钟提醒</h1>
+                        <p id="PAtype">日程类型：</p>
+                        <p id="PAname">名称：</p>
+                        <p id="PAtime">时间：</p>
+                        <p id="PAplac">地点：</p>
+                        <button type="button" onclick="closePAT()">确定</button>
+                        <button type="button" id="PAbutton">导航</button>
+                    </form>
+                </div>
+                <div class="overlay" id="tempAlarmTip">
+                    <form class="tips" style="background-color: aliceblue; margin: 100px auto;">
+                        <h1>课程提醒</h1>
+                        <p id="TAname">课程名称：</p>
+                        <p id="TAtime">上课时间：</p>
+                        <p id="TAplac">上课地点：</p>
+                        <p id="TAclas">上课班级：</p>
+                        <button type="button" onclick="closeTAT()">确定</button>
+                        <button type="button" id="TAbutton">导航</button>
+                    </form>
+                </div>
+                <div class="overlay" id="systemAlarmTip">
+                    <form class="tips" style="background-color: aliceblue; margin: 100px auto; width: 800px;">
+                        <h1>日程提醒</h1>
+                        <p>以下是您明天的日程：</p>
+                        <table id="SAtable">
+                            <tr>
+                                <th>类型</th>
+                                <th>时间</th>
+                                <th>地点</th>
+                                <th>名称</th>
+                                <th>参与班级</th>
+                            </tr>
+                            
+                        </table>
+                        <button type="button" onclick="closeSAT()">确定</button>
                     </form>
                 </div>
                 <div id="page01" class=" page" style="display: block; overflow: scroll; height: 80vh;">
@@ -290,7 +335,7 @@
                     <table id="alarmInfo">
                         <tr>
                             <th>类型</th>
-                            <th>时间</th>
+                            <th>闹钟时间</th>
                             <th>活动时间</th>
                             <th>起始日期</th>
                             <th>周期</th>
@@ -333,7 +378,7 @@
                     
                 </div>
                 <div id="page04" class=" page" style="display: none;">
-                    操作日志
+                    
                 </div>
             </div>
             

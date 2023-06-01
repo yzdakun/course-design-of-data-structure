@@ -28,6 +28,7 @@ public:
 	int place;
 	int Class;//���˻ʱ����ѧ��id������ʱ����༶
 	int kind;
+	int type;
 };
 
 class activity
