@@ -91,9 +91,24 @@ function timeCon(flag) {
 }//时间修改器的开启与关闭
 btnadd.onclick = function() {
     var name=document.getElementById('name').value;
+    if(name === "")
+    {
+        warning("学生姓名不能为空");
+        return ;
+    }
     // var number=document.getElementById('number').value;
     var clas=document.getElementById('class').value;
+    if(clas === "")
+    {
+        warning("学生班级不能为空");
+        return ;
+    }
     var id=document.getElementById('stuid').value;
+    if(id === "")
+    {
+        warning("学生id不能为空");
+        return ;
+    }
 
     var para = document.createElement("a");
     para.href = 'closeexe://&&1&&' + nowTime.getTime() + '&&1'
@@ -317,9 +332,6 @@ function initstudent() {
         // btnadd.click();
         addStudentBlock(info[2],info[3],info[1],info[0]);
     }
-    document.getElementById('stuid').value="请输入id";
-    document.getElementById('class').value="请输入班级";
-    document.getElementById('name').value="请输入姓名";
     // document.getElementById('number').value="请输入学号";
 }
 
@@ -375,11 +387,60 @@ function addCourse() {
     para.href = 'closeexe://&&4&&' + nowTime.getTime() + '&&' + '1';
 
     var name=document.getElementById('courseName').value;
+    if(name === "")
+    {
+        warning("课程名称不能为空");
+        return ;
+    }
     var day=document.getElementById('courseDay').value;
+    if(day === "")
+    {
+        warning("请输入星期");
+        return ;
+    }
+    else if(day < 1 || day > 7)
+    {
+        warning("星期超出有效范围");
+        return ;
+    }
     var sTime=document.getElementById('startTime').value;
+    if(sTime === "")
+    {
+        warning("请输入上课时间");
+        return ;
+    }
+    else if(sTime < 8 || sTime > 21)
+    {
+        warning("上课时间超出有效范围");
+        return ;
+    }
     var eTime=document.getElementById('endTime').value;
+    if(eTime === "")
+    {
+        warning("请输入下课时间");
+        return ;
+    }
+    else if(eTime <= sTime)
+    {
+        warning("下课时间应大于上课时间");
+        return ;
+    }
+    else if(eTime < 9 || eTime > 22)
+    {
+        warning("下课时间超出有效范围");
+    }
     var plac=document.getElementById('coursePlac').selectedIndex;
+    if(plac === 0)
+    {
+        warning("上课地点不能为空");
+        return ;
+    }
     var clas=document.getElementById('courseClas').value;
+    if(clas === "")
+    {
+        warning("上课班级不能为空");
+        return ;
+    }
     var Y=document.getElementById('Y');
     var N=document.getElementById('N');
     var courseWeek=document.getElementById('courseWeek').value;
@@ -392,11 +453,36 @@ function addCourse() {
 
     if(Y.checked === true)
     {
+        if(courseWeek === "")
+        {
+            warning("请输入上课周");
+            return ;
+        }
+        else if(courseWeek < 1 || courseWeek > 19)
+        {
+            warning("上课周超出有效范围");
+            return ;
+        }
         para.href += '&&' + 1 + '&&' + courseWeek + '&&' + '0';
         para.click();
     }
     else
     {
+        if(weekNum === "")
+        {
+            warning("请输入上课周数");
+            return ;
+        }
+        else if(weekNum < 2 || weekNum > 19)
+        {
+            warning("上课周数超出有效范围");
+            return ;
+        }
+        if(multiWeek === "")
+        {
+            warning("请输入上课周");
+            return ;
+        }
         para.href += '&&' + 2 + '&&' + weekNum + '&&' + multiWeek + '&&' + '0';
         para.click();
     }
@@ -414,11 +500,61 @@ function delCourse(obj) {
 function chaCourse(name) {
 
     var courseName=document.getElementById('courseName').value;
+    if(courseName === "")
+    {
+        warning("课程名称不能为空");
+        return ;
+    }
     var courseDay=document.getElementById('courseDay').value;
+    if(courseDay === "")
+    {
+        warning("请输入星期");
+        return ;
+    }
+    else if(courseDay < 1 || courseDay > 7)
+    {
+        warning("星期超出有效范围");
+        return ;
+    }
     var startTime=document.getElementById('startTime').value;
+    if(startTime === "")
+    {
+        warning("请输入上课时间");
+        return ;
+    }
+    else if(startTime < 8 || startTime > 21)
+    {
+        warning("上课时间超出有效范围");
+        return ;
+    }
     var endTime=document.getElementById('endTime').value;
+    if(endTime === "")
+    {
+        warning("请输入下课时间");
+        return ;
+    }
+    else if(endTime < 9 || endTime > 22)
+    {
+        warning("下课时间超出有效范围");
+        return ;
+    }
+    else if(endTime <= startTime)
+    {
+        warning("下课时间应大于上课时间");
+        return ;
+    }
     var coursePlac=document.getElementById('coursePlac').selectedIndex;
+    if(coursePlac === 0)
+    {
+        warning("上课地点不能为空");
+        return ;
+    }
     var courseClas=document.getElementById('courseClas').value;
+    if(courseClas === "")
+    {
+        warning("上课班级不能为空");
+        return ;
+    }
     var Y=document.getElementById('Y');
     var N=document.getElementById('N');
     var courseWeek=document.getElementById('courseWeek').value;
@@ -433,11 +569,36 @@ function chaCourse(name) {
 
     if(Y.checked === true)
     {
+        if(courseWeek === "")
+        {
+            warning("请输入上课周");
+            return ;
+        }
+        else if(courseWeek < 1 || courseWeek > 19)
+        {
+            warning("上课周超出有效范围");
+            return ;
+        }
         para.href += '&&' + 1 + '&&' + courseWeek + '&&' + '0';
         para.click();
     }
     else
     {
+        if(weekNum === "")
+        {
+            warning("请输入上课周数");
+            return ;
+        }
+        else if(weekNum < 2 || weekNum > 19)
+        {
+            warning("上课周数超出有效范围");
+            return ;
+        }
+        if(multiWeek === "")
+        {
+            warning("请输入上课周");
+            return ;
+        }
         para.href += '&&' + 2 + '&&' + weekNum + '&&' + multiWeek + '&&' + '0';
         para.click();
     }
@@ -579,6 +740,20 @@ function initLog() {
         page03.append(newp);
         i++;
     }
+}
+
+function warning(content)
+{
+    var warningTip = document.getElementById('warningTip');
+    var warningContent = document.getElementById('warningContent');
+    warningTip.style.display = 'block';
+    warningContent.innerHTML = content;
+}
+
+function closeWarn()
+{
+    var warningTip = document.getElementById('warningTip');
+    warningTip.style.display = 'none';
 }
 
 // function initpage() {

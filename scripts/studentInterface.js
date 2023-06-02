@@ -723,6 +723,8 @@ function buildNew(obj) {
     document.querySelectorAll('.radio').forEach(el=>{
         el.disabled=false;
     })
+    var indAct=document.getElementById('indAct');
+    indAct.click();
 
     var startDate=document.getElementById('newActdate');
     var startTime=document.getElementById('startTime');
@@ -741,6 +743,11 @@ function buildNew(obj) {
 function addActivity() {
     var newActdate=document.getElementById('newActdate').value;
     var startTime=document.getElementById('startTime').value;
+    if(startTime < 6 || startTime > 21)
+    {
+        warning("活动时间超出有效范围");
+        return ;
+    }
     var exeTime=dateHour2exe(newActdate,startTime);
 
     var nowWeek=selectdom.selectedIndex+1;
@@ -765,7 +772,17 @@ function addActivity() {
         {
             lop=1;
             var Actname=document.getElementById('Actname').value;
+            if(Actname === "")
+            {
+                warning("活动名称不能为空");
+                return ;
+            }
             var Actplac=document.getElementById('Actplac').selectedIndex;
+            if(Actplac === 0)
+            {
+                warning("活动地点不能为空");
+                return ;
+            }
 
             para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + lop
@@ -776,7 +793,17 @@ function addActivity() {
         {
             lop=2;
             var Actname=document.getElementById('Actname').value;
+            if(Actname === "")
+            {
+                warning("活动名称不能为空");
+                return ;
+            }
             var Actplac=document.getElementById('Actplac').selectedIndex;
+            if(Actplac === 0)
+            {
+                warning("活动地点不能为空");
+                return ;
+            }
             var endDate=document.getElementById('endDate').value;
             var endExeTime=Number(dateHour2exe(endDate,startTime)+1);
 
@@ -789,10 +816,19 @@ function addActivity() {
         {
             lop=3;
             var Actname=document.getElementById('Actname').value;
+            if(Actname === "")
+            {
+                warning("活动名称不能为空");
+                return ;
+            }
             var Actplac=document.getElementById('Actplac').selectedIndex;
             var endDate=document.getElementById('endDate').value;
             var endExeTime=dateHour2exe(endDate,startTime)+1;
-
+            if(Actplac === 0)
+            {
+                warning("活动地点不能为空");
+                return ;
+            }
             para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + lop
                                 + '&&' + exeTime + '&&' + endExeTime + '&&' + Actname + '&&' + Actplac;
@@ -806,7 +842,17 @@ function addActivity() {
     {
         type=2;
         var Actname=document.getElementById('Actname').value;
+        if(Actname === "")
+        {
+            warning("活动名称不能为空");
+            return ;
+        }
         var Actplac=document.getElementById('Actplac').selectedIndex;
+        if(Actplac === 0)
+        {
+            warning("活动地点不能为空");
+            return ;
+        }
 
         para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type
@@ -817,14 +863,28 @@ function addActivity() {
     else if(indEve.checked===true)
     {
         type=4;
+        if(num === 0)
+        {
+            warning("事务信息不能为空");
+            return ;
+        }
         para.href='closeexe://&&2&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
                                 + '&&' + type + '&&' + num;
         
         for(var i=1;i<=num;i++)
         {
             var newName=document.getElementById('name'+i).value;
+            if(newName === "")
+            {
+                warning("活动名称不能为空");
+                return ;
+            }
             var newPlac=document.getElementById('plac'+i).selectedIndex;
-
+            if(newPlac === 0)
+            {
+                warning("活动地点不能为空");
+                return ;
+            }
             para.href += '&&' + exeTime + '&&' + newName + '&&' + newPlac;
         }
         para.click();
@@ -868,6 +928,11 @@ function delActicity(info) {
 function modifyActivity(info) {
     var newActdate=document.getElementById('newActdate').value;
     var startTime=document.getElementById('startTime').value;
+    if(startTime < 6 || startTime > 21)
+    {
+        warning("活动时间超出有效范围");
+        return ;
+    }
     var exeTime=dateHour2exe(newActdate,startTime);
 
     var nowWeek=selectdom.selectedIndex+1;
@@ -891,17 +956,35 @@ function modifyActivity(info) {
         {
             lop = 1;
             var Actname=document.getElementById('Actname').value;
+            if(Actname === "")
+            {
+                warning("活动名称不能为空");
+                return ;
+            }
             var Actplac=document.getElementById('Actplac').selectedIndex;
-
+            if(Actplac === 0)
+            {
+                warning("活动地点不能为空");
+            }
             para.href += '&&' + lop + '&&' + exeTime + '&&' + Actname + '&&' + Actplac;
             para.click();
             // console.log(para.href);
         }
         else if(oneDay.checked === true)
         {
+            
             lop = 2;
             var Actname=document.getElementById('Actname').value;
+            if(Actname === "")
+            {
+                warning("活动名称不能为空");
+                return ;
+            }
             var Actplac=document.getElementById('Actplac').selectedIndex;
+            if(Actplac === 0)
+            {
+                warning("活动地点不能为空");
+            }
             var endDate=document.getElementById('endDate').value;
             var endExeTime=Number(dateHour2exe(endDate,startTime)+1);
 
@@ -913,7 +996,16 @@ function modifyActivity(info) {
         {
             lop = 3;
             var Actname=document.getElementById('Actname').value;
+            if(Actname === "")
+            {
+                warning("活动名称不能为空");
+                return ;
+            }
             var Actplac=document.getElementById('Actplac').selectedIndex;
+            if(Actplac === 0)
+            {
+                warning("活动地点不能为空");
+            }
             var endDate=document.getElementById('endDate').value;
             var endExeTime=Number(dateHour2exe(endDate,startTime)+1);
 
@@ -928,8 +1020,16 @@ function modifyActivity(info) {
                                 + '&&' + type + '&&' + oldStartTime;
 
         var Actname=document.getElementById('Actname').value;
+        if(Actname === "")
+        {
+            warning("活动名称不能为空");
+            return ;
+        }
         var Actplac=document.getElementById('Actplac').selectedIndex;
-
+        if(Actplac === 0)
+        {
+            warning("活动地点不能为空");
+        }
         para.href += '&&' + exeTime + '&&' + Actname + '&&' + Actplac;
         para.click();
         // console.log(para.href);
@@ -949,11 +1049,25 @@ function modifyActivity(info) {
         }
 
         para.href += '&&' + num;
+        if(num === 0)
+        {
+            warning("事务信息不能为空");
+            return ;
+        }
         for(var i=1;i<=num;i++)
         {
             var newName=document.getElementById('name'+i).value;
+            if(newName === "")
+            {
+                warning("活动名称不能为空");
+                return ;
+            }
             var newPlac=document.getElementById('plac'+i).selectedIndex;
-
+            if(newPlac === 0)
+            {
+                warning("活动地点不能为空");
+                return ;
+            }
             para.href += '&&' + exeTime + '&&' + newName + '&&' + newPlac;
         }
         para.click();
@@ -963,12 +1077,17 @@ function modifyActivity(info) {
 
 function searchActivity() {
     var searchName = document.getElementById('searchName').value;
+    if(searchName === "")
+    {
+        warning("查询名称不能为空");
+        return ;
+    }
     var searchType = document.getElementById('searchType').value;
     var page01 = document.getElementById('page01');
     para = document.createElement("a");
     var nowWeek=selectdom.selectedIndex+1;
     para.href = 'closeexe://&&5&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + page01.scrollTop
-                                + '&&' + searchType + '&&' + searchName + '&&' + "0";
+                                + '&&' + searchType + '&&' + searchName + '&&' + jsHour2exe();
     para.click();
 }
 
@@ -1269,6 +1388,11 @@ function compAddAlarm(info,type) {
     var nowWeek=selectdom.selectedIndex+1;
     var alarmTime=document.getElementById('alarmTime').value;
     var actTime=Number(info[1]);
+    if(alarmTime >= actTime%24)
+    {
+        warning("闹钟时间必须小于活动时间");
+        return ;
+    }
     alarmTime = actTime - (actTime%24-alarmTime);
 
     var para = document.createElement("a");
@@ -1416,7 +1540,6 @@ function modifyAlarm(info,lop) {
     var actTime=document.getElementById('actTime');
     // newAlarmDate.value=info[2];
     alarmTime.value=Number(info[0])%24;
-    alarmTime.max=Number(info[2])%24-1;
     actTime.innerHTML="活动时间："+(Number(info[2])%24);
 
     var comp=document.getElementById('comp');
@@ -1435,6 +1558,11 @@ function compModifyAlarm(info,lop) {
     var alarmTime=document.getElementById('alarmTime').value;
     var actTime=Number(info[2]);
     alarmTime = actTime - (actTime%24-alarmTime);
+    if(alarmTime >= actTime%24)
+    {
+        warning("闹钟时间必须小于活动时间");
+        return ;
+    }
 
     para.href += '&&' + info[0] + '&&' + alarmTime + '&&' + Number(info[1]) + '&&' + actTime;
     if(lop === 0)
@@ -1719,6 +1847,16 @@ function initCanvas() {
 function startFindWay() {
     var startPoint = document.getElementById('startPoint').selectedIndex;
     var endPoint = document.getElementById('endPoint').selectedIndex;
+    if(startPoint === 0)
+    {
+        warning("起点不能为空");
+        return ;
+    }
+    if(endPoint === 0 && middlePointsNum === 0)
+    {
+        warning("终点不能为空");
+        return ;
+    }
     var para = document.createElement("a");
     var nowWeek=selectdom.selectedIndex+1;
     if(endPoint != 0)
@@ -1732,8 +1870,18 @@ function startFindWay() {
         para.href = 'closeexe://&&7&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime();
         para.href += '&&' + (middlePointsNum+1) + '&&' + startPoint;
         var middlePoints = document.querySelectorAll('#middlePoint');
+        if(middlePointsNum > 18)
+        {
+            warning("途径点数量超出上限");
+            return ;
+        }
         for(var i=0;i<middlePointsNum;i++)
         {
+            if(middlePoints[i].selectedIndex === 0)
+            {
+                warning("途径点不能为空");
+                return ;
+            }
             para.href += '&&' + middlePoints[i].selectedIndex;
         }
         para.click();
@@ -1953,4 +2101,18 @@ function exeHour2Date(hour)
     var day=("0"+newDate.getDate()).slice(-2);
     var mydate=year+'-'+month+'-'+day;
     return mydate;
+}
+
+function warning(content)
+{
+    var warningTip = document.getElementById('warningTip');
+    var warningContent = document.getElementById('warningContent');
+    warningTip.style.display = 'block';
+    warningContent.innerHTML = content;
+}
+
+function closeWarn()
+{
+    var warningTip = document.getElementById('warningTip');
+    warningTip.style.display = 'none';
 }

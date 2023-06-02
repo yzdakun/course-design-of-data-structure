@@ -49,8 +49,15 @@
                         </p>
                         <button type="button" onclick="closeTips()">确定</button>
                     </form>
-                    
                 </div>
+                <div class="overlay" id="warningTip">
+                    <form class="tips" style="background-color: aliceblue; margin: 100px auto;">
+                        <p id="warningContent">
+
+                        </p>
+                        <button type="button" onclick="closeWarn()">确定</button>
+                    </form>
+                </div>   
                 <div class="overlay" id="modifyStudentForm" style="overflow: scroll;">
                     <form id="modifyForm" class="addForm" style="background-color: aliceblue; margin: 100px auto;">
                         <h1>修改学生信息</h1>
@@ -87,13 +94,13 @@
                         <section>
                             <p>
                                 <span>星期：</span>
-                                <input type="number" id="courseDay" min="1" max="7"> 
+                                <input type="number" id="courseDay" value="1" min="1" max="7"> 
                             </p>
                             <p>
-                                <span>起始时间：</span>
-                                <input type="number" id="startTime" min="6" max="21">
-                                <span>终止时间：</span>
-                                <input type="number" id="endTime" min="7" max="22">
+                                <span>上课时间：</span>
+                                <input type="number" id="startTime" value="8" min="8" max="21">
+                                <span>下课时间：</span>
+                                <input type="number" id="endTime" value="9" min="9" max="22">
                             </p>
                         </section>
                         <section>
@@ -124,13 +131,13 @@
                         <section id="oneWeek" style="display: none;">
                             <p>
                                 <span>上课周：</span>
-                                <input type="number" id="courseWeek" value="1">
+                                <input type="number" id="courseWeek" value="1" max="18">
                             </p>
                         </section>
                         <section id="multiWeek">
                             <p>
                                 <span>上课周数：</span>
-                                <input type="number" id="weekNum" min="2" value="2">
+                                <input type="number" id="weekNum" min="2" max="18" value="2">
                             </p>
                             <p>
                                 <span>上课周：</span>
@@ -145,10 +152,10 @@
                 </div>
                 <div id="page01" class=" page" style="display: block">
                     <div id="inputstu" text-align="center">
-                        <input type="text" id="name">
+                        <input type="text" id="name" placeholder="请输入姓名">
                         <!-- <input type="text" id="number"> -->
-                        <input type="text" id="class">
-                        <input type="text" id="stuid">
+                        <input type="number" id="class" placeholder="请输入班级">
+                        <input type="number" id="stuid" placeholder="请输入id">
                         <input type="button" value="添加" id="btnadd">
                     </div>
                     <table>
