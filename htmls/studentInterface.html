@@ -216,11 +216,11 @@
                     </form>
                 </div>
                 <div id="page01" class=" page" style="display: block; overflow: scroll; height: 80vh;">
-                    <div id="couhead" style="text-align: center;">
+                    <div id="couhead" style="text-align: center; position: sticky; top: 0; background-color: white;">
                         <input type="date" id="date" name="date"
                                value="2023-02-20"
-                               min="2023-02-20" max="2023-07-02" style="margin: 20px;">
-                        <select name="week" id="week" style="margin: 20px;">
+                               min="2023-02-20" max="2023-07-02" style="margin: 0px 20px;">
+                        <select name="week" id="week" style="margin: 0px 20px;">
                                 <option value = "1">第1周</option>
                                 <option value = "2">第2周</option>
                                 <option value = "3">第3周</option>
@@ -241,17 +241,20 @@
                                 <option value = "18">第18周</option>
                                 <option value = "19">第19周</option>
                         </select>
+                        <p>
+                            <input type="text" id="searchName" placeholder="请输入需要查询的日程名称" style="width: 300px;">
+                            <select name="searchType" id="searchType" style="margin: 20px">
+                                <option value = "1">课程</option>
+                                <option value = "2">集体活动</option>
+                                <option value = "3">个人活动</option>
+                                <option value = "4">临时事务</option>
+                            </select>
+                            <input type="button" id="searchBtn" value="查询" onclick="searchActivity()">
+                        </p>
                     </div>
-                    <div id="inputmes" style="margin: 10px auto; width: fit-content;">
-                        <input type="text" id="searchName" placeholder="请输入需要查询的日程名称" style="width: 300px;">
-                        <select name="searchType" id="searchType" style="margin: 20px">
-                            <option value = "1">课程</option>
-                            <option value = "2">集体活动</option>
-                            <option value = "3">个人活动</option>
-                            <option value = "4">临时事务</option>
-                        </select>
-                        <input type="button" id="searchBtn" value="查询" onclick="searchActivity()">
-                    </div>
+                    <!-- <div id="inputmes" style="margin: 10px auto; width: fit-content; position: sticky; background-color: white; top: 0;">
+                        
+                    </div> -->
                     <table id="coutable">
                         <tr>
                             <th>时间</th>
@@ -263,76 +266,76 @@
                             <th><p>星期六</p> <div class="day">02-25</div></th>
                             <th><p>星期日</p> <div class="day">02-26</div></th>
                         </tr>
-                        <tr>
+                        <tr id="time0">
                             <th>00:00 ~ 01:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time1">
                             <th>01:00 ~ 02:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time2">
                             <th>02:00 ~ 03:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time3">
                             <th>03:00 ~ 04:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time4">
                             <th>04:00 ~ 05:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time5">
                             <th>05:00 ~ 06:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time6">
                             <th>06:00 ~ 07:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time7">
                             <th>07:00 ~ 08:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time8">
                             <th>08:00 ~ 09:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time9">
                             <th>09:00 ~ 10:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time10">
                             <th>10:00 ~ 11:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time11">
                             <th>11:00 ~ 12:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time12">
                             <th>12:00 ~ 13:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time13">
                             <th>13:00 ~ 14:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time14">
                             <th>14:00 ~ 15:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time15">
                             <th>15:00 ~ 16:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time16">
                             <th>16:00 ~ 17:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time17">
                             <th>17:00 ~ 18:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time18">
                             <th>18:00 ~ 19:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time19">
                             <th>19:00 ~ 20:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time20">
                             <th>20:00 ~ 21:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time21">
                             <th>21:00 ~ 22:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time22">
                             <th>22:00 ~ 23:00</th>
                         </tr>
-                        <tr>
+                        <tr id="time23">
                             <th>23:00 ~ 24:00</th>
                         </tr>
                     </table>
