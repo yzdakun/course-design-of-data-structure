@@ -2280,7 +2280,7 @@ void manager::change_class()
 	// ifsArg >> c.week;
 	for (k = 0; k < count_course; k++)
 	{
-		if(course_Array[k].name == c.name)
+		if(course_Array[k].name == name)
 			continue;
 		if (((course_Array[k].StartTime < c.StartTime) && (course_Array[k].EndTime > c.StartTime)) || ((course_Array[k].StartTime < c.EndTime) && (course_Array[k].EndTime > c.EndTime)) || ((course_Array[k].StartTime == c.StartTime) && (course_Array[k].EndTime == c.EndTime)) || ((course_Array[k].StartTime < c.EndTime) && (course_Array[k].StartTime > c.StartTime)) || ((course_Array[k].EndTime < c.EndTime) && (course_Array[k].EndTime > c.StartTime)))
 		{
