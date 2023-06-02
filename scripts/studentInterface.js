@@ -75,25 +75,34 @@ window.onload = function() {
             break;
         case 0:
             changePage(0);
-
             selectdom.selectedIndex=Number(buffer[1])-1;
+            chacalen(0);
             if(buffer[2]!="null")
             {
                 calen.value=buffer[2];
-                chacalen(0);
+                var page01 = document.getElementById('page01');
+                page01.scrollBy(0,Number(buffer[4]));
             }
             else
-                chacalen(1);
+            {
+                calen.value=exeHour2Date(Number(buffer[4]));
+                var page01 = document.getElementById('page01');
+                var rowNum = document.getElementById('time' + (Number(buffer[4])%24));
+                var dis = rowNum.offsetTop;
+                page01.scrollBy(0,dis);
+            }
+                
 
             initTime(Number(buffer[3]));
             timeSet(1);
 
             initact();
             initAlarm();
-            var page01 = document.getElementById('page01');
-            page01.scrollBy(0,Number(buffer[4]));
+            
             if(Number(buffer[5]) === 1)
             {
+                var couhead = document.getElementById('couhead');
+                couhead.style.display = 'none';
                 tips.style.display='block';
                 var i=5;
                 var tipsContent=document.getElementById('tipsContent');
@@ -717,6 +726,8 @@ function goMultiple(info) {
 
 function buildNew(obj) {
     addAct.style.display='block';
+    var couhead = document.getElementById('couhead');
+    couhead.style.display='none';
     var head=document.getElementsByTagName('h1')[0];
     head.innerHTML="添加新的日程";
 
@@ -743,7 +754,7 @@ function buildNew(obj) {
 function addActivity() {
     var newActdate=document.getElementById('newActdate').value;
     var startTime=document.getElementById('startTime').value;
-    if(startTime < 6 || startTime > 21)
+    if(Number(startTime) < 6 || Number(startTime) > 21)
     {
         warning("活动时间超出有效范围");
         return ;
@@ -926,9 +937,10 @@ function delActicity(info) {
 }
 
 function modifyActivity(info) {
+    
     var newActdate=document.getElementById('newActdate').value;
     var startTime=document.getElementById('startTime').value;
-    if(startTime < 6 || startTime > 21)
+    if(Number(startTime) < 6 || Number(startTime) > 21)
     {
         warning("活动时间超出有效范围");
         return ;
@@ -1111,10 +1123,13 @@ function rec() {
         del(tmp);
     }
     addAct.style.display='none';
-    
+    var couhead = document.getElementById('couhead');
+    couhead.style.display='block';
 }
 
 function modifyAct(obj,name,plac,lop,info) {
+    var couhead = document.getElementById('couhead');
+    couhead.style.display='none';
     var s=obj.id.split('&');
 
     addAct.style.display='block';
@@ -1163,6 +1178,8 @@ function modifyAct(obj,name,plac,lop,info) {
 }//修改个人活动
 
 function modifyGro(obj,name,plac,lop,info) {
+    var couhead = document.getElementById('couhead');
+    couhead.style.display='none';
     var s=obj.id.split('&');
 
     addAct.style.display='block';
@@ -1214,6 +1231,8 @@ function modifyGro(obj,name,plac,lop,info) {
 }//修改集体活动
 
 function modifyEve(obj,info) {
+    var couhead = document.getElementById('couhead');
+    couhead.style.display='none';
     var s=obj.id.split('&');
 
     addAct.style.display='block';
@@ -1359,6 +1378,8 @@ function del(obj) {
 
 
 function addAlarm(info,type) {
+    var couhead = document.getElementById('couhead');
+    couhead.style.display = 'none';
     addAct.style.display='block';
     var head=document.getElementsByTagName('h1')[0];
     head.innerHTML="添加新的闹钟";
@@ -1388,7 +1409,7 @@ function compAddAlarm(info,type) {
     var nowWeek=selectdom.selectedIndex+1;
     var alarmTime=document.getElementById('alarmTime').value;
     var actTime=Number(info[1]);
-    if(alarmTime >= actTime%24)
+    if(Number(alarmTime) >= Number(actTime%24))
     {
         warning("闹钟时间必须小于活动时间");
         return ;
@@ -1495,8 +1516,9 @@ function initAlarm() {
         
         var delbut=document.createElement("button");
         delbut.type="button";
+        delbut.id=Number(info[0]) + '&' + date.innerHTML;
         delbut.onclick=function() {
-            delAlarm(Number(info[0]),date.innerHTML);
+            delAlarm(this.id);
         }
         delbut.innerHTML="删除";
 
@@ -1518,10 +1540,12 @@ function initAlarm() {
     }
 }//初始化闹钟列表
 
-function delAlarm(time,date) {
+function delAlarm(info) {
+    info = info.split('&');
     var nowWeek=selectdom.selectedIndex+1;
     var para=document.createElement("a");
-    para.href = 'closeexe://&&9&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + dateHour2exe(date,time);
+    para.href = 'closeexe://&&9&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime() + '&&' + info[0];
+    console.log(para.href);
     para.click();
 }//删除闹钟
 
@@ -1557,12 +1581,15 @@ function compModifyAlarm(info,lop) {
 
     var alarmTime=document.getElementById('alarmTime').value;
     var actTime=Number(info[2]);
-    alarmTime = actTime - (actTime%24-alarmTime);
-    if(alarmTime >= actTime%24)
+    if(Number(alarmTime) >= Number(actTime%24))
     {
+        console.log(alarmTime);
+        console.log(Number(actTime%24))
         warning("闹钟时间必须小于活动时间");
         return ;
     }
+    alarmTime = actTime - (actTime%24-alarmTime);
+   
 
     para.href += '&&' + info[0] + '&&' + alarmTime + '&&' + Number(info[1]) + '&&' + actTime;
     if(lop === 0)
@@ -1574,16 +1601,22 @@ function compModifyAlarm(info,lop) {
 function closePAT() {
     var PAT=document.getElementById('personalAlarmTip');
     PAT.style.display = 'none';
+    var couhead=document.getElementById('couhead');
+    couhead.style.display = 'block';
     timeSet(1);
 }
 function closeTAT() {
     var TAT=document.getElementById('tempAlarmTip');
     TAT.style.display = 'none';
+    var couhead=document.getElementById('couhead');
+    couhead.style.display = 'block';
     timeSet(1);
 }
 function closeSAT() {
     var SAT=document.getElementById('systemAlarmTip');
     SAT.style.display = 'none';
+    var couhead=document.getElementById('couhead');
+    couhead.style.display = 'block';
     timeSet(1);
 }
 
@@ -1593,6 +1626,8 @@ function checkPAT() {
     PA = PA.split("\n");
     if(PA[0] === '1')
     {
+        var couhead = document.getElementById('couhead');
+        couhead.style.display='none';
         timeSet(0);
         var info = PA[1].split(" ");
         var PAT = document.getElementById('personalAlarmTip');
@@ -1666,6 +1701,8 @@ function checkTAT() {
     TA = TA.split("\n");
     if(TA[0] === '1')
     {
+        var couhead = document.getElementById('couhead');
+        couhead.style.display='none';
         timeSet(0);
         var info = TA[1].split(" ");
         var TAT = document.getElementById('tempAlarmTip');
@@ -1699,7 +1736,9 @@ function checkSAT() {
     SA = SA.split("\r").join("");
     SA = SA.split("\n");
     if(SA[0] === '1')
-    {
+    {  
+        var couhead = document.getElementById('couhead');
+        couhead.style.display='none';
         timeSet(0);
         var SAT = document.getElementById('systemAlarmTip');
         SAT.style.display = 'block';
@@ -1793,6 +1832,8 @@ function tipMultiWay(info,XAT) {
 
 function closeTips() {
     tips.style.display='none';
+    var couhead = document.getElementById('couhead');
+    couhead.style.display='block';
 }
 
 
@@ -1870,7 +1911,7 @@ function startFindWay() {
         para.href = 'closeexe://&&7&&' + nowWeek + '&&' + calen.value + '&&' + nowTime.getTime();
         para.href += '&&' + (middlePointsNum+1) + '&&' + startPoint;
         var middlePoints = document.querySelectorAll('#middlePoint');
-        if(middlePointsNum > 18)
+        if(Number(middlePointsNum) > 18)
         {
             warning("途径点数量超出上限");
             return ;
@@ -2072,7 +2113,7 @@ function dateHour2exe(date,hour)
 {
     var tmpdate=new Date(date);
     var oridate=new Date("2023-02-20");
-    var basehour=(tmpdate.getTime()-oridate.getTime())/1000/60/60;
+    var basehour=parseInt(parseInt(parseInt((tmpdate.getTime()-oridate.getTime())/1000)/60)/60);
     var res=0;
     res = basehour + Number(hour);
     return res;
@@ -2093,7 +2134,7 @@ function exeHour2js(hour)
 function exeHour2Date(hour)
 {
     var oridate = new Date("2023-02-20");
-    var oriST = oridate.getTime();
+    var oriST = oridate.getTime() - 8*60*60*1000;
     oriST=Number(oriST+hour*1000*60*60);
     var newDate = new Date(oriST);
     var year=newDate.getFullYear();

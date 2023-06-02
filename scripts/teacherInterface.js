@@ -120,6 +120,8 @@ addCourseButton.onclick = function() {
     var courseTitle=document.getElementById('courseTitle');
     courseTitle.innerHTML="添加新的课程";
     courseForm.style.display='block';
+    var addCourseDiv = document.getElementById('addCourseDiv');
+    addCourseDiv.style.display = 'none';
     var compCourse=document.getElementById('compCourse');
     compCourse.onclick = function() {
         addCourse();
@@ -398,7 +400,7 @@ function addCourse() {
         warning("请输入星期");
         return ;
     }
-    else if(day < 1 || day > 7)
+    else if(Number(day) < 1 || Number(day) > 7)
     {
         warning("星期超出有效范围");
         return ;
@@ -409,7 +411,7 @@ function addCourse() {
         warning("请输入上课时间");
         return ;
     }
-    else if(sTime < 8 || sTime > 21)
+    else if(Number(sTime) < 8 || Number(sTime) > 21)
     {
         warning("上课时间超出有效范围");
         return ;
@@ -420,12 +422,12 @@ function addCourse() {
         warning("请输入下课时间");
         return ;
     }
-    else if(eTime <= sTime)
+    else if(Number(eTime) <= Number(sTime))
     {
         warning("下课时间应大于上课时间");
         return ;
     }
-    else if(eTime < 9 || eTime > 22)
+    else if(Number(eTime) < 9 || Number(eTime) > 22)
     {
         warning("下课时间超出有效范围");
     }
@@ -458,7 +460,7 @@ function addCourse() {
             warning("请输入上课周");
             return ;
         }
-        else if(courseWeek < 1 || courseWeek > 19)
+        else if(Number(courseWeek) < 1 || Number(courseWeek) > 19)
         {
             warning("上课周超出有效范围");
             return ;
@@ -473,7 +475,7 @@ function addCourse() {
             warning("请输入上课周数");
             return ;
         }
-        else if(weekNum < 2 || weekNum > 19)
+        else if(Number(weekNum) < 2 || Number(weekNum) > 19)
         {
             warning("上课周数超出有效范围");
             return ;
@@ -511,7 +513,7 @@ function chaCourse(name) {
         warning("请输入星期");
         return ;
     }
-    else if(courseDay < 1 || courseDay > 7)
+    else if(Number(courseDay) < 1 || Number(courseDay) > 7)
     {
         warning("星期超出有效范围");
         return ;
@@ -522,7 +524,7 @@ function chaCourse(name) {
         warning("请输入上课时间");
         return ;
     }
-    else if(startTime < 8 || startTime > 21)
+    else if(Number(startTime) < 8 || Number(startTime) > 21)
     {
         warning("上课时间超出有效范围");
         return ;
@@ -533,12 +535,12 @@ function chaCourse(name) {
         warning("请输入下课时间");
         return ;
     }
-    else if(endTime < 9 || endTime > 22)
+    else if(Number(endTime) < 9 || Number(endTime) > 22)
     {
         warning("下课时间超出有效范围");
         return ;
     }
-    else if(endTime <= startTime)
+    else if(Number(endTime) <= Number(startTime))
     {
         warning("下课时间应大于上课时间");
         return ;
@@ -574,7 +576,7 @@ function chaCourse(name) {
             warning("请输入上课周");
             return ;
         }
-        else if(courseWeek < 1 || courseWeek > 19)
+        else if(Number(courseWeek) < 1 || Number(courseWeek) > 19)
         {
             warning("上课周超出有效范围");
             return ;
@@ -589,7 +591,7 @@ function chaCourse(name) {
             warning("请输入上课周数");
             return ;
         }
-        else if(weekNum < 2 || weekNum > 19)
+        else if(Number(weekNum) < 2 || Number(weekNum) > 19)
         {
             warning("上课周数超出有效范围");
             return ;
@@ -608,6 +610,8 @@ function initchaCourse(name,day,sTime,eTime,clas,plac,weekNum,week) {
     var courseTitle=document.getElementById('courseTitle');
     courseTitle.innerHTML="修改课程";
     courseForm.style.display='block';
+    var addCourseDiv = document.getElementById('addCourseDiv');
+    addCourseDiv.style.display = 'none';
     var compCourse=document.getElementById('compCourse');
     compCourse.onclick = function() {
         chaCourse(name);
@@ -698,6 +702,8 @@ function Canc() {
 
 function closeCourse() {
     courseForm.style.display = 'none';
+    var addCourseDiv = document.getElementById('addCourseDiv');
+    addCourseDiv.style.display = 'block';
 }
 
 function addOption(obj) {

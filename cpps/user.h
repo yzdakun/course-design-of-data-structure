@@ -120,6 +120,7 @@ public:
 	void connection();
 	void translate();
 	void ManageSystem();
+	void m_translate(course& c);
 	vector<course> course_Array;
 	int count_course = 0;
 	vector<student> student_Array;

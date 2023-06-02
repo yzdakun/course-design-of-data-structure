@@ -276,6 +276,9 @@ body {
     border-radius: 5px;
     background-color: #337ab7;
 }
-#warningTip {
+.tips {
     z-index: 1;
+}
+#warningTip {
+    z-index: 2;
 }

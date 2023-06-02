@@ -14,7 +14,7 @@ public:
 	int period;//1�ǵ��Σ�2������
 	int c_week;//�Ͽε�����
 	string week;
-	int check[19]{0};
+	int check[20]{0};
 	course();
 	void showInfo();
 };

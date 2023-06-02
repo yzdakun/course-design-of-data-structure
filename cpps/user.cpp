@@ -129,7 +129,7 @@ void student::ManageSystem()
 				ifsArg>>flag;
 				cout<<flag<<endl;
 				int w,NTS,scrollTop;
-				int searchWeek;
+				int searchTime;
 				string searchName;
 				long long nowTimeStamp;
 				int timeWalkPace;
@@ -268,15 +268,16 @@ void student::ManageSystem()
 					ifsArg >> searchName;
 					ifsArg >> NTS;
 					searchName = UTF8_To_string(searchName);
-					searchWeek = Search(type,searchName,NTS);
+					searchTime = Search(type,searchName,NTS);
+					cout << searchTime << endl;
 
-					if(searchWeek > 0)
+					if(searchTime > 0)
 					{
-						ofsCou<<searchWeek<<endl;
+						ofsCou<<((searchTime/24)/7+1)<<endl;
 						ofsCou<<"null"<<endl;
 						ofsCou<<nowTimeStamp<<endl;
-						ofsCou<<scrollTop<<endl;
-						this->ShowClassSchedule(searchWeek);
+						ofsCou<<searchTime<<endl;
+						this->ShowClassSchedule(searchTime/24/7+1);
 					}
 					else
 					{
@@ -1067,7 +1068,7 @@ int student::Search(int kind, string name, int now_time)//半成品
 					if (CourseList[i][j].name == name)
 					{
 						flag = 1;
-						ret = x;
+						ret = CourseList[i][j].StartTime;
 						break;
 					}
 				}
@@ -1080,7 +1081,7 @@ int student::Search(int kind, string name, int now_time)//半成品
 					if (CourseList[i][j].name == name)
 					{
 						flag = 1;
-						ret = i;
+						ret = CourseList[i][j].StartTime;
 						break;
 					}
 				}
@@ -1109,19 +1110,19 @@ int student::Search(int kind, string name, int now_time)//半成品
 					if (GroupActList[i][j].name == name)
 					{
 						flag = 1;
-						ret = x;
+						ret = GroupActList[i][j].StartTime;
 						break;
 					}
 				}
 			}
 			else
 			{
-				for (int j = 0; j < CourseNum[i]; j++)
+				for (int j = 0; j < GroupActNum[i]; j++)
 				{
 					if (GroupActList[i][j].name == name)
 					{
 						flag = 1;
-						ret = i;
+						ret = GroupActList[i][j].StartTime;
 						break;
 					}
 				}
@@ -1150,7 +1151,7 @@ int student::Search(int kind, string name, int now_time)//半成品
 					if (ActivityList[i][j].name == name)
 					{
 						flag = 1;
-						ret = x;
+						ret = ActivityList[i][j].StartTime;
 						break;
 					}
 				}
@@ -1162,7 +1163,7 @@ int student::Search(int kind, string name, int now_time)//半成品
 					if (ActivityList[i][j].name == name)
 					{
 						flag = 1;
-						ret = i;
+						ret = ActivityList[i][j].StartTime;
 						break;
 					}
 				}
@@ -1191,7 +1192,7 @@ int student::Search(int kind, string name, int now_time)//半成品
 				if (TempActList[i][j].name == name)
 				{
 					flag = 1;
-					ret = x;
+					ret = TempActList[i][j].StartTime;
 					break;
 				}
 				}
@@ -1203,7 +1204,7 @@ int student::Search(int kind, string name, int now_time)//半成品
 				if (TempActList[i][j].name == name)
 				{
 					flag = 1;
-					ret = i;
+					ret = TempActList[i][j].StartTime;
 					break;
 				}
 			}
@@ -1215,7 +1216,7 @@ int student::Search(int kind, string name, int now_time)//半成品
 
 	// teststream << ret <<endl;
 	// teststream.close();
-	return ret + 1;
+	return ret;
 
 }
 
@@ -1931,6 +1932,7 @@ bool cmp(course a, course b)
 void manager::ManageSystem()
 {
 	init();
+	translate();
 	fUpdate();
 	log1.init("../datas/log.txt");
 	ofsCou.open("../htmls/pagebuffer.txt");
@@ -2108,7 +2110,7 @@ void manager::init()
 }
 void manager::add_class()
 {
-	int num, j = 0;
+	int num, j = 0, k = 0, t = 1;
 	course c;
 	// cout << "请选择要添加的课程数：" << endl;
 	ifsArg >> num;
@@ -2151,6 +2153,29 @@ void manager::add_class()
 			c.c_week = 1;
 			// cout << "请依次输入第" << i + 1 << "个课程的上课周" << endl;
 			ifsArg >> c.week;
+
+		}
+		// ifsArg >> c.c_week;
+		// ifsArg >> c.week;
+		for (k = 0; k < count_course; k++)
+		{
+			if (((course_Array[k].StartTime < c.StartTime) && (course_Array[k].EndTime > c.StartTime)) || ((course_Array[k].StartTime < c.EndTime) && (course_Array[k].EndTime > c.EndTime)) || ((course_Array[k].StartTime == c.StartTime) && (course_Array[k].EndTime == c.EndTime)) || ((course_Array[k].StartTime < c.EndTime) && (course_Array[k].StartTime > c.StartTime)) || ((course_Array[k].EndTime < c.EndTime) && (course_Array[k].EndTime > c.StartTime)))
+			{
+				m_translate(c);
+				for (t = 1; t <= 19; t++)
+				{
+					if ((c.check[t] == course_Array[k].check[t]) && c.check[t] == 1)
+					{
+						ofsCou << 1 << endl;
+						ofsCou << "该上课时间存在冲突！" << endl;
+						cout << course_Array[k].StartTime << " " << course_Array[k].EndTime << endl;
+						cout << c.StartTime << " " << c.EndTime << endl;
+						return ;
+					}
+				}
+				if (t != 20)
+					break;
+			}
 		}
 		course_Array.push_back(c);
 		count_course++;
@@ -2192,7 +2217,7 @@ void manager::delete_class()
 void manager::change_class()
 {
 	string name;
-	int num, j = 0, i = 0;
+	int num, j = 0, i = 0, k = 0, t = 1;
 	course c;
 		// cout << "请输入要修改的课程名称：" << endl;
 	ifsArg >> name;
@@ -2237,6 +2262,7 @@ void manager::change_class()
 	// cout << "修改后课程是否为单次课：" << endl;
 	// cout << "1.是	2.否" << endl;
 	ifsArg >> c.period;
+	
 	if (c.period == 2)
 	{
 		// cout << "请输入修改后课程的上课周数：" << endl;
@@ -2249,6 +2275,28 @@ void manager::change_class()
 		c.c_week = 1;
 		// cout << "请依次输入修改后课程的上课周：" << endl;
 		ifsArg >> c.week;
+	}
+	// ifsArg >> c.c_week;
+	// ifsArg >> c.week;
+	for (k = 0; k < count_course; k++)
+	{
+		if(course_Array[k].name == c.name)
+			continue;
+		if (((course_Array[k].StartTime < c.StartTime) && (course_Array[k].EndTime > c.StartTime)) || ((course_Array[k].StartTime < c.EndTime) && (course_Array[k].EndTime > c.EndTime)) || ((course_Array[k].StartTime == c.StartTime) && (course_Array[k].EndTime == c.EndTime)) || ((course_Array[k].StartTime < c.EndTime) && (course_Array[k].StartTime > c.StartTime)) || ((course_Array[k].EndTime < c.EndTime) && (course_Array[k].EndTime > c.StartTime)))
+		{
+			m_translate(c);
+			for (t = 1; t <= 19; t++)
+			{
+				if ((c.check[t] == course_Array[k].check[t]) && c.check[t] == 1)
+				{
+					ofsCou << 1 << endl;
+					ofsCou << "该上课时间存在冲突！" << endl;
+					return ;
+				}
+			}
+			if (t != 20)
+				break;
+		}
 	}
 	course_Array[num] = c;
 	log1.wr(this->name, "修改了一门课程");
@@ -2465,7 +2513,7 @@ void manager::translate()
 		{
 			if (s[j] == '-')
 			{	
-				if ((j>1)&&s[j - 2] >= '0' && s[j - 2] <= '9')//�ж��ǲ���ʮλ��
+				if ((j>1)&&s[j - 2] >= '0' && s[j - 2] <= '9')//判断是不是十位数
 				{
 					start = s[j - 1] - '0' + (s[j - 2] - '0') * 10;
 				}
@@ -2473,7 +2521,7 @@ void manager::translate()
 				{
 					start = s[j - 1] - '0';
 				}
-				if ((j + 2) < s.length()&&s[j + 2] >= '0' && s[j + 2] <= '9')//�ж��ǲ���ʮλ��
+				if ((j + 2) < s.length()&&s[j + 2] >= '0' && s[j + 2] <= '9')//判断是不是十位数
 				{
 					end = s[j + 2] - '0' + (s[j + 1] - '0') * 10;
 					j += 3;
@@ -2493,23 +2541,23 @@ void manager::translate()
 			}
 
 
-			else if (s[j] >= '0' && s[j] <= '9')//������
+			else if (s[j] >= '0' && s[j] <= '9')//单个周
 			{
-				if ((j + 1) < s.length()&&s[j + 1] >= '0' && s[j + 1] <= '9')//����������ǲ���ʮλ���������ʮλ
+				if ((j + 1) < s.length()&&s[j + 1] >= '0' && s[j + 1] <= '9')//看看这个数是不是十位数，如果是十位
 				{
-					single = 10 * (s[j] - '\0') + (s[j + 1] - '\0');
-					if ((j == 0 && s[j + 2] == ',')||(j == 0 && s[j + 2] == '\0'))//��һ��
+					single = 10 * (s[j] - '0') + (s[j + 1] - '0');
+					if ((j == 0 && s[j + 2] == ',')||(j == 0 && s[j + 2] == '\0'))//第一个
 					{
 						course_Array[i].check[single] = 1;
 						j += 3;
 					}
-					else if ((j + 2) < s.length() && j > 0 && s[j - 1] == ',' && s[j + 2] == ',')//�������Ҷ��ǡ�����
+					else if ((j + 2) < s.length() && j > 0 && s[j - 1] == ',' && s[j + 2] == ',')//并且左右都是“，”
 					{
 						course_Array[i].check[single] = 1;
 						j += 3;
 
 					}
-					else if ((j + 2) < s.length() && j > 0 && s[j + 2] == '\0' && s[j - 1] == ',')//���һ��
+					else if ((j + 2) < s.length() && j > 0 && s[j + 2] == '\0' && s[j - 1] == ',')//最后一个
 					{
 						course_Array[i].check[single] = 1;
 						j += 3;
@@ -2518,7 +2566,7 @@ void manager::translate()
 					else
 						j++;
 				}
-				else//����ʮλ��
+				else//不是十位数
 				{
 					single = s[j] - '0';
 					if ((j + 1) < s.length() && j > 0 && s[j - 1] == ',' && s[j + 1] == ',')
@@ -2527,7 +2575,7 @@ void manager::translate()
 						j += 2;
 
 					}
-					else if ((j == 0 && s[j + 1] == ',') || (j == 0 && s[j + 1] == '\0'))//��һ��
+					else if ((j == 0 && s[j + 1] == ',') || (j == 0 && s[j + 1] == '\0'))//第一个
 					{
 						course_Array[i].check[single] = 1;
 						j += 2;
@@ -2549,7 +2597,101 @@ void manager::translate()
 		}
 	}
 }
+void manager::m_translate(course& c) 
+{
+	string s;
+	int start, end, single;
+	
+	
+		s = c.week;
+		int j = 0;
+		while (j < s.length())
+		{
+			if (s[j] == '-')
+			{
+				if ((j > 1) && s[j - 2] >= '0' && s[j - 2] <= '9')//判断是不是十位数
+				{
+					start = s[j - 1] - '0' + (s[j - 2] - '0') * 10;
+				}
+				else
+				{
+					start = s[j - 1] - '0';
+				}
+				if ((j + 2) < s.length() && s[j + 2] >= '0' && s[j + 2] <= '9')//判断是不是十位数
+				{
+					end = s[j + 2] - '0' + (s[j + 1] - '0') * 10;
+					j += 3;
 
+				}
+				else
+				{
+					end = s[j + 1] - '0';
+					j += 2;
+
+				}
+				for (int k = start; k <= end; k++)
+				{
+					c.check[k] = 1;
+				}
+				continue;
+			}
+
+
+			else if (s[j] >= '0' && s[j] <= '9')//单个周
+			{
+				if ((j + 1) < s.length() && s[j + 1] >= '0' && s[j + 1] <= '9')//看看这个数是不是十位数，如果是十位
+				{
+					single = 10 * (s[j] - '0') + (s[j + 1] - '0');
+					if ((j == 0 && s[j + 2] == ',') || (j == 0 && s[j + 2] == '\0'))//第一个
+					{
+						c.check[single] = 1;
+						j += 3;
+					}
+					else if ((j + 2) < s.length() && j > 0 && s[j - 1] == ',' && s[j + 2] == ',')//并且左右都是“，”
+					{
+						c.check[single] = 1;
+						j += 3;
+
+					}
+					else if ((j + 2) < s.length() && j > 0 && s[j + 2] == '\0' && s[j - 1] == ',')//最后一个
+					{
+						c.check[single] = 1;
+						j += 3;
+
+					}
+					else
+						j++;
+				}
+				else//不是十位数
+				{
+					single = s[j] - '0';
+					if ((j + 1) < s.length() && j > 0 && s[j - 1] == ',' && s[j + 1] == ',')
+					{
+						c.check[single] = 1;
+						j += 2;
+
+					}
+					else if ((j == 0 && s[j + 1] == ',') || (j == 0 && s[j + 1] == '\0'))//第一个
+					{
+						c.check[single] = 1;
+						j += 2;
+
+					}
+					else if ((j + 1) < s.length() && j > 0 && s[j + 1] == '\0' && s[j - 1] == ',')
+					{
+						c.check[single] = 1;
+						j += 2;
+
+					}
+					else
+						j++;
+				}
+
+			}
+			else
+				j++;
+		}
+}
 
 
 

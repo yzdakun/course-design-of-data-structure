@@ -40,6 +40,8 @@ string stohex(const string &str)
 string UTF8_To_string(const string & str)
 {
 	// system("pause");
+	if(str[0]!='%')
+		return str;
 	string tmp="";
 	int len=str.length();
 	for(int i=0;i<len;i++)
