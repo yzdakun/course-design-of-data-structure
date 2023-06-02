@@ -89,10 +89,10 @@ private:
 
 
 	int Search(int kind, string name,int now_time);
-	void AddGroupAct();
-	void AddActivity();
+	int AddGroupAct();
+	int AddActivity();
 	int AddSingleActivity(int tm, string name, int place, int type);
-	void AddTempAct();
+	int AddTempAct();
 	void DeleteGroupAct();
 	void DeleteActivity();
 	void DeleteTempAct();
@@ -102,6 +102,7 @@ private:
 	void DeletePersonalAlarmClock();
 	void ShowPersonalAlarmClock();
 	void ShowInfo(int loc, int kind, int ActTime);
+	int BinarySearch(int kind, int tm);
 
 	//student(int id, int ClassNum, string name, string password);
 };
@@ -119,6 +120,7 @@ extern student StudentList[MAX_PEOPLE];
 extern int StudentCnt ;
 extern manager ManagerList[MAX_PEOPLE];
 extern int ManagerCnt ;
+
 
 
 
