@@ -22,8 +22,8 @@ public:
 	string place;
 	int Class;
 	int kind;
-	int period;//1ÊÇµ¥´Î£¬2ÊÇÖÜÆÚ
-	int c_week;//ÉÏ¿ÎµÄÖÜÊı
+	int period;//1æ˜¯å•æ¬¡ï¼Œ2æ˜¯å‘¨æœŸ
+	int c_week;//ä¸Šè¯¾çš„å‘¨æ•°
 	string week;
 	int check[20]{ 0 };
 	course();
@@ -32,7 +32,7 @@ public:
 class student : public user
 {
 public:
-	int ClassNum;//Ñ§Éú°àºÅ
+	int ClassNum;//å­¦ç”Ÿç­å·
 };
 class manager :public user
 {
@@ -47,6 +47,7 @@ public:
 	void init();
 	void connection();
 	void translate();
+	void m_translate(course& c);
 	vector<course> course_Array;
 	int count_course = 0;
 	vector<student> student_Array;
