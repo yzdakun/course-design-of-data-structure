@@ -1463,14 +1463,14 @@ void student::DeleteGroupAct()
 	ifsArg >> tm;
 
 	int w = tm / 168;
-	int idx;
-	for (idx = 0; idx < GroupActNum[w]; idx++)
-	{
-		if (GroupActList[w][idx].StartTime == tm)
-		{
-			break;
-		}
-	}
+	int idx = BinarySearch(2, tm);
+	// for (idx = 0; idx < GroupActNum[w]; idx++)
+	// {
+	// 	if (GroupActList[w][idx].StartTime == tm)
+	// 	{
+	// 		break;
+	// 	}
+	// }
 	if (idx == GroupActNum[w])
 	{
 		cout << "不存在该事务" << endl;
@@ -1491,14 +1491,14 @@ void student::DeleteActivity()
 	ifsArg >> tm;
 
 	int w = tm / 168;
-	int idx;
-	for (idx = 0; idx < ActivityNum[w]; idx++)
-	{
-		if (ActivityList[w][idx].StartTime == tm)
-		{
-			break;
-		}
-	}
+	int idx = BinarySearch(3, tm);
+	// for (idx = 0; idx < ActivityNum[w]; idx++)
+	// {
+	// 	if (ActivityList[w][idx].StartTime == tm)
+	// 	{
+	// 		break;
+	// 	}
+	// }
 	if (idx == ActivityNum[w])
 	{
 		cout << "不存在该事务" << endl;
@@ -1524,7 +1524,7 @@ void student::DeleteTempAct()
 
 
 	int w = tm / 168;
-	int idx ;
+	int idx = BinarySearch(4, tm);
 	
 	for (idx = 0; idx < TempActNum[w]; idx++)
 	{
@@ -1814,7 +1814,7 @@ void student::ShowPersonalAlarmClock()
 void student::ShowInfo(int loc, int kind, int ActTime, int type)
 {
 	int w = ActTime / 168;
-	int idx = -1;
+	// int idx = -1;
 	ofstream ofs;
 	ofs.open("../datas/personalAlarm.txt");
 	if(type == 0)
@@ -1822,19 +1822,25 @@ void student::ShowInfo(int loc, int kind, int ActTime, int type)
 
 	if (kind == 1)
 	{
-		for (int i = 0; i < CourseNum[w]; i++)
-		{
-			if (CourseList[w][i].StartTime == ActTime)
-			{
-				idx = i;
-				break;
-			}
-		}
-		if (idx == -1)
+		int idx = BinarySearch(kind, ActTime);
+		if (idx == CourseNum[w] || CourseList[w][idx].StartTime != ActTime)
 		{
 			ofs.close();
 			return;
 		}
+		// for (int i = 0; i < CourseNum[w]; i++)
+		// {
+		// 	if (CourseList[w][i].StartTime == ActTime)
+		// 	{
+		// 		idx = i;
+		// 		break;
+		// 	}
+		// }
+		// if (idx == -1)
+		// {
+		// 	ofs.close();
+		// 	return;
+		// }
 		if(type == 0)
 			ofs <<  CourseList[w][idx].kind << " " << CourseList[w][idx].StartTime << " " << CourseList[w][idx].EndTime << " " << CourseList[w][idx].name << " " << CourseList[w][idx].place << " " << CourseList[w][idx].Class << endl;
 		else
@@ -1842,19 +1848,25 @@ void student::ShowInfo(int loc, int kind, int ActTime, int type)
 	}
 	else if (kind == 2)
 	{
-		for (int i = 0; i < GroupActNum[w]; i++)
-		{
-			if (GroupActList[w][i].StartTime == ActTime)
-			{
-				idx = i;
-				break;
-			}
-		}
-		if (idx == -1)
+		int idx = BinarySearch(kind, ActTime);
+		if (idx == GroupActNum[w] || GroupActList[w][idx].StartTime != ActTime)
 		{
 			ofs.close();
 			return;
 		}
+		// for (int i = 0; i < GroupActNum[w]; i++)
+		// {
+		// 	if (GroupActList[w][i].StartTime == ActTime)
+		// 	{
+		// 		idx = i;
+		// 		break;
+		// 	}
+		// }
+		// if (idx == -1)
+		// {
+		// 	ofs.close();
+		// 	return;
+		// }
 		if(type == 0)
 			ofs << GroupActList[w][idx].kind << " " << GroupActList[w][idx].StartTime << " " << GroupActList[w][idx].EndTime << " " << GroupActList[w][idx].name << " " << GroupActList[w][idx].place << " " << GroupActList[w][idx].Class << " " << 1 << endl;
 		else
@@ -1862,19 +1874,25 @@ void student::ShowInfo(int loc, int kind, int ActTime, int type)
 	}
 	else if (kind == 3)
 	{
-		for (int i = 0; i < ActivityNum[w]; i++)
-		{
-			if (ActivityList[w][i].StartTime == ActTime)
-			{
-				idx = i;
-				break;
-			}
-		}
-		if (idx == -1)
+		int idx = BinarySearch(kind, ActTime);
+		if (idx == ActivityNum[w] || ActivityList[w][idx].StartTime != ActTime)
 		{
 			ofs.close();
 			return;
 		}
+		// for (int i = 0; i < ActivityNum[w]; i++)
+		// {
+		// 	if (ActivityList[w][i].StartTime == ActTime)
+		// 	{
+		// 		idx = i;
+		// 		break;
+		// 	}
+		// }
+		// if (idx == -1)
+		// {
+		// 	ofs.close();
+		// 	return;
+		// }
 		if(type == 0)
 			ofs << ActivityList[w][idx].kind << " " << ActivityList[w][idx].StartTime << " " << ActivityList[w][idx].EndTime << " " << ActivityList[w][idx].name << " " << ActivityList[w][idx].place << " " << ActivityList[w][idx].type << endl;
 		else
@@ -1882,19 +1900,25 @@ void student::ShowInfo(int loc, int kind, int ActTime, int type)
 	}
 	else if (kind == 4)
 	{
-		for (int i = 0; i < TempActNum[w]; i++)
-		{
-			if (TempActList[w][i].StartTime == ActTime)
-			{
-				idx = i;
-				break;
-			}
-		}
-		if (idx == -1)
+		int idx = BinarySearch(kind, ActTime);
+		if (idx == TempActNum[w] || TempActList[w][idx].StartTime != ActTime)
 		{
 			ofs.close();
 			return;
 		}
+		// for (int i = 0; i < TempActNum[w]; i++)
+		// {
+		// 	if (TempActList[w][i].StartTime == ActTime)
+		// 	{
+		// 		idx = i;
+		// 		break;
+		// 	}
+		// }
+		// if (idx == -1)
+		// {
+		// 	ofs.close();
+		// 	return;
+		// }
 		int tmpr = idx;
 		while (TempActList[w][tmpr].StartTime == TempActList[w][idx].StartTime && tmpr < TempActNum[w])
 		{
@@ -1920,6 +1944,83 @@ void student::ShowInfo(int loc, int kind, int ActTime, int type)
 	ofs.close();
 }
 
+int student::BinarySearch(int kind, int tm)
+{
+	int w = tm / 168;
+
+	if (kind == 1)
+	{
+		int l = 0, r = CourseNum[w];
+		int mid = l + r >> 1;
+		while (l < r)
+		{
+			mid = l + r >> 1;
+			if (CourseList[w][mid].StartTime < tm)
+			{
+				l = mid + 1;
+			}
+			else
+			{
+				r = mid;
+			}
+		}
+		return l;
+	}
+	else if (kind == 2)
+	{
+		int l = 0, r = GroupActNum[w];
+		int mid = l + r >> 1;
+		while (l < r)
+		{
+			mid = l + r >> 1;
+			if (GroupActList[w][mid].StartTime < tm)
+			{
+				l = mid + 1;
+			}
+			else
+			{
+				r = mid;
+			}
+		}
+		return l;
+	}
+	else if (kind == 3)
+	{
+		int l = 0, r = ActivityNum[w];
+		int mid = l + r >> 1;
+		while (l < r)
+		{
+			mid = l + r >> 1;
+			if (ActivityList[w][mid].StartTime < tm)
+			{
+				l = mid + 1;
+			}
+			else
+			{
+				r = mid;
+			}
+		}
+		return l;
+	}
+	else if (kind == 4)
+	{
+		int l = 0, r = TempActNum[w];
+		int mid = l + r >> 1;
+		while (l < r)
+		{
+			mid = l + r >> 1;
+			if (TempActList[w][mid].StartTime < tm)
+			{
+				l = mid + 1;
+			}
+			else
+			{
+				r = mid;
+			}
+		}
+		return l;
+	}
+}
 
 
 

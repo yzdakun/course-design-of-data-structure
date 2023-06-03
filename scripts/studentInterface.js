@@ -2122,7 +2122,7 @@ function dateHour2exe(date,hour)
 function jsHour2exe()
 {
     var oridate=new Date("2023-02-20");
-    return parseInt(parseInt(parseInt((nowTime.getTime() - oridate.getTime())/1000)/60)/60) + 8;
+    return parseInt(parseInt(parseInt((nowTime.getTime() - (oridate.getTime()-8*60*60*1000))/1000)/60)/60);
 }
 function exeHour2js(hour)
 {

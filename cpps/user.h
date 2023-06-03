@@ -102,7 +102,7 @@ private:
 	void DeletePersonalAlarmClock();
 	void ShowPersonalAlarmClock();
 	void ShowInfo(int loc, int kind, int ActTime, int type);
-
+	int BinarySearch(int kind, int tm);
 	//student(int id, int ClassNum, string name, string password);
 };
 
